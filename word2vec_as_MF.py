@@ -23,7 +23,7 @@ class Word2vecMF(object):
         """
         
         self.D = None
-        self.B = None
+        self.B = None 
         self.C = None
         self.W = None
         self.vocab = None

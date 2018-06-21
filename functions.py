@@ -10,7 +10,7 @@ from scipy.sparse.linalg import svds
 from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 
-from word2vec_as_EMF import Word2vecMF
+from word2vec_as_MF import Word2vecMF
 
 def load_sentences(mode='debug'):
     """
@@ -50,6 +50,7 @@ def opt_experiment(model,
                    MAX_ITER = 100,
                    from_iter = 0,
                    start_from = 'RAND',
+                   display = 0,
                    init = (False, None, None)            
                   ):
     """
@@ -72,7 +73,7 @@ def opt_experiment(model,
     
     
     if (mode == 'PS'):
-        model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter,
+        model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display= display,
                                   init=init_, save=(True, from_folder))
         
     if (mode == 'SPS'):
