@@ -253,10 +253,10 @@ def dist_change(vecs, vec2, chosen_pairs, n=5, dropped=True, from_iter=0, to_ite
             idx = args_sorted[i]
         else:
             idx = args_sorted[-1-i]
-        print "Words:", chosen_pairs[idx]
-        print "Assesor score:", vec2[idx]
-        print "Distance change:", vecs[from_iter, idx], '-->', vecs[to_iter, idx]
-        print '\n'
+        print("Words:", chosen_pairs[idx])
+        print("Assesor score:", vec2[idx])
+        print("Distance change:", vecs[from_iter, idx], '-->', vecs[to_iter, idx])
+        print('\n')
     
     
 def nearest_words_from_iter(model, word, from_folder, top=20, display=False, it=1):

@@ -40,7 +40,7 @@ class Word2vecMF(object):
         prevocabulary = {}
         for sentence in data:
             for word in sentence:
-                if not prevocabulary.has_key(word):
+                if not word in prevocabulary:
                     prevocabulary[word] = 1
                 else:
                     prevocabulary[word] += 1
@@ -61,14 +61,14 @@ class Word2vecMF(object):
 
         dim = len(self.vocab)
         D = np.zeros((dim, dim))
-        s = window_size/2
+        s = window_size//2
             
         for sentence in data:
             l = len(sentence)
-            for i in xrange(l):
-                for j in xrange(max(0,i-s), min(i+s+1,l)):
-                    if (i != j and self.vocab.has_key(sentence[i]) 
-                        and self.vocab.has_key(sentence[j])):
+            for i in range(l):
+                for j in range(max(0,i-s), min(i+s+1,l)):
+                    if (i != j and sentence[i] in self.vocab
+                        and sentence[j] in self.vocab):
                         c = self.vocab[sentence[j]]
                         w = self.vocab[sentence[i]]
                         D[c][w] += 1                  
@@ -84,7 +84,7 @@ class Word2vecMF(object):
         P = self.D.sum()
 
         w_v, c_v = np.meshgrid(w_, c_)
-        B = k*(w_v*c_v)/float(P)
+        B = k*(w_v*c_v)/P
         return B
         
     ######################### Necessary functions #########################
@@ -149,10 +149,10 @@ class Word2vecMF(object):
         if (save[0] and from_iter==0):
                 self.save_CW(save[1], 0)
                 
-        for it in xrange(from_iter, from_iter+MAX_ITER):    
+        for it in range(from_iter, from_iter+MAX_ITER):    
             
             if (display):
-                print "Iter #:", it+1
+                print("Iter #:", it+1)
                 
             gradW = (self.C).dot(self.grad_MF(self.C, self.W))
             self.W = self.W + eta*gradW
@@ -163,6 +163,7 @@ class Word2vecMF(object):
                 self.save_CW(save[1], it+1)
 
     #################### Projector splitting algorithm ####################
+            
             
     def projector_splitting(self, eta=5e-6, d=100, 
                             MAX_ITER=1, from_iter=0, display=0, 
@@ -178,15 +179,14 @@ class Word2vecMF(object):
         else:
             self.C = np.random.rand(d, self.D.shape[0])
             self.W = np.random.rand(d, self.D.shape[1]) 
-            
         if (save[0] and from_iter==0):
                 self.save_CW(save[1], 0)
         
         X = (self.C).T.dot(self.W)
-        for it in xrange(from_iter, from_iter+MAX_ITER):
+        for it in range(from_iter, from_iter+MAX_ITER):
             
             if (display):
-                print "Iter #:", it+1
+                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
             
             U, S, V = svds(X, d)
             S = np.diag(S)
@@ -207,8 +207,30 @@ class Word2vecMF(object):
             V = V.T
             S = S.T
             
-            X = U.dot(S).dot(V)                                  
+            X = U.dot(S).dot(V)                                     
 
+    def bfgd(self, d=100, from_iter=0, MAX_ITER=1, eta=1e-7, init=(False, None, None), display=True):
+        """
+        Bi-factorized gradient descent algorithm
+        """
+        if (init[0]):
+            self.C = init[1]
+            self.W = init[2]
+        else:
+            self.C = np.random.rand(d, self.D.shape[0])
+            self.W = np.random.rand(d, self.D.shape[1]) 
+        
+        for it in range(from_iter, from_iter+MAX_ITER):
+            
+            if (display):
+                print("Itecr #:", it+1, "loss", self.MF(self.C, self.W))
+            dX = self.grad_MF(self.C, self.W)
+            dC = self.W.dot(dX.T)
+            dW = self.C.dot(dX)
+            
+            self.C+= eta*dC
+            self.W+= eta*dW
+            
     def stochastic_ps(self, eta=5e-6, batch_size=100, d=100, 
                       MAX_ITER=1, from_iter=0, display=0,
                       init=(False, None, None), save=(False, None)):
@@ -231,10 +253,10 @@ class Word2vecMF(object):
         pc_w = self.D / self.D.sum(axis=0)
         
         X = (self.C).T.dot(self.W)
-        for it in xrange(from_iter, from_iter+MAX_ITER):
+        for it in range(from_iter, from_iter+MAX_ITER):
             
             if (display):
-                print "Iter #:", it+1
+                print("Iter #:", it+1)
             
             U, S, V = svds(X, d)
             S = np.diag(S)
@@ -343,7 +365,7 @@ class Word2vecMF(object):
         
         MFs = np.zeros(MAX_ITER)
         
-        for it in xrange(from_iter, from_iter+MAX_ITER):
+        for it in range(from_iter, from_iter+MAX_ITER):
             C, W = self.load_CW(from_folder, it)
             MFs[it-from_iter] = self.MF(C, W)
         
@@ -372,7 +394,7 @@ class Word2vecMF(object):
         if word in self.vocab:
             vec = W[:,int(self.vocab[word])]
         else:
-            print "No such word in vocabulary."
+            print("No such word in vocabulary.")
             vec = None
             
         return vec
@@ -393,10 +415,9 @@ class Word2vecMF(object):
         args = np.argsort(cosines)[::-1]       
             
         nws = []
-        for i in xrange(1, top+1):
+        for i in range(1, top+1):
             nws.append(self.inv_vocab[args[i]])
             if (display):
-                print self.inv_vocab[args[i]], round(cosines[args[i]],3)
+                print(self.inv_vocab[args[i]], round(cosines[args[i]],3))
 
         return nws
-    
