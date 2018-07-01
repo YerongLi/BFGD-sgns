@@ -119,7 +119,7 @@ class Word2vecMF(object):
         
         X = C.T.dot(W)
         MF = self.D*np.log(self.sigmoid(X)) + self.B*np.log(self.sigmoid(-X))
-        return -MF.mean()
+        return -MF.sum()
 
     def grad_MF(self, C, W):
         """
@@ -151,7 +151,7 @@ class Word2vecMF(object):
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
-            if (display):
+            if display:
                 print("Iter #:", it+1)
                 
             gradW = (self.C).dot(self.grad_MF(self.C, self.W))
@@ -185,7 +185,7 @@ class Word2vecMF(object):
         X = (self.C).T.dot(self.W)
         for it in range(from_iter, from_iter+MAX_ITER):
             
-            if (display):
+            if display and 0==(it+1)%10:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
             
             U, S, V = svds(X, d)
@@ -222,7 +222,7 @@ class Word2vecMF(object):
         
         for it in range(from_iter, from_iter+MAX_ITER):
             
-            if (display):
+            if display and 0==(it+1)%10:
                 print("Itecr #:", it+1, "loss", self.MF(self.C, self.W))
             dX = self.grad_MF(self.C, self.W)
             dC = self.W.dot(dX.T)
