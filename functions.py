@@ -46,6 +46,7 @@ def opt_experiment(model,
                    min_count=200,
                    d = 100,
                    eta = 5e-6,
+                   lbd = 0.,
                    batch_size = 1000,
                    MAX_ITER = 100,
                    from_iter = 0,
@@ -82,7 +83,7 @@ def opt_experiment(model,
                             init=init_, save=(True, from_folder))
         
     if (mode == 'AM'):
-        model.alt_min(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
+        model.alt_min(eta=eta, d=d, lbd=lbd, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder))
     
     return model

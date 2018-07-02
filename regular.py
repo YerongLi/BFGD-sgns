@@ -3,7 +3,7 @@
 
 # ## Imports
 
-# In[1]:
+# In[13]:
 
 
 '''%matplotlib inline
@@ -34,18 +34,19 @@ import time
 
 # ## Read and preprocess enwik9
 
-# In[2]:
+# In[14]:
 
 
 # %%time
 data = []
-with open('data/xaa') as file:
-# with open('data/xaa') as file:
+#with open('data/enwik8.txt') as file:
+with open('data/x1') as file:
     for line in file:
         data+= [line[:-1]]
+dimension = 100
 
 
-# In[3]:
+# In[15]:
 
 
 def wiki_to_wordlist(sentence, remove_stopwords=False ):
@@ -65,7 +66,7 @@ def wiki_to_wordlist(sentence, remove_stopwords=False ):
     return(words)
 
 
-# In[5]:
+# In[16]:
 
 
 # %%time
@@ -78,7 +79,7 @@ sentences = [sentence.split() for sentence in data]
 indices = []
 
 
-# In[6]:
+# In[17]:
 
 
 # %%time
@@ -91,7 +92,7 @@ for i, sentence in enumerate(sentences):
 real_sentences = np.array(sentences)[indices]
 
 
-# In[ ]:
+# In[18]:
 
 
 '''print('real_sentences', real_sentences[-30:])
@@ -99,42 +100,58 @@ print('indices', indices[-30:])
 # print('sentences', sentences)'''
 
 
-# In[7]:
+# # Gensim
+
+# In[19]:
 
 
-# Create word2vec as matrix factorization model
-model_enwik = Word2vecMF()
-model_enwik.data_to_matrices(real_sentences, 200, 5, 'enwik-200/matrices.npz')
+'''%%time
+skip = Word2Vec(real_sentences, size = dimension, compute_loss=True)'''
 
 
-# In[ ]:
+# In[20]:
 
 
-'''# If the model has been already created, load it from file
-model_enwik = Word2vecMF()
-model_enwik.load_matrices(from_file='enwik-200/matrices.npz')'''
+'''skip.get_latest_training_loss()'''
 
 
 # ## Train ro_sgns model starting from SVD of SPPMI
 
-# In[8]:
+# In[21]:
+
+
+# If the model has been already created, load it from file
+model_enwik = Word2vecMF()
+#model_enwik.load_matrices(from_file='enwik-200/matrices.npz')
+
+
+# In[22]:
+
+
+# Create word2vec as matrix factorization model
+model_enwik = Word2vecMF()
+model_enwik.data_to_matrices(real_sentences, dimension, 5, 'enwik-200/matrices.npz')
+
+
+# In[23]:
 
 
 # SVD initialization
 SPPMI = np.maximum(np.log(model_enwik.D) - np.log(model_enwik.B), 0)
 # print SPPMI
-u, s, vt = svds(SPPMI, k=200)
+u, s, vt = svds(SPPMI, k=dimension)
 C_svd = u.dot(np.sqrt(np.diag(s))).T
 W_svd = np.sqrt(np.diag(s)).dot(vt)
 
 
-# In[10]:
+# In[24]:
 
 
 model_enwik.C = C_svd
 model_enwik.W = W_svd
 
-model_enwik.save_CW('enwik-200/initializations/SVD_dim200', 0)
+#model_enwik.save_CW('enwik-200/initializations/SVD_dim200', 0)
+print(model_enwik.C.shape, model_enwik.W.shape, model_enwik.B.shape, model_enwik.D.shape)
 
 
 # In[ ]:
@@ -144,7 +161,7 @@ model_enwik.save_CW('enwik-200/initializations/SVD_dim200', 0)
 start_time = time.time()
 opt_experiment(model_enwik,
                mode='PS', 
-               d=200,
+               d=dimension,
                eta = 5e-5,
                MAX_ITER=10,
                from_iter=0,
@@ -153,44 +170,33 @@ opt_experiment(model_enwik,
 print("--- %s seconds ---" % (time.time() - start_time))'''
 
 
-# In[ ]:
+# In[28]:
 
 
-'''# Train the model
+# Train the model
 start_time = time.time()
 opt_experiment(model_enwik,
                mode='AM', 
-               d=200,
+               d=dimension,
                eta = 5e-6,
-               MAX_ITER=10000,
-               from_iter=10000,
+               lbd = 1.0,
+               MAX_ITER=189000,
+               from_iter=30000,
                start_from='SVD',
                init=(True, C_svd, W_svd), display=True)
-print("--- %s seconds ---" % (time.time() - start_time))'''
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
 # In[ ]:
 
 
-model_enwik.C = C_svd
+'''model_enwik.C = C_svd
 model_enwik.W = W_svd
 start_time = time.time()
-model_enwik.bfgd(d=200,from_iter=10000, MAX_ITER=10000, eta=5e-6, display=True,
+model_enwik.bfgd(d=dimension,from_iter=10000, MAX_ITER=10000, eta=5e-6, display=True,
                  init=(True, C_svd, W_svd), 
                  save=[True, 'dataset'])
-print("--- %s seconds ---" % (time.time() - start_time))
-
-
-# In[16]:
-
-
-get_ipython().run_cell_magic('time', '', 'model = Word2Vec(real_sentences, size = 200, compute_loss=True, min_count= 10)')
-
-
-# In[17]:
-
-
-model.get_latest_training_loss()
+print("--- %s seconds ---" % (time.time() - start_time))'''
 
 
 # In[ ]:

@@ -133,7 +133,7 @@ class Word2vecMF(object):
     
     ################# Alternating minimization algorithm ##################
     
-    def alt_min(self, eta=1e-7, d=100, MAX_ITER=1, from_iter=0, display=False,
+    def alt_min(self, eta=1e-7, d=100, lbd=0.0 ,MAX_ITER=1, from_iter=0, display=False,
                 init=(False, None, None), save=(False, None)):
         """
         Alternating mimimization algorithm for word2vec matrix factorization.
@@ -153,15 +153,15 @@ class Word2vecMF(object):
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
-            if display and 0==(it+1)%100:
+            if display and 0==(it+1)%1000:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
-            if save[0] and 0==(it+1)%1000:
+            if save[0] and 0==(it+1)%5000:
                 self.save_CW(save[1], it+1)      
-                
-            gradW = (self.C).dot(self.grad_MF(self.C, self.W))
+            G=self.C.dot(self.C.T)-self.W.dot(self.W.T)    
+            gradW = (self.C).dot(self.grad_MF(self.C, self.W))+lbd*0.25*G.dot(self.W)
             self.W = self.W + eta*gradW
-            gradC = self.W.dot(self.grad_MF(self.C, self.W).T)
+            gradC = self.W.dot(self.grad_MF(self.C, self.W).T)+lbd*0.25*G.dot(self.C)
             self.C = self.C + eta*gradC
 
     #################### Projector splitting algorithm ####################
