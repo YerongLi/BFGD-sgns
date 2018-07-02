@@ -50,7 +50,7 @@ def opt_experiment(model,
                    MAX_ITER = 100,
                    from_iter = 0,
                    start_from = 'RAND',
-                   display = 0,
+                   display = False,
                    init = (False, None, None)            
                   ):
     """
@@ -60,7 +60,8 @@ def opt_experiment(model,
     # Start projector splitting from svd of SPPMI or random initialization
   
     def folder_path(num_iter):
-        return 'enwik-'+str(min_count)+'/'+mode+str(num_iter)+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
+        #return 'enwik-'+str(min_count)+'/'+mode+str(num_iter)+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
+        return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
 
     
     from_folder = folder_path(from_iter+MAX_ITER)
@@ -71,17 +72,17 @@ def opt_experiment(model,
     else:
         init_ = init
     
-    
+    print(from_folder)
     if (mode == 'PS'):
-        model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display= display,
+        model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                                   init=init_, save=(True, from_folder))
         
     if (mode == 'SPS'):
-        model.stochastic_ps(eta=eta, batch_size=batch_size, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter,
+        model.stochastic_ps(eta=eta, batch_size=batch_size, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                             init=init_, save=(True, from_folder))
         
     if (mode == 'AM'):
-        model.alt_min(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter,
+        model.alt_min(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder))
     
     return model
