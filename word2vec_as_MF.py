@@ -158,10 +158,11 @@ class Word2vecMF(object):
                 
             if save[0] and 0==(it+1)%5000:
                 self.save_CW(save[1], it+1)      
-            G=self.C.dot(self.C.T)-self.W.dot(self.W.T)    
-            gradW = (self.C).dot(self.grad_MF(self.C, self.W))+lbd*0.25*G.dot(self.W)
+            G=self.C.dot(self.C.T)-self.W.dot(self.W.T)
+            grad = self.grad_MF(self.C, self.W)
+            gradW =  self.C.dot(grad)+lbd*0.25*G.dot(self.W)
+            gradC = self.W.dot(grad.T)+lbd*0.25*G.dot(self.C)
             self.W = self.W + eta*gradW
-            gradC = self.W.dot(self.grad_MF(self.C, self.W).T)+lbd*0.25*G.dot(self.C)
             self.C = self.C + eta*gradC
 
     #################### Projector splitting algorithm ####################
