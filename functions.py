@@ -62,7 +62,7 @@ def opt_experiment(model,
   
     def folder_path(num_iter):
         #return 'enwik-'+str(min_count)+'/'+mode+str(num_iter)+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
-        return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
+        return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_'+str(lbd)
 
     
     from_folder = folder_path(from_iter+MAX_ITER)

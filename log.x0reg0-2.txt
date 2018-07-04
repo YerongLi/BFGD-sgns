@@ -1,7 +1,3 @@
-python x0reg0-2.py 
-(356, 356)
-1845105.82033
-enwik-200/AMiter_fromX000_dim100_step2e-05_factors
 Iter #: 100 loss 1126194.36432
 Iter #: 200 loss 1074150.59809
 Iter #: 300 loss 1068176.0626
@@ -1892,4 +1888,3 @@ Iter #: 188700 loss 956417.867974
 Iter #: 188800 loss 956418.577151
 Iter #: 188900 loss 956419.285173
 Iter #: 189000 loss 956419.992037
---- 5855.913190603256 seconds ---

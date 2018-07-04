@@ -1,8 +1,3 @@
-python pmm0-2.py 
-pmm0-2.py:141: RuntimeWarning: divide by zero encountered in log
-  SPPMI = np.maximum(np.log(model_enwik.D) - np.log(model_enwik.B), 0)
-1808805.02133
-enwik-200/AMiter_fromPMM0_dim100_step2e-05_factors
 Iter #: 100 loss 1125481.96769
 Iter #: 200 loss 1049087.46193
 Iter #: 300 loss 1028891.63171
@@ -1409,4 +1404,3 @@ Iter #: 140300 loss 954925.199055
 Iter #: 140400 loss 954925.730545
 Iter #: 140500 loss 954926.260322
 Iter #: 140600 loss 954926.788382
-
