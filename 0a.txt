@@ -1,3 +1,120 @@
+yerong@yerong-UBUNTU:~$ atom
+ssh: /home/yerong/local/Anaconda3/lib/libcrypto.so.1.0.0: no version information available (required by ssh)
+ssh: /home/yerong/local/Anaconda3/lib/libcrypto.so.1.0.0: no version information available (required by ssh)
+Last login: Sat Jul  7 15:47:53 2018 from c-76-30-252-169.hsd1.tx.comcast.net
+Rocks 6.1 (Emerald Boa)
+Profile built 06:03 20-Jan-2013
+
+Kickstarted 23:50 19-Jan-2013
+                  THIS SYSTEM IS FOR AUTHORIZED USE ONLY
+   System managers may monitor and record activities on this system in
+   the course of maintenance or investigations into improper usage.
+   Anyone using this system expressly consents to such monitoring and is
+   advised that any resulting evidence of criminal activity may be
+   provided to law enforcement officials.
+
+   ------------
+   o The MSC group WIKI is available at https://wiki.wag.caltech.edu
+
+   o Computer problems and questions should be sent to help@wag.caltech.edu
+   ------------
+
+
+checking quotas for yerong on hulk ....
+Filesystem             usage   quota   limit
+                     3689912 5242880 5242880              /net/hulk/home6
+Python version not supported for gdb.
+PYSTR: Undefined variable.
+[yerong@atom ~] > cd BFGD-sgns/
+[yerong@atom ~/BFGD-sgns] > cp 1pmmreg256rank20-1.py 2pmmreg256rank20-1.py
+[yerong@atom ~/BFGD-sgns] > cp 1pmmreg0rank20-1.py 2pmmreg0rank20-1.py
+[yerong@atom ~/BFGD-sgns] > vi 2pmmreg256rank20-1.py
+[yerong@atom ~/BFGD-sgns] > vi 2pmmreg0rank20-1.py
+[yerong@atom ~/BFGD-sgns] > vi 2pmmreg0rank20-1.py
+[yerong@atom ~/BFGD-sgns] > atm4
+Warning: untrusted X11 forwarding setup failed: xauth key data not generated
+Warning: No xauth data; using fake authentication data for X11 forwarding.
+Last login: Sat Jul  7 09:45:07 2018 from atom.local
+Rocks Compute Node
+Rocks 6.1 (Emerald Boa)
+Profile built 09:03 24-Dec-2017
+
+Kickstarted 09:10 24-Dec-2017
+                  THIS SYSTEM IS FOR AUTHORIZED USE ONLY
+   System managers may monitor and record activities on this system in
+   the course of maintenance or investigations into improper usage.
+   Anyone using this system expressly consents to such monitoring and is
+   advised that any resulting evidence of criminal activity may be
+   provided to law enforcement officials.
+
+   ------------
+   o The MSC group WIKI is available at https://wiki.wag.caltech.edu
+
+   o Computer problems and questions should be sent to help@wag.caltech.edu
+   ------------
+
+
+checking quotas for yerong on hulk ....
+Filesystem             usage   quota   limit
+                     3690048 5242880 5242880              /net/hulk/home6
+Python version not supported for gdb.
+PYSTR: Undefined variable.
+[yerong@node-3-5 ~] > cd BFGD-sgns/
+[yerong@node-3-5 ~/BFGD-sgns] > python 2pmmreg0rank20-1.py
+2pmmreg0rank20-1.py:141: RuntimeWarning: divide by zero encountered in log
+  SPPMI = np.maximum(np.log(model_enwik.D) - np.log(model_enwik.B), 0)
+enwik-200/AMiter_fromPMM_D1_dim20_step1e-05_0.0
+Iter #: 100 loss (4171812.1026176261, 372.70091490713793)
+Iter #: 200 loss (3870809.6923370063, 681.95513084860215)
+Iter #: 300 loss (3765962.9447975527, 888.32533130637592)
+Iter #: 400 loss (3722356.8928613584, 1043.0271693027626)
+Iter #: 500 loss (3700618.3980857325, 1166.1127684897074)
+Iter #: 600 loss (3687443.1901347269, 1267.7252895907025)
+Iter #: 700 loss (3678206.5024069101, 1353.7539235019503)
+Iter #: 800 loss (3671109.7723822119, 1427.9109137529763)
+Iter #: 900 loss (3665228.0279805767, 1492.6924964162913)
+Iter #: 1000 loss (3651215.3834093958, 1547.2622426463065)
+Iter #: 1100 loss (3652742.3179887682, 1594.4656665279417)
+Iter #: 1200 loss (3646718.4179675844, 1639.6137548080972)
+Iter #: 1300 loss (3640727.0369359609, 1683.3869713315478)
+Iter #: 1400 loss (3635807.6365238903, 1725.5104626133248)
+Iter #: 1500 loss (3631735.2086070888, 1765.7585688085901)
+Iter #: 1600 loss (3628237.6437831833, 1803.9789339981019)
+Iter #: 1700 loss (3625075.6514512142, 1840.0192998069867)
+Iter #: 1800 loss (3622173.8840968157, 1873.829741231672)
+Iter #: 1900 loss (3619520.9043025505, 1905.450616688998)
+Iter #: 2000 loss (3617151.6411181861, 1934.9910918796752)
+Iter #: 2100 loss (3615092.1382693825, 1962.5973737984402)
+Iter #: 2200 loss (3613324.4819669086, 1988.419672261776)
+Iter #: 2300 loss (3611805.1197259193, 2012.5987238298114)
+Iter #: 2400 loss (3610489.4663786092, 2035.2642490185394)
+Iter #: 2500 loss (3609341.0339683075, 2056.5349371267125)
+Iter #: 2600 loss (3608331.5408531725, 2076.5185083386532)
+Iter #: 2700 loss (3607438.9432766088, 2095.312310506652)
+Iter #: 2800 loss (3606645.7136945217, 2113.0043028625714)
+Iter #: 2900 loss (3605937.6563299014, 2129.6741290907266)
+Iter #: 3000 loss (3605303.1093898602, 2145.3941146874868)
+Iter #: 3100 loss (3604732.3854607171, 2160.2301381369807)
+Iter #: 3200 loss (3604217.3615969499, 2174.2423778716366)
+Iter #: 3300 loss (3603751.1712823478, 2187.4859525270917)
+Iter #: 3400 loss (3603327.9703240152, 2200.0114724160771)
+^CTraceback (most recent call last):
+  File "2pmmreg0rank20-1.py", line 201, in <module>
+    init=(True, C_svd, W_svd), display=True)
+  File "/net/hulk/home6/yerong/BFGD-sgns/functions.py", line 87, in opt_experiment
+    init=init_, save=(True, from_folder))
+  File "/net/hulk/home6/yerong/BFGD-sgns/word2vec_as_MF.py", line 163, in alt_min
+    grad = self.grad_MF(self.C, self.W)
+  File "/net/hulk/home6/yerong/BFGD-sgns/word2vec_as_MF.py", line 131, in grad_MF
+    grad = self.D*self.sigmoid(-X) - self.B*self.sigmoid(X)
+  File "/net/hulk/home6/yerong/BFGD-sgns/word2vec_as_MF.py", line 100, in sigmoid
+    Y[(X<20)&(X>-20)] = 1 / (1 + np.exp(-X[(X<20)&(X>-20)]))
+KeyboardInterrupt
+[yerong@node-3-5 ~/BFGD-sgns] > vi 2pmmreg0rank20-1.py
+[yerong@node-3-5 ~/BFGD-sgns] > python 2pmmreg0rank20-1.py
+2pmmreg0rank20-1.py:141: RuntimeWarning: divide by zero encountered in log
+  SPPMI = np.maximum(np.log(model_enwik.D) - np.log(model_enwik.B), 0)
+enwik-200/AMiter_fromPMM_D2_dim20_step1e-05_0.0
 Iter #: 100 loss (4171812.1026176261, 372.70091490713793)
 Iter #: 200 loss (3870809.6923370063, 681.95513084860215)
 Iter #: 300 loss (3765962.9447975527, 888.32533130637592)
@@ -1898,3 +2015,6 @@ Iter #: 189700 loss (3598022.3573960471, 2364.506812903212)
 Iter #: 189800 loss (3598022.4911641181, 2364.4910520411286)
 Iter #: 189900 loss (3598022.6247582235, 2364.4753000114315)
 Iter #: 190000 loss (3598022.7581785172, 2364.4595567985903)
+--- 33485.50167965889 seconds ---
+[yerong@node-3-5 ~/BFGD-sgns] > packet_write_wait: Connection to 131.215.26.70 port 22: Broken pipe
+yerong@yerong-UBUNTU:~$

@@ -5,7 +5,7 @@ import pickle
 import operator
 
 import numpy as np
-from numpy.linalg import svd, qr
+from numpy.linalg import svd, qr, norm
 from scipy.spatial.distance import cosine
 from scipy.sparse.linalg import svds
 
@@ -119,7 +119,7 @@ class Word2vecMF(object):
         
         X = C.T.dot(W)
         MF = self.D*np.log(self.sigmoid(X)) + self.B*np.log(self.sigmoid(-X))
-        return -MF.sum()
+        return -MF.sum(), norm(C.dot(C.T)-W.dot(W.T), 'fro')
 
     def grad_MF(self, C, W):
         """
@@ -153,15 +153,16 @@ class Word2vecMF(object):
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
-            if display and 0==(it+1)%1000:
+            if display and 0==(it+1)%100:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
             if save[0] and 0==(it+1)%5000:
                 self.save_CW(save[1], it+1)      
-            G=self.C.dot(self.C.T)-self.W.dot(self.W.T)
+            G=-lbd*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
+            # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
             grad = self.grad_MF(self.C, self.W)
-            gradW =  self.C.dot(grad)+lbd*0.25*G.dot(self.W)
-            gradC = self.W.dot(grad.T)+lbd*0.25*G.dot(self.C)
+            gradW =  self.C.dot(grad)-G.dot(self.W)
+            gradC = self.W.dot(grad.T)+G.dot(self.C)
             self.W = self.W + eta*gradW
             self.C = self.C + eta*gradC
 
