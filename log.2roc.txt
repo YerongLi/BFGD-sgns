@@ -1,0 +1,212 @@
+yerong@yerong-UBUNTU:~$ ion
+ssh: /home/yerong/local/Anaconda3/lib/libcrypto.so.1.0.0: no version information available (required by ssh)
+ssh: /home/yerong/local/Anaconda3/lib/libcrypto.so.1.0.0: no version information available (required by ssh)
+Last login: Wed Jul 11 20:14:49 2018 from c-76-30-252-169.hsd1.tx.comcast.net
+Rocks 6.1 (Emerald Boa)
+Profile built 10:34 25-Jan-2013
+
+Kickstarted 03:05 25-Jan-2013
+                  THIS SYSTEM IS FOR AUTHORIZED USE ONLY
+   System managers may monitor and record activities on this system in
+   the course of maintenance or investigations into improper usage.
+   Anyone using this system expressly consents to such monitoring and is
+   advised that any resulting evidence of criminal activity may be
+   provided to law enforcement officials.
+
+   ------------
+   o The MSC group WIKI is available at https://wiki.wag.caltech.edu
+
+   o Computer problems and questions should be sent to help@wag.caltech.edu
+   ------------
+
+
+checking quotas for yerong on hulk ....
+Filesystem             usage   quota   limit
+                     3829096 5242880 5242880              /net/hulk/home6
+
+Python version not supported for gdb.
+PYSTR: Undefined variable.
+[yerong@ion ~] > 
+[yerong@ion ~] > cd B
+B: No such file or directory.
+[yerong@ion ~] > 
+BFGD-sgns/  bio/        dpll.out    id_rsa.pub  local/      pbs*        
+[yerong@ion ~] > cd BF
+BF: No such file or directory.
+[yerong@ion ~] > cd BFGD-sgns/
+[yerong@ion ~/BFGD-sgns] > vi 2RO_5e-5.py 
+[yerong@ion ~/BFGD-sgns] > ion1
+Warning: untrusted X11 forwarding setup failed: xauth key data not generated
+Warning: No xauth data; using fake authentication data for X11 forwarding.
+Last login: Wed Jul 11 20:17:25 2018 from ion.local
+Rocks Compute Node
+Rocks 6.1 (Emerald Boa)
+Profile built 10:10 24-Dec-2017
+
+Kickstarted 10:16 24-Dec-2017
+                  THIS SYSTEM IS FOR AUTHORIZED USE ONLY
+   System managers may monitor and record activities on this system in
+   the course of maintenance or investigations into improper usage.
+   Anyone using this system expressly consents to such monitoring and is
+   advised that any resulting evidence of criminal activity may be
+   provided to law enforcement officials.
+
+   ------------
+   o The MSC group WIKI is available at https://wiki.wag.caltech.edu
+
+   o Computer problems and questions should be sent to help@wag.caltech.edu
+   ------------
+
+
+checking quotas for yerong on hulk ....
+Filesystem             usage   quota   limit
+cd BF	
+                     3829096 5242880 5242880              /net/hulk/home6
+Python version not supported for gdb.
+PYSTR: Undefined variable.
+[yerong@node-1-5 ~] > cd BFGD-sgns/
+[yerong@node-1-5 ~/BFGD-sgns] > cd 
+16.txt                   2x0reg0.006rank20-1.py   pbs*
+1pmmreg0rank20-1.py      2x0reg0.007rank20-1.py   pmm0-2.py 
+1pmmreg128rank20-1.py    2x0reg0.01rank20-1.py    pmm0.py 
+1pmmreg256rank20-1.py    2x0reg0.02rank20-1.py    pmm.py 
+1RO_5e-5.py              2x0reg0.03rank20-1.py    __pycache__/
+1.txt                    2x0reg0rank20-1.py       word2vec_as_MF.py 
+1x0reg0rank20-1.py       8.txt                    x0.py 
+1x0reg128rank20-1.py     data/                    x0reg0.005rank20-1.py 
+1x0reg1rank20-1.py       dataset/                 x0reg0-0.1.py 
+1x0reg256rank20-1.py     datasets/                x0reg0.01rank20-1.py 
+1x0reg512rank20-1.py     enwik-200/               x0reg0-1.py 
+1x0reg64rank20-1.py      enwik_experiments.ipynb  x0reg0-2.py 
+1x0reg8rank20-1.py       enwik_experiments.py     x0reg0-3.py 
+2pmmreg0.01rank20-1.py   functions.py             x0reg0rank20-0.1.py 
+2pmmreg0.02rank20-1.py   __init__.py              x0reg0rank20-1.py 
+2pmmreg0.03rank20-1.py   log.pmm0-2.txt           x0reg1-1.py 
+2pmmreg0.05rank20-1.py   log.pmm0.txt             x0reg16-0.1.py 
+2pmmreg0.1rank20-1.py    log.pmm1.txt             x0reg16rank20-0.1.py 
+2pmmreg0.5rank20-1.py    log.x0reg0-1.txt         x0reg32rank20-0.1.py 
+2pmmreg0rank20-1.py      log.x0reg0-2.txt         x0reg4-1.py 
+2pmmreg1rank20-1.py      log.x0reg0-3.txt         x0reg4-3.py 
+2pmmreg256rank20-1.py    log.x0reg0.txt           x0reg4rank20-0.1.py 
+2pmmreg32rank20-1.py     log.x0reg1-1.txt         x0reg8-0.1.py 
+2pmmreg8rank20-1.py      log.x0reg4-1.txt         x0reg8-1.py 
+2RO_5e-5.py              log.x0.txt               x0reg8rank20-0.1.py 
+2x0reg0.005rank20-1.py   main_.pl                 
+[yerong@node-1-5 ~/BFGD-sgns] > python 2RO_5e-5.py 
+2RO_5e-5.py:138: RuntimeWarning: divide by zero encountered in log
+  SPPMI = np.maximum(np.log(model_enwik.D) - np.log(model_enwik.B), 0)
+(6259647.1364839999, 3.6633641607813436e-13)
+enwik-200/PSiter_fromSVD_dim20_step5e-05_0.0
+Iter #: 330100 loss (3423944.2383135557, 3.2812367654020093e-12)
+Iter #: 330200 loss (3423937.8191292468, 2.5999540820586839e-12)
+Iter #: 330300 loss (3423931.403647101, 2.3845542310725312e-12)
+Iter #: 330400 loss (3423924.9918638626, 2.3108187659858592e-12)
+Iter #: 330500 loss (3423918.583776277, 2.8368288078615236e-12)
+Iter #: 330600 loss (3423912.1793810921, 2.9378881064465019e-12)
+Iter #: 330700 loss (3423905.7786750626, 1.8281347204953231e-12)
+Iter #: 330800 loss (3423899.3816549415, 2.2881798254901238e-12)
+Iter #: 330900 loss (3423892.9883174929, 3.0198339189305553e-12)
+Iter #: 331000 loss (3423886.5986594823, 2.8709069398680539e-12)
+Iter #: 331100 loss (3423880.212677679, 2.489212750625891e-12)
+Iter #: 331200 loss (3423873.8303688485, 2.6284786766367923e-12)
+Iter #: 331300 loss (3423867.4517297782, 3.0465584122423043e-12)
+Iter #: 331400 loss (3423861.0767572382, 2.2262430638480675e-12)
+Iter #: 331500 loss (3423854.7054480175, 2.4451045818015075e-12)
+Iter #: 331600 loss (3423848.3377989074, 2.9703872585366233e-12)
+Iter #: 331700 loss (3423841.97380669, 1.8247016740620719e-12)
+Iter #: 331800 loss (3423835.6134681697, 3.1991420110917787e-12)
+Iter #: 331900 loss (3423829.256780142, 2.2191511827754398e-12)
+Iter #: 332000 loss (3423822.9037394072, 2.2386658285060371e-12)
+Iter #: 332100 loss (3423816.5543427779, 2.7711466409257023e-12)
+Iter #: 332200 loss (3423810.2085870644, 2.6880076398649443e-12)
+Iter #: 332300 loss (3423803.8664690768, 3.3016214852241505e-12)
+Iter #: 332400 loss (3423797.5279856352, 3.3665822247832937e-12)
+Iter #: 332500 loss (3423791.1931335628, 2.6849708976084069e-12)
+Iter #: 332600 loss (3423784.8619096866, 2.4437451697049524e-12)
+Iter #: 332700 loss (3423778.5343108363, 1.3942676012058125e-12)
+Iter #: 332800 loss (3423772.2103338432, 2.6646135258337438e-12)
+Iter #: 332900 loss (3423765.8899755417, 2.5082444469420897e-12)
+Iter #: 333000 loss (3423759.5732327807, 2.225931075328464e-12)
+Iter #: 333100 loss (3423753.2601023968, 2.1939370480162813e-12)
+Iter #: 333200 loss (3423746.9505812451, 2.3728100166504897e-12)
+Iter #: 333300 loss (3423740.6446661712, 2.5026650354174325e-12)
+Iter #: 333400 loss (3423734.3423540378, 3.4366763221100133e-12)
+Iter #: 333500 loss (3423728.0436417037, 2.6060361874165124e-12)
+Iter #: 333600 loss (3423721.7485260265, 2.2623002136209782e-12)
+Iter #: 333700 loss (3423715.4570038789, 2.9810512509883007e-12)
+Iter #: 333800 loss (3423709.1690721326, 2.7585526076605298e-12)
+Iter #: 333900 loss (3423702.8847276578, 3.0518586213789735e-12)
+Iter #: 334000 loss (3423696.6039673351, 3.2521557668738969e-12)
+Iter #: 334100 loss (3423690.3267880422, 2.2784603096527269e-12)
+Iter #: 334200 loss (3423684.0531866727, 2.7319224698751065e-12)
+Iter #: 334300 loss (3423677.7831601095, 2.9745804800050913e-12)
+Iter #: 334400 loss (3423671.5167052508, 1.9695622055515637e-12)
+Iter #: 334500 loss (3423665.2538189911, 2.9459046128638194e-12)
+Iter #: 334600 loss (3423658.9944982277, 2.800053833629551e-12)
+Iter #: 334700 loss (3423652.7387398686, 2.9330382434178343e-12)
+Iter #: 334800 loss (3423646.4865408223, 4.1752782106995022e-12)
+Iter #: 334900 loss (3423640.2378980001, 2.9355040478236701e-12)
+Iter #: 335000 loss (3423633.9928083126, 2.9870094130327135e-12)
+Iter #: 335100 loss (3423627.7512686821, 2.416956819963771e-12)
+Iter #: 335200 loss (3423621.513276027, 2.0043224922177498e-12)
+Iter #: 335300 loss (3423615.2788272798, 2.1015911374238864e-12)
+Iter #: 335400 loss (3423609.0479193674, 2.5141620040379975e-12)
+Iter #: 335500 loss (3423602.8205492222, 1.8369847731655013e-12)
+Iter #: 335600 loss (3423596.5967137855, 2.7067196350472865e-12)
+Iter #: 335700 loss (3423590.3764099902, 2.7001697396755024e-12)
+Iter #: 335800 loss (3423584.1596347853, 2.4666291461007343e-12)
+Iter #: 335900 loss (3423577.9463851191, 2.2232010287434913e-12)
+Iter #: 336000 loss (3423571.7366579408, 2.2299635418456288e-12)
+Iter #: 336100 loss (3423565.5304502095, 2.7580235617827141e-12)
+Iter #: 336200 loss (3423559.3277588771, 2.4548912179017759e-12)
+Iter #: 336300 loss (3423553.1285809102, 2.5206219221716289e-12)
+Iter #: 336400 loss (3423546.9329132745, 2.156307616920641e-12)
+Iter #: 336500 loss (3423540.7407529354, 2.9369167674328352e-12)
+Iter #: 336600 loss (3423534.5520968731, 1.8847343832407088e-12)
+Iter #: 336700 loss (3423528.3669420639, 2.7972625244634061e-12)
+Iter #: 336800 loss (3423522.1852854798, 1.4944366473362241e-12)
+Iter #: 336900 loss (3423516.0071241111, 1.9064738202434932e-12)
+Iter #: 337000 loss (3423509.8324549422, 2.9253821468168069e-12)
+Iter #: 337100 loss (3423503.6612749659, 2.8147213917344991e-12)
+Iter #: 337200 loss (3423497.4935811744, 1.7125175167120861e-12)
+Iter #: 337300 loss (3423491.3293705652, 2.2522581125084645e-12)
+Iter #: 337400 loss (3423485.168640146, 2.8017013820429446e-12)
+Iter #: 337500 loss (3423479.0113869132, 2.9493485922333881e-12)
+Iter #: 337600 loss (3423472.8576078783, 3.5289985069002287e-12)
+Iter #: 337700 loss (3423466.7073000548, 1.7744089197926037e-12)
+Iter #: 337800 loss (3423460.5604604594, 3.1593283800790557e-12)
+Iter #: 337900 loss (3423454.4170861105, 3.0966000712237626e-12)
+Iter #: 338000 loss (3423448.2771740262, 2.5822842069133988e-12)
+Iter #: 338100 loss (3423442.1407212378, 3.1141313294558004e-12)
+Iter #: 338200 loss (3423436.0077247722, 2.390955349472436e-12)
+Iter #: 338300 loss (3423429.8781816643, 2.6392284555955196e-12)
+Iter #: 338400 loss (3423423.7520889486, 2.5771936068944392e-12)
+Iter #: 338500 loss (3423417.6294436669, 3.3953544530968469e-12)
+Iter #: 338600 loss (3423411.5102428622, 2.1619349031791252e-12)
+Iter #: 338700 loss (3423405.3944835812, 2.387969472712096e-12)
+Iter #: 338800 loss (3423399.2821628759, 2.7169791417779042e-12)
+Iter #: 338900 loss (3423393.1732777967, 1.8520079106925263e-12)
+Iter #: 339000 loss (3423387.0678254059, 2.4097312011569045e-12)
+Iter #: 339100 loss (3423380.9658027627, 2.4444779583829413e-12)
+Iter #: 339200 loss (3423374.867206926, 2.3334769438525287e-12)
+Iter #: 339300 loss (3423368.7720349692, 2.7483116482583084e-12)
+Iter #: 339400 loss (3423362.6802839674, 2.5994546054679628e-12)
+Iter #: 339500 loss (3423356.5919509851, 2.6727347239443854e-12)
+Iter #: 339600 loss (3423350.5070331087, 2.0984561935630482e-12)
+Iter #: 339700 loss (3423344.4255274185, 3.6614397379284913e-12)
+Iter #: 339800 loss (3423338.3474309952, 2.691254404708873e-12)
+Iter #: 339900 loss (3423332.272740928, 3.2580528146571903e-12)
+Iter #: 340000 loss (3423326.2014543149, 2.1286049528987031e-12)
+Iter #: 340100 loss (3423320.1335682468, 2.5037318863534107e-12)
+Iter #: 340200 loss (3423314.0690798224, 3.2170714655259678e-12)
+Iter #: 340300 loss (3423308.0079861423, 2.8052923274250308e-12)
+Iter #: 340400 loss (3423301.9502843111, 2.6141786740429013e-12)
+Iter #: 340500 loss (3423295.8959714412, 2.7143164375630241e-12)
+Iter #: 340600 loss (3423289.8450446432, 2.1662693926380775e-12)
+Iter #: 340700 loss (3423283.7975010388, 2.8032053386301398e-12)
+Iter #: 340800 loss (3423277.7533377344, 3.1627879130395682e-12)
+Iter #: 340900 loss (3423271.7125518611, 2.0675095353119325e-12)
+Iter #: 341000 loss (3423265.6751405457, 3.545466174323998e-12)
+Iter #: 341100 loss (3423259.64110091, 2.6602100750559499e-12)
+Iter #: 341200 loss (3423253.6104300944, 2.8699950756210306e-12)
+Iter #: 341300 loss (3423247.5831252304, 1.9699128722212031e-12)
