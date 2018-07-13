@@ -118,7 +118,7 @@ def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=Fa
         ind2 = indices['1'+name][idx]
         scores = indices['2'+name][idx]
 
-        for it in range(MAX_ITER):
+        for it in xrange(MAX_ITER):
             W, C = model.load_CW(from_folder, it)
             if (matrix == 'W'):
                 G = W
@@ -158,7 +158,7 @@ def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=Fa
     
     return corrs_dict
     
-def corr_experiment(model, data, from_folder, MAX_ITER=100, plot_corrs=False):
+def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs=False):
     """
     Aggregator for word similarity correlation experiment.
     """
@@ -173,9 +173,12 @@ def corr_experiment(model, data, from_folder, MAX_ITER=100, plot_corrs=False):
     ind2 = []
     vec2 = []
     chosen_pairs = []
-    for i in xrange(dataset.shape[0]):
-        word1 = dataset[i, 0].lower()
-        word2 = dataset[i, 1].lower()
+    for i in range(dataset.shape[0]):
+        try:
+            word1 = dataset[i, 0].lower()
+            word2 = dataset[i, 1].lower()
+        except:
+            print(dataset[i,0])
         if (word1 in model_vocab and word2 in model_vocab):
             ind1.append(int(model_vocab[word1]))
             ind2.append(int(model_vocab[word2]))
@@ -185,12 +188,14 @@ def corr_experiment(model, data, from_folder, MAX_ITER=100, plot_corrs=False):
     # Calculate correlations
     corrs = []
     vecs = []
-    for it in range(MAX_ITER):
+    for it in ITER:
+    #for it in range(MAX_ITER):
         vec1 = []
         C, W = model.load_CW(from_folder, it)
         
         G = (C.T).dot(W)
         pc = (model.D).sum(axis=1) / (model.D).sum()
+        print('pc', pc.shape)
         vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
         vec1 = list(vec1)
         
