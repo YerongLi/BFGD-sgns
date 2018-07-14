@@ -11,7 +11,44 @@ from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 
 from word2vec_as_MF import Word2vecMF
+from gensim.models import Word2Vec
+def parse(from_file):
+    data = []
+    with open(from_file) as file:
+        for line in file:
+            data+= [line[:-1]]
+    def wiki_to_wordlist(sentence, remove_stopwords=False ):
+        # Function to convert a document to a sequence of words,
+        # optionally removing stop words.  Returns a list of words.
 
+        # 3. Convert words to lower case and split them
+        words = sentence.split()
+        #
+        # 4. Optionally remove stop words (false by default)
+    
+        if remove_stopwords:
+            stops = set(stopwords.words("english"))
+            words = [w for w in words if not w in stops]
+        #
+        # 5. Return a list of words
+        return(words)
+    sentences = []  # Initialize an empty list of sentences
+
+    print("Parsing sentences from training set")
+    for sentence in data:
+        sentences += [wiki_to_wordlist(sentence)]
+    indices = []
+    for i, sentence in enumerate(sentences):
+        if not sentence:
+            pass
+        else:
+            indices.append(i)
+
+    real_sentences = np.array(sentences)[indices]
+    
+    return real_sentences
+            
+            
 def load_sentences(mode='debug'):
     """
     Load training corpus sentences/
@@ -158,14 +195,14 @@ def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=Fa
     
     return corrs_dict
     
-def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs=False):
+def corr_experiment(model, benchmark, from_folder, ITER=range(10000,5000), plot_corrs=False):
     """
     Aggregator for word similarity correlation experiment.
     """
     
     # Load dataset and model dictionary
 
-    dataset = data.values
+    dataset = benchmark.values
     model_vocab = model.vocab
 
     # Choose only pairs of words which exist in model dictionary
@@ -195,7 +232,6 @@ def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs
         
         G = (C.T).dot(W)
         pc = (model.D).sum(axis=1) / (model.D).sum()
-        print('pc', pc.shape)
         vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
         vec1 = list(vec1)
         
@@ -220,6 +256,41 @@ def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs
             ax[i].grid()
     
     return corrs, vecs, vec2, chosen_pairs
+def corr_word2vec(skip ,benchmark, model_vocab):
+    """
+    Aggregator for word similarity correlation experiment.
+    """
+     
+    
+    # Load dataset and model dictionary
+
+    dataset = benchmark.values
+
+    # Choose only pairs of words which exist in model dictionary
+    ind1 = []
+    ind2 = []
+    vec2 = []
+    chosen_pairs = []
+    for i in range(dataset.shape[0]):
+        try:
+            word1 = dataset[i, 0].lower()
+            word2 = dataset[i, 1].lower()
+        except:
+            print(dataset[i,0])
+        if (word1 in model_vocab and word2 in model_vocab):
+            ind1.append(int(model_vocab[word1]))
+            ind2.append(int(model_vocab[word2]))
+            vec2.append(np.float64(dataset[i, 2]))
+            chosen_pairs.append((word1, word2))
+            
+    vec1 = []
+    for pair in chosen_pairs:
+        word1, word2 = pair
+        vec1.append(skip.similarity(word1, word2))
+
+    corr = spearmanr(vec1, vec2)[0]
+    
+    return corr, vec1, vec2, chosen_pairs
 
 def plot_dynamics(vecs, vec2, n=5, MAX_ITER=100):
     """
