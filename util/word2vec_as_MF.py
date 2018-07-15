@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt
 import os
-import csv
-import pickle
 import operator
 
 import numpy as np
@@ -130,10 +127,41 @@ class Word2vecMF(object):
         #print(self.D.shape, X.shape, self.B.shape)
         grad = self.D*self.sigmoid(-X) - self.B*self.sigmoid(X)
         return grad
-    
+
     ################# Alternating minimization algorithm ##################
     
-    def alt_min(self, eta=1e-7, d=100, lbd=0.0 ,MAX_ITER=1, from_iter=0, display=False,
+    def alt_min(self, eta=1e-7, d=100, MAX_ITER=1, from_iter=0, display=0,
+                init=(False, None, None), save=(False, None)):
+        """
+        Alternating mimimization algorithm for word2vec matrix factorization.
+        """
+        
+        # Initialization
+        if (init[0]):
+            self.C = init[1]
+            self.W = init[2]
+        else:
+            self.C = np.random.rand(d, self.D.shape[0])
+            self.W = np.random.rand(d, self.D.shape[1])  
+            
+        if (save[0] and from_iter==0):
+                self.save_CW(save[1], 0)
+                
+        for it in range(from_iter, from_iter+MAX_ITER):    
+            
+            if (display):
+                print("Iter #:", it+1)
+                
+            gradW = (self.C).dot(self.grad_MF(self.C, self.W))
+            self.W = self.W + eta*gradW
+            gradC = self.W.dot(self.grad_MF(self.C, self.W).T)
+            self.C = self.C + eta*gradC
+                
+            if (save[0]):
+                self.save_CW(save[1], it+1)    
+    
+    ################# Bi-factorized griadient descent algorithm ##################    
+    def bfgd(self, eta=1e-7, d=100, reg=0.0 ,MAX_ITER=1, from_iter=0, display=False,
                 init=(False, None, None), save=(False, None)):
         """
         Alternating mimimization algorithm for word2vec matrix factorization.
@@ -158,7 +186,7 @@ class Word2vecMF(object):
                 
             if save[0] and 0==(it+1)%5000:
                 self.save_CW(save[1], it+1)      
-            G=-lbd*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
+            G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
             # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
             grad = self.grad_MF(self.C, self.W)
             gradW =  self.C.dot(grad)-G.dot(self.W)
@@ -212,31 +240,7 @@ class Word2vecMF(object):
             
             X = U.dot(S).dot(V)                                     
 
-    def bfgd(self, d=100, from_iter=0, MAX_ITER=1, eta=5e-6, init=(False, None, None), display=True, save=[False, None]):
-        """
-        Bi-factorized gradient descent algorithm
-        """
-        if (init[0]):
-            self.C = init[1]
-            self.W = init[2]
-        else:
-            self.C = np.random.rand(d, self.D.shape[0])
-            self.W = np.random.rand(d, self.D.shape[1])
-        
-        for it in range(from_iter, from_iter+MAX_ITER):
-            
-            if display and 0==(it+1)%100:
-                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
-                
-            if save[0] and 0==(it+1)%1000:
-                self.save_CW(save[1], it+1)
-                
-            dX = self.grad_MF(self.C, self.W)
-            dC = self.W.dot(dX.T)
-            dW = self.C.dot(dX)
-            
-            self.C+= eta*dC
-            self.W+= eta*dW
+    
             
     def stochastic_ps(self, eta=5e-6, batch_size=100, d=100, 
                       MAX_ITER=1, from_iter=0, display=False,
@@ -315,7 +319,8 @@ class Word2vecMF(object):
         sorted_vocab = sorted(self.vocab.items(), key=operator.itemgetter(1))
         vocab_to_save = np.array([item[0] for item in sorted_vocab])
         
-        np.savez(open(to_file, 'wb'), vocab=vocab_to_save, D=self.D, B=self.B)
+        if not False == to_file:
+            np.savez(open(to_file, 'wb'), vocab=vocab_to_save, D=self.D, B=self.B)
     
     ######################### Matrices to Factors ##########################
  
