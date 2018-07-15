@@ -2,9 +2,10 @@
 
 - Clone **BFGD-sgns** repostirtory:
 
+```
 git clone https://github.com/YerongLi/BFGD-sgns.git
-cd BFGD-sngs
-
+cd BFGD-sgns
+```
 - Download [enwik9](http://mattmahoney.net/dc/enwik9.zip) dataset and preprocess raw data with Perl script [main_.pl](main_.pl). 
 
 ```
