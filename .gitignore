@@ -1,3 +1,4 @@
 data/
 enwik-200/
 *.pyc
+.ipynb_checkpoints/

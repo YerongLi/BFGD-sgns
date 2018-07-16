@@ -1,17 +1,30 @@
-import matplotlib.pyplot as plt
-from IPython import display
-
 import numpy as np
-import pandas as pd
 import os
-import pickle
 
 from scipy.sparse.linalg import svds
 from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 
-from word2vec_as_MF import Word2vecMF
+from util.word2vec_as_MF import Word2vecMF
 
+def load(from_file):
+    data = []
+    with open(from_file) as file:
+        for line in file:
+            data+= [line[:-1]]
+
+    sentences = []  # Initialize an empty list of sentences
+
+    print("Parsing sentences from training set")
+    #data=['Yes','This is a test','.','   ']
+    for sentence in data:
+        sentences += [sentence.split()]
+
+    real_sentences = [sentence for sentence in sentences if sentence]
+    
+    return real_sentences
+            
+            
 def load_sentences(mode='debug'):
     """
     Load training corpus sentences/
@@ -46,7 +59,7 @@ def opt_experiment(model,
                    min_count=200,
                    d = 100,
                    eta = 5e-6,
-                   lbd = 0.,
+                   reg = 0.,
                    batch_size = 1000,
                    MAX_ITER = 100,
                    from_iter = 0,
@@ -62,7 +75,7 @@ def opt_experiment(model,
   
     def folder_path(num_iter):
         #return 'enwik-'+str(min_count)+'/'+mode+str(num_iter)+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
-        return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_'+str(lbd)
+        return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_'+str(reg)
 
     
     from_folder = folder_path(from_iter+MAX_ITER)
@@ -83,7 +96,11 @@ def opt_experiment(model,
                             init=init_, save=(True, from_folder))
         
     if (mode == 'AM'):
-        model.alt_min(eta=eta, d=d, lbd=lbd, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
+        model.alt_min(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter,
+                      init=init_, save=(True, from_folder))
+        
+    if (mode == 'BFGD'):
+        model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder))
     
     return model
@@ -131,41 +148,16 @@ def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=Fa
         corrs = np.array(corrs)  
         corrs_dict[name] = corrs
             
-    # Plot correlations
-    if (plot_corrs):
-        
-        #w2v_ds_corrs = datasets_corr(model, datasets_path, 'enwik-200/w2v/factors', MAX_ITER=1, plot_corrs=False)
-        #svd_ds_corrs = datasets_corr(model, datasets_path, 'enwik-200/PS800iter_fromSVD_factors', MAX_ITER=1, plot_corrs=False)
-        
-        fig, ax = plt.subplots(4, 3, figsize=(15, 20))
-        for num, name in enumerate(sorted_names):
-            x = ax[num/3,num%3]
-
-            x.plot(corrs_dict[name], lw=2, label='opt method')
-            x.set_title(name, fontsize=14)
-
-            # plot original word2vec correlation
-            #w2v_corr = w2v_ds_corrs[name][0]
-            #x.plot((0, MAX_ITER), (w2v_corr, w2v_corr), 'k-', color='red', lw=2, label='SGNS')
-
-            # plot SVD correlation
-            #svd_corr = svd_ds_corrs[name][0]
-            #x.plot((0, MAX_ITER), (svd_corr, svd_corr), 'k-', color='green', lw=2, label='SVD')
-
-            x.legend(loc='best')
-            x.grid()
-    
-    
     return corrs_dict
     
-def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs=False):
+def correlation(model, benchmark, from_folder, index, plot_corrs=False):
     """
     Aggregator for word similarity correlation experiment.
     """
     
     # Load dataset and model dictionary
 
-    dataset = data.values
+    dataset = benchmark.values
     model_vocab = model.vocab
 
     # Choose only pairs of words which exist in model dictionary
@@ -185,41 +177,56 @@ def corr_experiment(model, data, from_folder, ITER=range(10000,5000), plot_corrs
             vec2.append(np.float64(dataset[i, 2]))
             chosen_pairs.append((word1, word2))
             
-    # Calculate correlations
-    corrs = []
-    vecs = []
-    for it in ITER:
-    #for it in range(MAX_ITER):
-        vec1 = []
-        C, W = model.load_CW(from_folder, it)
+    vec1 = []
+    C, W = model.load_CW(from_folder, index)
         
-        G = (C.T).dot(W)
-        pc = (model.D).sum(axis=1) / (model.D).sum()
-        print('pc', pc.shape)
-        vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
-        vec1 = list(vec1)
+    G = (C.T).dot(W)
+    pc = (model.D).sum(axis=1) / (model.D).sum()
+    vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
+    vec1 = list(vec1)
         
-        #W = W / np.linalg.norm(W, axis=0)
-        #vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
-        #vec1 = list(vec1)
-        corrs.append(spearmanr(vec1, vec2)[0])
-        vecs.append(vec1)
-    corrs = np.array(corrs)  
-    vecs = np.array(vecs)
+    #W = W / np.linalg.norm(W, axis=0)
+    #vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
+    #vec1 = list(vec1)
+    corr = spearmanr(vec1, vec2)[0]
+ 
     
-    # Plot correlations
-    if (plot_corrs):
-        plots = [corrs, vecs.mean(axis=1), vecs.std(axis=1)]
-        titles = ['Correlation', 'Mean', 'Standard deviation']
+    return corr, vec1, vec2, chosen_pairs
+def corr_word2vec(skip ,benchmark, model_vocab):
+    """
+    Aggregator for word similarity correlation experiment.
+    """
+     
+    
+    # Load dataset and model dictionary
 
-        fig, ax = plt.subplots(1, 3, figsize=(15, 5))
-        for i in xrange(3):
-            ax[i].plot(plots[i])
-            ax[i].set_title(titles[i], fontsize=14)
-            ax[i].set_xlabel('Iterations', fontsize=14)
-            ax[i].grid()
+    dataset = benchmark.values
+
+    # Choose only pairs of words which exist in model dictionary
+    ind1 = []
+    ind2 = []
+    vec2 = []
+    chosen_pairs = []
+    for i in range(dataset.shape[0]):
+        try:
+            word1 = dataset[i, 0].lower()
+            word2 = dataset[i, 1].lower()
+        except:
+            print(dataset[i,0])
+        if (word1 in model_vocab and word2 in model_vocab):
+            ind1.append(int(model_vocab[word1]))
+            ind2.append(int(model_vocab[word2]))
+            vec2.append(np.float64(dataset[i, 2]))
+            chosen_pairs.append((word1, word2))
+            
+    vec1 = []
+    for pair in chosen_pairs:
+        word1, word2 = pair
+        vec1.append(skip.similarity(word1, word2))
+
+    corr = spearmanr(vec1, vec2)[0]
     
-    return corrs, vecs, vec2, chosen_pairs
+    return corr, vec1, vec2, chosen_pairs
 
 def plot_dynamics(vecs, vec2, n=5, MAX_ITER=100):
     """

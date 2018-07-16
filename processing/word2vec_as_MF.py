@@ -1,13 +1,13 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import os
-import csv
+#import csv
 import pickle
 import operator
 
 import numpy as np
-from numpy.linalg import svd, qr, norm
-from scipy.spatial.distance import cosine
-from scipy.sparse.linalg import svds
+#from numpy.linalg import svd, qr, norm
+#from scipy.spatial.distance import cosine
+#from scipy.sparse.linalg import svds
 
 class Word2vecMF(object):
     
@@ -86,7 +86,7 @@ class Word2vecMF(object):
         w_v, c_v = np.meshgrid(w_, c_)
         B = k*(w_v*c_v)/P
         return B
-        
+    '''    
     ######################### Necessary functions #########################
     
     def sigmoid(self, X):
@@ -295,7 +295,7 @@ class Word2vecMF(object):
             S = S.T
             
             X = U.dot(S).dot(V)       
-    
+    '''
     #######################################################################
     ############################## Data flow ##############################
     #######################################################################
@@ -332,7 +332,7 @@ class Word2vecMF(object):
         for i, word in enumerate(matrices['vocab']):
             self.vocab[word] = i
         self.inv_vocab = {v: k for k, v in self.vocab.items()}
-        
+    '''    
     def save_CW(self, to_folder, iteration):
         """
         Save factors C and W (from some iteration) to some folder.
@@ -387,7 +387,7 @@ class Word2vecMF(object):
         MFs = np.load(open(from_file), 'rb')['MF']
         
         return MFs
-    
+     
     #######################################################################
     ######################### Linquistic metrics ##########################
     #######################################################################
@@ -427,3 +427,4 @@ class Word2vecMF(object):
                 print(self.inv_vocab[args[i]], round(cosines[args[i]],3))
 
         return nws
+     '''
