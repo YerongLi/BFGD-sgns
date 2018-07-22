@@ -162,11 +162,10 @@ class Word2vecMF(object):
     
     ################# Bi-factorized griadient descent algorithm ##################    
     def bfgd(self, eta=1e-7, d=100, reg=0.0 ,MAX_ITER=1, from_iter=0, display=False,
-                init=(False, None, None), save=(False, None)):
+                init=(False, None, None), save=(False, None), itv_print=100, itv_save=5000):
         """
         Alternating mimimization algorithm for word2vec matrix factorization.
         """
-        
         # Initialization
         if (init[0]):
             self.C = init[1]
@@ -181,11 +180,7 @@ class Word2vecMF(object):
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
-            if display and 0==(it+1)%100:
-                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
-                
-            if save[0] and 0==(it+1)%5000:
-                self.save_CW(save[1], it+1)      
+ 
             G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
             # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
             grad = self.grad_MF(self.C, self.W)
@@ -193,7 +188,12 @@ class Word2vecMF(object):
             gradC = self.W.dot(grad.T)+G.dot(self.C)
             self.W = self.W + eta*gradW
             self.C = self.C + eta*gradC
-
+            
+            if display and 0==(it+1)%itv_print:
+                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
+                
+            if save[0] and 0==(it+1)%itv_save:
+                self.save_CW(save[1], it+1)     
     #################### Projector splitting algorithm ####################
             
             
@@ -306,7 +306,7 @@ class Word2vecMF(object):
     
     ########################## Data to Matrices ###########################
     
-    def data_to_matrices(self, sentences, r, k, to_file):
+    def data_to_matrices(self, sentences, r, k, to_file=False):
         """
         Process raw sentences, create word dictionary, matrix D and matrix B
         then save them to file.

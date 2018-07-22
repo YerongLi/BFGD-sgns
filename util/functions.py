@@ -6,6 +6,7 @@ from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 
 from util.word2vec_as_MF import Word2vecMF
+from numpy.linalg import norm, svd
 
 def load(from_file):
     data = []
@@ -52,7 +53,10 @@ def plot_MF(MFs, x=None, xlabel='Iterations', ylabel='MF'):
     ax.set_ylabel(ylabel, fontsize=14)
     ax.grid(True)
     
-    
+def norm_p2(A):
+    _, s, _ = svd(A)
+    return np.sqrt(sum(np.square(s)))
+
 ################################## Projector splitting experiment ##################################
 def opt_experiment(model,
                    mode='PS',
@@ -65,14 +69,16 @@ def opt_experiment(model,
                    from_iter = 0,
                    start_from = 'RAND',
                    display = False,
-                   init = (False, None, None)            
+                   init = (False, None, None),
+                   itv_print=100,
+                   itv_save=5000           
                   ):
     """
     Aggregator for projector splitting experiment.
     """ 
     
     # Start projector splitting from svd of SPPMI or random initialization
-  
+    
     def folder_path(num_iter):
         #return 'enwik-'+str(min_count)+'/'+mode+str(num_iter)+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_factors'
         return 'enwik-'+str(min_count)+'/'+mode+'iter_from'+start_from+'_dim'+str(d)+'_step'+str(eta)+'_'+str(reg)
@@ -86,7 +92,8 @@ def opt_experiment(model,
     else:
         init_ = init
     
-    print(from_folder)
+    if (init_[0]): print(model.MF(init_[1], init_[2]))
+    
     if (mode == 'PS'):
         model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                                   init=init_, save=(True, from_folder))
@@ -100,10 +107,10 @@ def opt_experiment(model,
                       init=init_, save=(True, from_folder))
         
     if (mode == 'BFGD'):
+        print('DEBUG')
         model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
-                      init=init_, save=(True, from_folder))
+                      init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save)
     
-    return model
 
 
 ################################## Word similarity experiments ##################################
@@ -149,49 +156,43 @@ def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=Fa
         corrs_dict[name] = corrs
             
     return corrs_dict
-    
-def correlation(model, benchmark, from_folder, index, plot_corrs=False):
-    """
-    Aggregator for word similarity correlation experiment.
-    """
-    
-    # Load dataset and model dictionary
 
-    dataset = benchmark.values
-    model_vocab = model.vocab
 
-    # Choose only pairs of words which exist in model dictionary
-    ind1 = []
-    ind2 = []
-    vec2 = []
-    chosen_pairs = []
-    for i in range(dataset.shape[0]):
-        try:
-            word1 = dataset[i, 0].lower()
-            word2 = dataset[i, 1].lower()
-        except:
-            print(dataset[i,0])
-        if (word1 in model_vocab and word2 in model_vocab):
-            ind1.append(int(model_vocab[word1]))
-            ind2.append(int(model_vocab[word2]))
-            vec2.append(np.float64(dataset[i, 2]))
-            chosen_pairs.append((word1, word2))
-            
-    vec1 = []
-    C, W = model.load_CW(from_folder, index)
-        
-    G = (C.T).dot(W)
-    pc = (model.D).sum(axis=1) / (model.D).sum()
-    vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
-    vec1 = list(vec1)
-        
-    #W = W / np.linalg.norm(W, axis=0)
-    #vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
-    #vec1 = list(vec1)
-    corr = spearmanr(vec1, vec2)[0]
- 
+################################## SPPMI decomposition initialization ##################################
+
+def SPPMI_init(model, dimension):
+    SPPMI = np.maximum(np.log(model.D) - np.log(model.B), 0)
     
-    return corr, vec1, vec2, chosen_pairs
+    u, s, vt = svds(SPPMI, k=dimension)
+    C_svd = u.dot(np.sqrt(np.diag(s))).T
+    W_svd = np.sqrt(np.diag(s)).dot(vt)
+    
+    print('Initial loss', model.MF(C_svd, W_svd))
+    
+    return C_svd, W_svd
+
+################################## Bi-Factorized Gradient Descent initialization ##################################
+def BFGD_init(model, dimension, reg=0):
+    L=norm((model.B+model.D)/4, 'fro')
+    X0 = 1/L*model.grad_MF(
+    np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[0]]))
+    print(X0.shape)
+    u, s, vt = svds(X0, k=dimension)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
+    
+    step_size=None
+    
+    if reg==0:
+        norm1=norm_p2(np.concatenate((C0.T, W0.T), axis=0))
+        norm2=norm_p2(model.grad_MF(C0, W0))
+        step_size = 1/(20*L*(norm1**2)+3*norm2)
+        
+    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
+    
+    
+    return C0, W0, step_size
+
 def corr_word2vec(skip ,benchmark, model_vocab):
     """
     Aggregator for word similarity correlation experiment.

@@ -1,23 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-
+import pandas as pd
+import glob
 from scipy.sparse.linalg import svds
 from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 
 from util.word2vec_as_MF import Word2vecMF
 
-def corr_experiment(model, benchmark, from_folder, ITER=range(10000,5000), plot_corrs=False):
+################################## Spearman correlation ########################################
+def correlation(model, benchmark, from_folder, index, plot_corrs=False):
     """
     Aggregator for word similarity correlation experiment.
     """
     
     # Load dataset and model dictionary
 
-    dataset = benchmark.values
+    dataset = pd.read_csv(benchmark,header=None, delimiter=';').values
     model_vocab = model.vocab
-
     # Choose only pairs of words which exist in model dictionary
     ind1 = []
     ind2 = []
@@ -35,104 +36,68 @@ def corr_experiment(model, benchmark, from_folder, ITER=range(10000,5000), plot_
             vec2.append(np.float64(dataset[i, 2]))
             chosen_pairs.append((word1, word2))
             
-    # Calculate correlations
-    corrs = []
-    vecs = []
-    for it in ITER:
-    #for it in range(MAX_ITER):
-        vec1 = []
-        C, W = model.load_CW(from_folder, it)
+    vec1 = []
+    C, W = model.load_CW(from_folder, index)
         
-        G = (C.T).dot(W)
-        pc = (model.D).sum(axis=1) / (model.D).sum()
-        vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
-        vec1 = list(vec1)
+    #G = (C.T).dot(W)
+    #pc = (model.D).sum(axis=1) / (model.D).sum()
+    #vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
+    #vec1 = [1-cosine(W[:, ind1[idx]], W[:, ind2[idx]])for idx in range(len(ind1))]
+    #vec1 = list(vec1)
         
-        #W = W / np.linalg.norm(W, axis=0)
-        #vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
-        #vec1 = list(vec1)
-        corrs.append(spearmanr(vec1, vec2)[0])
-        vecs.append(vec1)
-    corrs = np.array(corrs)  
-    vecs = np.array(vecs)
+    W = W / np.linalg.norm(W, axis=0)
+    vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
+    #vec1 = list(vec1)
     
-    # Plot correlations
-    if (plot_corrs):
-        plots = [corrs, vecs.mean(axis=1), vecs.std(axis=1)]
-        titles = ['Correlation', 'Mean', 'Standard deviation']
+    corr = spearmanr(vec1, vec2)[0]
+     
+    return corr, vec1, vec2, chosen_pairs
 
-        fig, ax = plt.subplots(1, 3, figsize=(15, 5))
-        for i in xrange(3):
-            ax[i].plot(plots[i])
-            ax[i].set_title(titles[i], fontsize=14)
-            ax[i].set_xlabel('Iterations', fontsize=14)
-            ax[i].grid()
-    
-    return corrs, vecs, vec2, chosen_pairs
 
-def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=False, matrix='W', train_ratio=1.0):
+def datasets_corr(model, from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_ratio=1.0):
     """
     Calculate correlations for all datasets in datasets_path
     """
     
-    indices = np.load(open(datasets_path+'/indices.npz', 'rb'))
-    sorted_names = ['mc30', 'rg65', 'verb143', 'wordsim_sim', 'wordsim_rel', 'wordsim353', 
-                    'mturk287', 'mturk771', 'simlex999', 'rw2034', 'men3000']
-    
-    # Calculate correlations
+    sorted_names = ['men3000', 'MTURK-771', 'rg65', 'verb143', 'wordsim_sim', 'wordsim_rel', 'wordsim353', 'mturk287',  'simlex999', 'rw2034', 'mc30']
+    prefix='datasets/'
     corrs_dict = {}
-    #for filename in os.listdir(datasets_path):
-        #if filename[-4:]=='.csv':
-        
+    filelist = glob.glob(from_folder+'/W*.npz')
+    steps = sorted([int(file.split('/')[-1][1:-4]) for file in filelist])
+    steps = [step for step in steps if step<MAX_ITER]
     for name in sorted_names:
         
         corrs = []
-        
-        pairs_num = indices['0'+name].size
-        idx = np.arange(pairs_num)
-        np.random.shuffle(idx)
-        idx = idx[:int(train_ratio * pairs_num)]
-        
-        ind1 = indices['0'+name][idx]
-        ind2 = indices['1'+name][idx]
-        scores = indices['2'+name][idx]
+        for idx, step in enumerate(steps):
+            try:
+                corrs.append(correlation(model=model,
+                             benchmark=prefix+name+'.csv',
+                             from_folder=from_folder,
+                             index=step)[0])
+            except:
+                corrs.append(np.inf)
+                print('Step', idx, ' invalid.', end='')
 
-        for it in xrange(MAX_ITER):
-            W, C = model.load_CW(from_folder, it)
-            if (matrix == 'W'):
-                G = W
-            else:
-                G = (C.T).dot(W)
-            G = G / np.linalg.norm(G, axis=0)
-            cosines = (G[:,ind1]*G[:,ind2]).sum(axis=0)
-            corrs.append(spearmanr(cosines, scores)[0])
-
-        corrs = np.array(corrs)  
-        corrs_dict[name] = corrs
-            
+        steps = [steps[i] for i,x in enumerate(corrs) if not np.isinf(x)]
+        corrs = [x for x in corrs if not np.isinf(x)]
+        corrs_dict[name]=(steps, corrs)
+        
+        
+    #print(corrs_dict)        
     # Plot correlations
+    column = 2
+    row = 6
+    fig, axarr = plt.subplots(row, column)
+    fig.tight_layout()
+    fig.set_figheight(10)
     if (plot_corrs):
-        
-        #w2v_ds_corrs = datasets_corr(model, datasets_path, 'enwik-200/w2v/factors', MAX_ITER=1, plot_corrs=False)
-        #svd_ds_corrs = datasets_corr(model, datasets_path, 'enwik-200/PS800iter_fromSVD_factors', MAX_ITER=1, plot_corrs=False)
-        
-        fig, ax = plt.subplots(4, 3, figsize=(15, 20))
-        for num, name in enumerate(sorted_names):
-            x = ax[num/3,num%3]
-
-            x.plot(corrs_dict[name], lw=2, label='opt method')
-            x.set_title(name, fontsize=14)
-
-            # plot original word2vec correlation
-            #w2v_corr = w2v_ds_corrs[name][0]
-            #x.plot((0, MAX_ITER), (w2v_corr, w2v_corr), 'k-', color='red', lw=2, label='SGNS')
-
-            # plot SVD correlation
-            #svd_corr = svd_ds_corrs[name][0]
-            #x.plot((0, MAX_ITER), (svd_corr, svd_corr), 'k-', color='green', lw=2, label='SVD')
-
-            x.legend(loc='best')
-            x.grid()
+        for idx, name in enumerate(sorted_names):
+            i=idx//column
+            j=idx%column
+            axarr[i,j].plot(corrs_dict[name][0], corrs_dict[name][1])
+            axarr[i,j].set_title(name)
+            
+    
     
     
     return corrs_dict
