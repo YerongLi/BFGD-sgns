@@ -128,18 +128,29 @@ def SPPMI_init(model, dimension):
 ################################## Bi-Factorized Gradient Descent initialization ##################################
 def BFGD_init(model, dimension, reg=0):
     L=norm((model.B+model.D)/4, 'fro')
+    
+    '''
+        X0=C0.T @ W0,  Vc x Vw
+    ''' 
     X0 = 1/L*model.grad_MF(
-    np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[0]]))
+    np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))
+    
     print(X0.shape)
+    
     u, s, vt = svds(X0, k=dimension)
+    
+    '''
+        C0, context matrix, d x Vc
+        W0,    word matrix, d x Vw
+    '''
     C0 = u.dot(np.sqrt(np.diag(s))).T
     W0 = np.sqrt(np.diag(s)).dot(vt)
     
     step_size=None
     
     if reg==0:
-        norm1=norm_p2(np.concatenate((C0.T, W0.T), axis=0))
-        norm2=norm_p2(model.grad_MF(C0, W0))
+        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+        norm2=norm(model.grad_MF(C0, W0), ord=2)
         step_size = 1/(20*L*(norm1**2)+3*norm2)
         
     print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)

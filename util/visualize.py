@@ -50,7 +50,7 @@ def correlation(model, benchmark, from_folder, index, plot_corrs=False):
     #vec1 = (pc.reshape(-1, 1)*G[:,ind1]*G[:,ind2]).sum(axis=0)
     #vec1 = [1-cosine(W[:, ind1[idx]], W[:, ind2[idx]])for idx in range(len(ind1))]
     #vec1 = list(vec1)
-    W = C.T @ W
+    # W = C.T @ W
     W = W / np.linalg.norm(W, axis=0)
     vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
     #vec1 = list(vec1)
