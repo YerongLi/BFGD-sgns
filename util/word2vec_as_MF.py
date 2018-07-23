@@ -199,7 +199,7 @@ class Word2vecMF(object):
             
     def projector_splitting(self, eta=5e-6, d=100, 
                             MAX_ITER=1, from_iter=0, display=0, 
-                            init=(False, None, None), save=(False, None)):
+                            init=(False, None, None), save=(False, None), itv_print=100, itv_save=1000):
         """
         Projector splitting algorithm for word2vec matrix factorization.
         """
@@ -215,11 +215,7 @@ class Word2vecMF(object):
         X = (self.C).T.dot(self.W)
         for it in range(from_iter, from_iter+MAX_ITER):
             
-            if display and 0==(it+1)%100:
-                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
-           
-            if save[0] and 0==(it+1)%1000:
-                self.save_CW(save[1], it+1)
+
             
             U, S, V = svds(X, d)
             S = np.diag(S)
@@ -238,7 +234,12 @@ class Word2vecMF(object):
             V = V.T
             S = S.T
             
-            X = U.dot(S).dot(V)                                     
+            X = U.dot(S).dot(V)
+            if display and 0==(it+1)%itv_print:
+                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
+           
+            if save[0] and 0==(it+1)%itv_save:
+                self.save_CW(save[1], it+1)
 
     
             

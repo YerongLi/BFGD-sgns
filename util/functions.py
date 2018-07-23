@@ -91,12 +91,11 @@ def opt_experiment(model,
         init_ = (True, C, W)
     else:
         init_ = init
-    
-    if (init_[0]): print(model.MF(init_[1], init_[2]))
+    print(from_folder)
     
     if (mode == 'PS'):
         model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
-                                  init=init_, save=(True, from_folder))
+                                  init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save)
         
     if (mode == 'SPS'):
         model.stochastic_ps(eta=eta, batch_size=batch_size, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
@@ -107,55 +106,10 @@ def opt_experiment(model,
                       init=init_, save=(True, from_folder))
         
     if (mode == 'BFGD'):
-        print('DEBUG')
+
         model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save)
     
-
-
-################################## Word similarity experiments ##################################
-
-def datasets_corr(model, datasets_path, from_folder, MAX_ITER=100, plot_corrs=False, matrix='W', train_ratio=1.0):
-    """
-    Calculate correlations for all datasets in datasets_path
-    """
-    
-    indices = np.load(open(datasets_path+'/indices.npz', 'rb'))
-    sorted_names = ['mc30', 'rg65', 'verb143', 'wordsim_sim', 'wordsim_rel', 'wordsim353', 
-                    'mturk287', 'mturk771', 'simlex999', 'rw2034', 'men3000']
-    
-    # Calculate correlations
-    corrs_dict = {}
-    #for filename in os.listdir(datasets_path):
-        #if filename[-4:]=='.csv':
-        
-    for name in sorted_names:
-        
-        corrs = []
-        
-        pairs_num = indices['0'+name].size
-        idx = np.arange(pairs_num)
-        np.random.shuffle(idx)
-        idx = idx[:int(train_ratio * pairs_num)]
-        
-        ind1 = indices['0'+name][idx]
-        ind2 = indices['1'+name][idx]
-        scores = indices['2'+name][idx]
-
-        for it in xrange(MAX_ITER):
-            W, C = model.load_CW(from_folder, it)
-            if (matrix == 'W'):
-                G = W
-            else:
-                G = (C.T).dot(W)
-            G = G / np.linalg.norm(G, axis=0)
-            cosines = (G[:,ind1]*G[:,ind2]).sum(axis=0)
-            corrs.append(spearmanr(cosines, scores)[0])
-
-        corrs = np.array(corrs)  
-        corrs_dict[name] = corrs
-            
-    return corrs_dict
 
 
 ################################## SPPMI decomposition initialization ##################################
@@ -193,41 +147,7 @@ def BFGD_init(model, dimension, reg=0):
     
     return C0, W0, step_size
 
-def corr_word2vec(skip ,benchmark, model_vocab):
-    """
-    Aggregator for word similarity correlation experiment.
-    """
-     
-    
-    # Load dataset and model dictionary
 
-    dataset = benchmark.values
-
-    # Choose only pairs of words which exist in model dictionary
-    ind1 = []
-    ind2 = []
-    vec2 = []
-    chosen_pairs = []
-    for i in range(dataset.shape[0]):
-        try:
-            word1 = dataset[i, 0].lower()
-            word2 = dataset[i, 1].lower()
-        except:
-            print(dataset[i,0])
-        if (word1 in model_vocab and word2 in model_vocab):
-            ind1.append(int(model_vocab[word1]))
-            ind2.append(int(model_vocab[word2]))
-            vec2.append(np.float64(dataset[i, 2]))
-            chosen_pairs.append((word1, word2))
-            
-    vec1 = []
-    for pair in chosen_pairs:
-        word1, word2 = pair
-        vec1.append(skip.similarity(word1, word2))
-
-    corr = spearmanr(vec1, vec2)[0]
-    
-    return corr, vec1, vec2, chosen_pairs
 
 def plot_dynamics(vecs, vec2, n=5, MAX_ITER=100):
     """
