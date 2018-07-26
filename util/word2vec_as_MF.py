@@ -160,7 +160,6 @@ class Word2vecMF(object):
             if (save[0]):
                 self.save_CW(save[1], it+1)    
     
-    ################# Bi-factorized griadient descent algorithm ##################    
     def bfgd(self, eta=1e-7, d=100, reg=0.0 ,MAX_ITER=1, from_iter=0, display=False,
                 init=(False, None, None), save=(False, None), itv_print=100, itv_save=5000):
         """
@@ -177,6 +176,7 @@ class Word2vecMF(object):
         
         if (save[0] and from_iter==0):
                 self.save_CW(save[1], 0)
+                self.save_vocab(save[1]+'/vocab.txt')
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
@@ -211,12 +211,14 @@ class Word2vecMF(object):
         else:
             self.C = np.random.rand(d, self.D.shape[0])
             self.W = np.random.rand(d, self.D.shape[1])
-        
-        X = (self.C).T.dot(self.W)
-        for it in range(from_iter, from_iter+MAX_ITER):
-            
 
             
+        if (save[0] and from_iter==0):
+                self.save_CW(save[1], 0)
+                self.save_vocab(save[1]+'/vocab.txt')
+
+        X = (self.C).T.dot(self.W)
+        for it in range(from_iter, from_iter+MAX_ITER):
             U, S, V = svds(X, d)
             S = np.diag(S)
             V = V.T
@@ -300,32 +302,67 @@ class Word2vecMF(object):
             S = S.T
             
             X = U.dot(S).dot(V)       
+
+    def save_vocab(self, to_file):
+        
+        sorted_vocab = sorted(self.vocab.items(), key=operator.itemgetter(1))
+        vocab_to_save = np.array([item[0] for item in sorted_vocab])
+        with open(to_file, 'w') as filehandle:
+            # Save context vocabulary
+            for listitem in vocab_to_save:
+                filehandle.write('%s ' % listitem)
+            filehandle.write('\n')
+            # Save word vocabulary
+            for listitem in vocab_to_save:
+                filehandle.write('%s ' % listitem)
+                
+    def load_vocab(self, from_file):
+        file = open(from_file, 'r')
     
+        Cvocab = file.readline().split(' ')[:-1]
+        Wvocab = file.readline().split(' ')[:-1]
+    
+        Cvocab = {key: index for index, key in enumerate(Cvocab)}
+        Wvocab = {key: index for index, key in enumerate(Wvocab)}
+    
+        return Cvocab, Wvocab    
     #######################################################################
     ############################## Data flow ##############################
     #######################################################################
     
     ########################## Data to Matrices ###########################
     
-    def data_to_matrices(self, sentences, r, k, to_file=False):
+    def data_to_matrices(self, from_file, r, k, DB_to_file=False, vocab_to_file=False):
         """
         Process raw sentences, create word dictionary, matrix D and matrix B
         then save them to file.
         """
-        
+        sentences = []
+        with open(from_file) as file:
+            for line in file:
+                sentences+= [line[:-1]]
+
+        print("Parsing sentences from training set")
+        sentences = [sentence.split() for sentence in sentences]
+
+        sentences = [sentence for sentence in sentences if sentence]      
         self.vocab = self.create_vocabulary(sentences, r)
         self.D = self.create_matrix_D(sentences)
+        del sentences
         self.B = self.create_matrix_B(k)
         
         sorted_vocab = sorted(self.vocab.items(), key=operator.itemgetter(1))
         vocab_to_save = np.array([item[0] for item in sorted_vocab])
         
-        if not False == to_file:
-            np.savez(open(to_file, 'wb'), vocab=vocab_to_save, D=self.D, B=self.B)
+        if not False == DB_to_file:
+            np.savez(open(DB_to_file, 'wb'), vocab=vocab_to_save, D=self.D, B=self.B)
+        
+        if not False == vocab_to_file:
+            self.save_vocab(vocab_to_file)
     
     ######################### Matrices to Factors ##########################
  
-    def load_matrices(self, from_file):
+    '''def load_matrices(self, from_file):
         """
         Load word dictionary, matrix D and matrix B from file.
         """
@@ -337,7 +374,7 @@ class Word2vecMF(object):
         self.vocab = {}
         for i, word in enumerate(matrices['vocab']):
             self.vocab[word] = i
-        self.inv_vocab = {v: k for k, v in self.vocab.items()}
+        self.inv_vocab = {v: k for k, v in self.vocab.items()}'''
         
     def save_CW(self, to_folder, iteration):
         """

@@ -7,24 +7,7 @@ from scipy.stats import spearmanr
 
 from util.word2vec_as_MF import Word2vecMF
 from numpy.linalg import norm, svd
-
-def load(from_file):
-    data = []
-    with open(from_file) as file:
-        for line in file:
-            data+= [line[:-1]]
-
-    sentences = []  # Initialize an empty list of sentences
-
-    print("Parsing sentences from training set")
-    #data=['Yes','This is a test','.','   ']
-    for sentence in data:
-        sentences += [sentence.split()]
-
-    real_sentences = [sentence for sentence in sentences if sentence]
-    
-    return real_sentences
-            
+           
             
 def load_sentences(mode='debug'):
     """
