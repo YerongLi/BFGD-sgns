@@ -15,7 +15,7 @@ mkdir data
 perl main_.pl enwik9 > data/enwik9.txti
 cd data
 sed -i 's/\./\n/g' enwik9.txt
-python setup.py build_ext --inplace
+make
 jupyter notebook enwik_experiments.ipynb  # for training and illustration
 jupyter notebook evaluation.ipynb         # for evaluation
 ```
