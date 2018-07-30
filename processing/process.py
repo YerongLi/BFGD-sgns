@@ -1,4 +1,4 @@
-from word2vec_as_MF import Word2vecMF
+from until.word2vec_as_MF import Word2vecMF
 import numpy as np
 data = []
 
