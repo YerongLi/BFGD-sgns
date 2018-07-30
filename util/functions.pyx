@@ -69,37 +69,63 @@ def opt_experiment(model,
         model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save,
                       autostop=autostop, tol=tol)
+
+def RAND_init(model, dimension, calculate_step=False):
     
+    
+    C0 = np.random.rand(dimension,model.D.shape[0])-0.5
+    W0 = np.random.rand(dimension,model.D.shape[1])-0.5
+    
+    RAND = C0.T @ W0  
+    u, s, vt = svd(RAND)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
+    
+    step_size = None
+    
+    if calculate_step:
+        L=norm((model.B+model.D)/4, 'fro')
+        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+        norm2=norm(model.grad_MF(C0, W0), ord=2)
+        step_size = 1/(20*L*(norm1**2)+3*norm2)    
+    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
+    
+    return C0, W0, step_size        
 
 
 ################################## SPPMI decomposition initialization ##################################
 
-def SPPMI_init(model, dimension):
+def SPPMI_init(model, dimension, k ,calculate_step=False):
     
     SPPMI = np.maximum(np.log(model.D) - np.log(model.B), 0)
     # SPPMI = np.log(model.D) - np.log(model.B)
-    
-    print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
+    np.savez(open('SPPMI'+str(k)+'.npz', 'wb'), S=SPPMI)
+    '''print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
     print(norm(SPPMI, 'fro'))
     print(SPPMI[0], 'SPPMI')
     print(np.log(model.D)[0], 'logD')
-    print(np.log(model.B)[0], 'logB')
-    L=norm((model.B+model.D)/4, 'fro')
+    print(np.log(model.B)[0], 'logB')'''
+    
     u, s, vt = svds(SPPMI, k=dimension)
     C0 = u.dot(np.sqrt(np.diag(s))).T
     W0 = np.sqrt(np.diag(s)).dot(vt)
-   
-    norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
-    norm2=norm(model.grad_MF(C0, W0), ord=2)
-    step_size = 1/(20*L*(norm1**2)+3*norm2)    
+    
+    step_size = None
+    
+    if calculate_step:
+        L=norm((model.B+model.D)/4, 'fro')
+        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+        norm2=norm(model.grad_MF(C0, W0), ord=2)
+        step_size = 1/(20*L*(norm1**2)+3*norm2)    
     print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
     
     return C0, W0, step_size
 
 ################################## Bi-Factorized Gradient Descent initialization ##################################
-def BFGD_init(model, dimension, reg=0):
-    L=norm((model.B+model.D)/4, 'fro')
+def BFGD_init(model, dimension, reg=0, calculate_step=False):
+
     
+    L=norm((model.B+model.D)/4, 'fro')
     '''
     X0=C0.T @ W0,  Vc x Vw
     ''' 
@@ -119,10 +145,12 @@ def BFGD_init(model, dimension, reg=0):
     
     step_size=None
     
-    if reg==0:
-        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
-        norm2=norm(model.grad_MF(C0, W0), ord=2)
-        step_size = 1/(20*L*(norm1**2)+3*norm2)
+    if calculate_step:
+    
+        if reg==0:
+            norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+            norm2=norm(model.grad_MF(C0, W0), ord=2)
+            step_size = 1/(20*L*(norm1**2)+3*norm2)
         
     print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
     
