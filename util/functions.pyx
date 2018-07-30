@@ -8,34 +8,7 @@ from scipy.stats import spearmanr
 from util.word2vec_as_MF import Word2vecMF
 from numpy.linalg import norm, svd
            
-            
-def load_sentences(mode='debug'):
-    """
-    Load training corpus sentences/
-    """
-    
-    if (mode == 'imdb'):
-        sentences = pickle.load(open('data/sentences_all.txt', 'rb'))
-    elif (mode == 'debug'):
-        sentences = pickle.load(open('data/sentences1k.txt', 'rb'))
-    elif (mode == 'enwik9'):
-        sentences = pickle.load(open('data/enwik9_sentences.txt', 'rb'))
-    return sentences
 
-def plot_MF(MFs, x=None, xlabel='Iterations', ylabel='MF'):
-    """
-    Plot given MFs.
-    """
-    
-    fig, ax = plt.subplots(figsize=(15, 5))
-    if not x:
-        ax.plot(MFs)
-    else:
-        ax.plot(x, MFs)
-    ax.set_xlabel(xlabel, fontsize=14)
-    ax.set_ylabel(ylabel, fontsize=14)
-    ax.grid(True)
-    
 def norm_p2(A):
     _, s, _ = svd(A)
     return np.sqrt(sum(np.square(s)))
@@ -52,9 +25,11 @@ def opt_experiment(model,
                    from_iter = 0,
                    start_from = 'RAND',
                    display = False,
+                   autostop = False,
                    init = (False, None, None),
                    itv_print=100,
-                   itv_save=5000           
+                   itv_save=5000,
+                   tol=80,           
                   ):
     """
     Aggregator for projector splitting experiment.
@@ -78,7 +53,8 @@ def opt_experiment(model,
     
     if (mode == 'PS'):
         model.projector_splitting(eta=eta, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
-                                  init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save)
+                                  init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save, 
+                                  autostop= autostop, tol=tol)
         
     if (mode == 'SPS'):
         model.stochastic_ps(eta=eta, batch_size=batch_size, d=d, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
@@ -91,29 +67,41 @@ def opt_experiment(model,
     if (mode == 'BFGD'):
 
         model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
-                      init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save)
+                      init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save,
+                      autostop=autostop, tol=tol)
     
 
 
 ################################## SPPMI decomposition initialization ##################################
 
 def SPPMI_init(model, dimension):
+    
     SPPMI = np.maximum(np.log(model.D) - np.log(model.B), 0)
+    # SPPMI = np.log(model.D) - np.log(model.B)
     
+    print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
+    print(norm(SPPMI, 'fro'))
+    print(SPPMI[0], 'SPPMI')
+    print(np.log(model.D)[0], 'logD')
+    print(np.log(model.B)[0], 'logB')
+    L=norm((model.B+model.D)/4, 'fro')
     u, s, vt = svds(SPPMI, k=dimension)
-    C_svd = u.dot(np.sqrt(np.diag(s))).T
-    W_svd = np.sqrt(np.diag(s)).dot(vt)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
+   
+    norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+    norm2=norm(model.grad_MF(C0, W0), ord=2)
+    step_size = 1/(20*L*(norm1**2)+3*norm2)    
+    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
     
-    print('Initial loss', model.MF(C_svd, W_svd))
-    
-    return C_svd, W_svd
+    return C0, W0, step_size
 
 ################################## Bi-Factorized Gradient Descent initialization ##################################
 def BFGD_init(model, dimension, reg=0):
     L=norm((model.B+model.D)/4, 'fro')
     
     '''
-        X0=C0.T @ W0,  Vc x Vw
+    X0=C0.T @ W0,  Vc x Vw
     ''' 
     X0 = 1/L*model.grad_MF(
     np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))
@@ -123,8 +111,8 @@ def BFGD_init(model, dimension, reg=0):
     u, s, vt = svds(X0, k=dimension)
     
     '''
-        C0, context matrix, d x Vc
-        W0,    word matrix, d x Vw
+    C0, context matrix, d x Vc
+    W0,    word matrix, d x Vw
     '''
     C0 = u.dot(np.sqrt(np.diag(s))).T
     W0 = np.sqrt(np.diag(s)).dot(vt)
@@ -143,50 +131,6 @@ def BFGD_init(model, dimension, reg=0):
 
 
 
-def plot_dynamics(vecs, vec2, n=5, MAX_ITER=100):
-    """
-    Plot how the distances between pairs change with each n
-    iterations of the optimization method.
-    """
-    
-    for i in xrange(MAX_ITER):
-        if (i%n==0):
-            plt.clf()
-            plt.xlim([-0.01, 1.2])
-            plt.plot(vecs[i], vec2, 'ro', color='blue')
-            plt.grid()
-            display.clear_output(wait=True)
-            display.display(plt.gcf())
-    plt.clf()
-    
-    fig, ax = plt.subplots(1, 2, figsize=(13, 4))
-    for i in xrange(2):
-        ax[i].set_xlim([-0.01, 1.2])
-        ax[i].plot(vecs[-i], vec2, 'ro', color='blue')
-        ax[i].set_title(str(i*MAX_ITER)+' iterations')
-        ax[i].set_xlabel('Cosine distance', fontsize=14)
-        ax[i].set_ylabel('Assesor grade', fontsize=14)
-        ax[i].grid()
-    
-    
-def dist_change(vecs, vec2, chosen_pairs, n=5, dropped=True, from_iter=0, to_iter=-1):
-    """
-    Get top pairs which change distance between words the most.
-    """
-    
-    vecs_diff = vecs[to_iter, :] - vecs[from_iter, :]
-    args_sorted = np.argsort(vecs_diff)
-
-    for i in xrange(n):
-        if (dropped):
-            idx = args_sorted[i]
-        else:
-            idx = args_sorted[-1-i]
-        print("Words:", chosen_pairs[idx])
-        print("Assesor score:", vec2[idx])
-        print("Distance change:", vecs[from_iter, idx], '-->', vecs[to_iter, idx])
-        print('\n')
-    
     
 def nearest_words_from_iter(model, word, from_folder, top=20, display=False, it=1):
     """
@@ -259,26 +203,3 @@ def analogical_reasoning(model, dataset, from_folder, it=0):
     acc = (good_sum) / float(dataset.shape[0]-miss_sum)
     
     return acc, miss_sum
-
-def AR_experiment(model, dataset, from_folder, MAX_ITER=100, step_size=5, plot_accs=False):
-    """
-    Aggregator for analogical reasoning accuracy experiment.
-    """
-    
-    # Calculate accuracies 
-    accs = []
-    num_points = MAX_ITER/step_size + 1
-    for i in xrange(num_points):
-        acc, miss = analogical_reasoning(model, dataset, from_folder, i*step_size)
-        accs.append(acc)
-    accs = np.array(accs)
-    
-    # Plot accuracies
-    if (plot_accs):
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(np.arange(num_points)*step_size, accs)
-        ax.set_ylabel('Accuracy', fontsize=14)
-        ax.set_xlabel('Iterations', fontsize=14)
-        ax.grid()    
-        
-    return accs, miss

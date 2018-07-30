@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
+import os, pickle
 import pandas as pd
 import glob
 from scipy.sparse.linalg import svds
@@ -123,7 +123,7 @@ def datasets_corr(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', trai
                              index=step)[0])
             except:
                 corrs.append(np.inf)
-                print('Step', idx, 'invalid.', end=' ')
+                print('Step', idx, 'invalid.')
 
         steps = [steps[i] for i,x in enumerate(corrs) if not np.isinf(x)]
         corrs = [x for x in corrs if not np.isinf(x)]
@@ -144,3 +144,55 @@ def datasets_corr(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', trai
     fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
     fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
     return corrs_dict
+
+def load_sentences(mode='debug'):
+    """
+    Load training corpus sentences/
+    """
+    
+    if (mode == 'imdb'):
+        sentences = pickle.load(open('data/sentences_all.txt', 'rb'))
+    elif (mode == 'debug'):
+        sentences = pickle.load(open('data/sentences1k.txt', 'rb'))
+    elif (mode == 'enwik9'):
+        sentences = pickle.load(open('data/enwik9_sentences.txt', 'rb'))
+    return sentences
+
+def plot_MF(MFs, x=None, xlabel='Iterations', ylabel='MF'):
+    """
+    Plot given MFs.
+    """
+    
+    fig, ax = plt.subplots(figsize=(15, 5))
+    if not x:
+        ax.plot(MFs)
+    else:
+        ax.plot(x, MFs)
+    ax.set_xlabel(xlabel, fontsize=14)
+    ax.set_ylabel(ylabel, fontsize=14)
+    ax.grid(True)
+
+
+
+'''def AR_experiment(model, dataset, from_folder, MAX_ITER=100, step_size=5, plot_accs=False):
+    """
+    Aggregator for analogical reasoning accuracy experiment.
+    """
+    
+    # Calculate accuracies 
+    accs = []
+    num_points = MAX_ITER/step_size + 1
+    for i in xrange(num_points):
+        acc, miss = analogical_reasoning(model, dataset, from_folder, i*step_size)
+        accs.append(acc)
+    accs = np.array(accs)
+    
+    # Plot accuracies
+    if (plot_accs):
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(np.arange(num_points)*step_size, accs)
+        ax.set_ylabel('Accuracy', fontsize=14)
+        ax.set_xlabel('Iterations', fontsize=14)
+        ax.grid()    
+        
+    return accs, miss'''

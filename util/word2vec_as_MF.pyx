@@ -6,6 +6,8 @@ from numpy.linalg import svd, qr, norm
 from scipy.spatial.distance import cosine
 from scipy.sparse.linalg import svds
 
+
+print('Please run:\n  python setup.py build_ext --inplace')
 class Word2vecMF(object):
     
     def __init__(self):
@@ -116,7 +118,7 @@ class Word2vecMF(object):
         
         X = C.T.dot(W)
         MF = self.D*np.log(self.sigmoid(X)) + self.B*np.log(self.sigmoid(-X))
-        return -MF.sum(), norm(C.dot(C.T)-W.dot(W.T), 'fro')
+        return -MF.sum() #, norm(C.dot(C.T)-W.dot(W.T), 'fro')
 
     def grad_MF(self, C, W):
         """
@@ -161,7 +163,8 @@ class Word2vecMF(object):
                 self.save_CW(save[1], it+1)    
     
     def bfgd(self, eta=1e-7, d=100, reg=0.0 ,MAX_ITER=1, from_iter=0, display=False,
-                init=(False, None, None), save=(False, None), itv_print=100, itv_save=5000):
+                init=(False, None, None), save=(False, None), itv_print=100, itv_save=5000,
+                autostop =False, tol=100):
         """
         Alternating mimimization algorithm for word2vec matrix factorization.
         """
@@ -173,6 +176,11 @@ class Word2vecMF(object):
             self.C = np.random.rand(d, self.D.shape[0])
             self.W = np.random.rand(d, self.D.shape[1])
         
+        
+        if autostop:
+            Xt1 = (self.C).T.dot(self.W)
+        
+        print("Iter #:", from_iter, "loss", self.MF(self.C, self.W))
         
         if (save[0] and from_iter==0):
                 self.save_CW(save[1], 0)
@@ -186,9 +194,22 @@ class Word2vecMF(object):
             grad = self.grad_MF(self.C, self.W)
             gradW =  self.C.dot(grad)-G.dot(self.W)
             gradC = self.W.dot(grad.T)+G.dot(self.C)
+            #print(norm(grad, 'fro'), 'grad')
+            #print(norm(gradW, 'fro'), 'gradW')
+            #print(norm(gradC, 'fro'), 'gradC')
+            #print(norm(self.W, 'fro'), 'C')
+            
             self.W = self.W + eta*gradW
             self.C = self.C + eta*gradC
             
+            if autostop:
+                X = (self.C).T.dot(self.W)
+                if norm(X-Xt1,'fro')/norm(X, 'fro')<tol*eta:
+                    print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
+                    break
+                else:
+                    Xt1=np.array(X)
+
             if display and 0==(it+1)%itv_print:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
@@ -199,7 +220,8 @@ class Word2vecMF(object):
             
     def projector_splitting(self, eta=5e-6, d=100, 
                             MAX_ITER=1, from_iter=0, display=0, 
-                            init=(False, None, None), save=(False, None), itv_print=100, itv_save=1000):
+                            init=(False, None, None), save=(False, None), itv_print=100, itv_save=1000,
+                            autostop =False, tol=100):
         """
         Projector splitting algorithm for word2vec matrix factorization.
         """
@@ -212,12 +234,17 @@ class Word2vecMF(object):
             self.C = np.random.rand(d, self.D.shape[0])
             self.W = np.random.rand(d, self.D.shape[1])
 
-            
+        print("Iter #:", from_iter, "loss", self.MF(self.C, self.W)) 
         if (save[0] and from_iter==0):
                 self.save_CW(save[1], 0)
                 self.save_vocab(save[1]+'/vocab.txt')
 
+            
         X = (self.C).T.dot(self.W)
+
+        if autostop:
+            Xt1=np.array(X)
+
         for it in range(from_iter, from_iter+MAX_ITER):
             U, S, V = svds(X, d)
             S = np.diag(S)
@@ -237,6 +264,14 @@ class Word2vecMF(object):
             S = S.T
             
             X = U.dot(S).dot(V)
+
+            if autostop:
+                if norm(X-Xt1,'fro')/norm(X, 'fro')<tol*eta:
+                    print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
+                    break
+                else:
+                    Xt1=np.array(X)
+
             if display and 0==(it+1)%itv_print:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
            
@@ -362,11 +397,11 @@ class Word2vecMF(object):
     
     ######################### Matrices to Factors ##########################
  
-    '''def load_matrices(self, from_file):
+    def load_matrices(self, from_file):
         """
         Load word dictionary, matrix D and matrix B from file.
         """
-        
+        print('Loading matrices from training set')
         matrices = np.load(open(from_file, 'rb'))
         self.D = matrices['D']
         self.B = matrices['B']
@@ -374,7 +409,7 @@ class Word2vecMF(object):
         self.vocab = {}
         for i, word in enumerate(matrices['vocab']):
             self.vocab[word] = i
-        self.inv_vocab = {v: k for k, v in self.vocab.items()}'''
+        self.inv_vocab = {v: k for k, v in self.vocab.items()}
         
     def save_CW(self, to_folder, iteration):
         """
