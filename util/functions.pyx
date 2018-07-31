@@ -73,8 +73,8 @@ def opt_experiment(model,
 def RAND_init(model, dimension, calculate_step=False):
     
     
-    C0 = np.random.rand(dimension,model.D.shape[0])-0.5
-    W0 = np.random.rand(dimension,model.D.shape[1])-0.5
+    C0 = (np.random.rand(dimension,model.D.shape[0])-0.5)/dimension
+    W0 = (np.random.rand(dimension,model.D.shape[1])-0.5)/dimension
     
     RAND = C0.T @ W0  
     u, s, vt = svd(RAND)
@@ -95,13 +95,14 @@ def RAND_init(model, dimension, calculate_step=False):
 
 ################################## SPPMI decomposition initialization ##################################
 
-def SPPMI_init(model, dimension, k ,calculate_step=False):
-    
-    SPPMI = np.maximum(np.log(model.D) - np.log(model.B), 0)
+def SPPMI_init(model, dimension, negative, calculate_step=False):
+    SPPMI = np.maximum(np.nan_to_num(np.log(model.D) - np.log(model.B)),0)
     # SPPMI = np.log(model.D) - np.log(model.B)
-    np.savez(open('SPPMI'+str(k)+'.npz', 'wb'), S=SPPMI)
-    '''print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
+    
+    np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
+    print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
     print(norm(SPPMI, 'fro'))
+    '''
     print(SPPMI[0], 'SPPMI')
     print(np.log(model.D)[0], 'logD')
     print(np.log(model.B)[0], 'logB')'''
