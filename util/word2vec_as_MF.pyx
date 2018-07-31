@@ -183,15 +183,16 @@ class Word2vecMF(object):
         print("Iter #:", from_iter, "loss", self.MF(self.C, self.W))
         
         if (save[0] and from_iter==0):
-                self.save_CW(save[1], 0)
-                self.save_vocab(save[1]+'/vocab.txt')
+            self.save_CW(save[1], 0)
+            self.save_vocab(save[1]+'/vocab.txt')
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
- 
             G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
             # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
+            
             grad = self.grad_MF(self.C, self.W)
+            
             gradW =  self.C.dot(grad)-G.dot(self.W)
             gradC = self.W.dot(grad.T)+G.dot(self.C)
             #print(norm(grad, 'fro'), 'grad')
@@ -214,7 +215,9 @@ class Word2vecMF(object):
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
             if save[0] and 0==(it+1)%itv_save:
-                self.save_CW(save[1], it+1)     
+                self.save_CW(save[1], it+1)
+                
+                
     #################### Projector splitting algorithm ####################
             
             

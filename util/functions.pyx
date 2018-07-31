@@ -95,11 +95,12 @@ def RAND_init(model, dimension, calculate_step=False):
 
 ################################## SPPMI decomposition initialization ##################################
 
-def SPPMI_init(model, dimension, negative, calculate_step=False):
+def SPPMI_init(model, dimension, negative, calculate_step = False):
     SPPMI = np.maximum(np.nan_to_num(np.log(model.D) - np.log(model.B)),0)
     # SPPMI = np.log(model.D) - np.log(model.B)
-    
+        
     np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
+    
     print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
     print(norm(SPPMI, 'fro'))
     '''
@@ -107,54 +108,50 @@ def SPPMI_init(model, dimension, negative, calculate_step=False):
     print(np.log(model.D)[0], 'logD')
     print(np.log(model.B)[0], 'logB')'''
     
-    u, s, vt = svds(SPPMI, k=dimension)
-    C0 = u.dot(np.sqrt(np.diag(s))).T
-    W0 = np.sqrt(np.diag(s)).dot(vt)
+    U, S, V = svds(SPPMI, k = dimension)
+    C0 = U.dot(np.sqrt(np.diag(S))).T
+    W0 = np.sqrt(np.diag(S)).dot(V)
     
     step_size = None
     
     if calculate_step:
-        L=norm((model.B+model.D)/4, 'fro')
-        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
-        norm2=norm(model.grad_MF(C0, W0), ord=2)
-        step_size = 1/(20*L*(norm1**2)+3*norm2)    
+        L = norm((model.B + model.D)/4, 'fro')
+        norm1 = norm(np.concatenate((C0.T, W0.T), axis = 0), ord = 2)
+        norm2 = norm(model.grad_MF(C0, W0), ord = 2)
+        step_size = 1/(20*L*(norm1**2) + 3*norm2)    
     print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
     
     return C0, W0, step_size
 
 ################################## Bi-Factorized Gradient Descent initialization ##################################
-def BFGD_init(model, dimension, reg=0, calculate_step=False):
-
+def BFGD_init(model, dimension, reg = 0, calculate_step = False):
     
-    L=norm((model.B+model.D)/4, 'fro')
+    L = norm((model.B + model.D)/4, 'fro')
+
     '''
     X0=C0.T @ W0,  Vc x Vw
     ''' 
-    X0 = 1/L*model.grad_MF(
-    np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))
     
-    print(X0.shape)
-    
-    u, s, vt = svds(X0, k=dimension)
+    X0 = (1/L) * model.grad_MF(np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))        
+    U, S, V = svds(X0, k = dimension)
     
     '''
     C0, context matrix, d x Vc
     W0,    word matrix, d x Vw
     '''
-    C0 = u.dot(np.sqrt(np.diag(s))).T
-    W0 = np.sqrt(np.diag(s)).dot(vt)
+
+    C0 = U.dot(np.sqrt(np.diag(S))).T
+    W0 = np.sqrt(np.diag(S)).dot(V)
     
-    step_size=None
+    step_size = None
     
-    if calculate_step:
-    
-        if reg==0:
-            norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
-            norm2=norm(model.grad_MF(C0, W0), ord=2)
-            step_size = 1/(20*L*(norm1**2)+3*norm2)
+    if calculate_step:    
+        if reg == 0:
+            norm1 = norm(np.concatenate((C0.T, W0.T), axis = 0), ord = 2)
+            norm2 = norm(model.grad_MF(C0, W0), ord = 2)
+            step_size = 1/(20*L*(norm1**2) + 3*norm2)
         
-    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
-    
+    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)    
     
     return C0, W0, step_size
 
