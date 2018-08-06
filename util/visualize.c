@@ -1236,7 +1236,6 @@ static const char __pyx_k_header[] = "header";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_isfile[] = "isfile";
 static const char __pyx_k_linalg[] = "linalg";
-static const char __pyx_k_loaded[] = " loaded.";
 static const char __pyx_k_matrix[] = "matrix";
 static const char __pyx_k_pandas[] = "pandas";
 static const char __pyx_k_pickle[] = "pickle";
@@ -1253,7 +1252,6 @@ static const char __pyx_k_load_CW[] = "load_CW";
 static const char __pyx_k_men3000[] = "men3000";
 static const char __pyx_k_normInv[] = "normInv";
 static const char __pyx_k_verb143[] = "verb143";
-static const char __pyx_k_Finished[] = "Finished.";
 static const char __pyx_k_MAX_ITER[] = "MAX_ITER";
 static const char __pyx_k_filelist[] = "filelist";
 static const char __pyx_k_mturk287[] = "mturk287";
@@ -1303,7 +1301,6 @@ static const char __pyx_k_scipy_spatial_distance[] = "scipy.spatial.distance";
 static const char __pyx_k_Linguistic_scores_Spearman_Corre[] = "Linguistic scores (Spearman Correlation Scores)";
 static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_C;
-static PyObject *__pyx_kp_s_Finished;
 static PyObject *__pyx_kp_s_Linguistic_scores_Spearman_Corre;
 static PyObject *__pyx_n_s_MAX_ITER;
 static PyObject *__pyx_kp_s_MTURK_771;
@@ -1364,7 +1361,6 @@ static PyObject *__pyx_n_s_linalg;
 static PyObject *__pyx_n_s_load;
 static PyObject *__pyx_n_s_load_CW;
 static PyObject *__pyx_n_s_load_vocab;
-static PyObject *__pyx_kp_s_loaded;
 static PyObject *__pyx_n_s_lower;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_matplotlib_pyplot;
@@ -3623,7 +3619,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
  * 
  *     if os.path.isfile(from_file):             # <<<<<<<<<<<<<<
  *          corrs_dict, steps = pickle.load(open(from_file, 'rb'))
- *          print(from_file+' loaded.')
+ *          #print(from_file+' loaded.')
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_os); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3684,7 +3680,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
  * 
  *     if os.path.isfile(from_file):
  *          corrs_dict, steps = pickle.load(open(from_file, 'rb'))             # <<<<<<<<<<<<<<
- *          print(from_file+' loaded.')
+ *          #print(from_file+' loaded.')
  *     else:
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pickle); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
@@ -3800,24 +3796,12 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     __pyx_v_steps = __pyx_t_6;
     __pyx_t_6 = 0;
 
-    /* "util/visualize.pyx":110
- *     if os.path.isfile(from_file):
- *          corrs_dict, steps = pickle.load(open(from_file, 'rb'))
- *          print(from_file+' loaded.')             # <<<<<<<<<<<<<<
- *     else:
- * 
- */
-    __pyx_t_1 = PyNumber_Add(__pyx_v_from_file, __pyx_kp_s_loaded); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 110, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
     /* "util/visualize.pyx":108
  *     from_file=from_folder+'/corrDict.pkl'
  * 
  *     if os.path.isfile(from_file):             # <<<<<<<<<<<<<<
  *          corrs_dict, steps = pickle.load(open(from_file, 'rb'))
- *          print(from_file+' loaded.')
+ *          #print(from_file+' loaded.')
  */
     goto __pyx_L3;
   }
@@ -4679,7 +4663,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
  *         pickle.dump((corrs_dict, steps), open(from_file, 'wb'))
  *         print(from_file+' created.')             # <<<<<<<<<<<<<<
  * 
- *     print('Finished.')
+ *     #fig.set_figheight(10)
  */
     __pyx_t_4 = PyNumber_Add(__pyx_v_from_file, __pyx_kp_s_created); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -4688,26 +4672,17 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
   }
   __pyx_L3:;
 
-  /* "util/visualize.pyx":142
- *         print(from_file+' created.')
+  /* "util/visualize.pyx":143
  * 
- *     print('Finished.')             # <<<<<<<<<<<<<<
- *     #fig.set_figheight(10)
- *     if (plot_corrs):
- */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_Finished) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
-
-  /* "util/visualize.pyx":144
- *     print('Finished.')
  *     #fig.set_figheight(10)
  *     if (plot_corrs):             # <<<<<<<<<<<<<<
  * 
  *         column = 2
  */
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_plot_corrs); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_plot_corrs); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
   if (__pyx_t_5) {
 
-    /* "util/visualize.pyx":146
+    /* "util/visualize.pyx":145
  *     if (plot_corrs):
  * 
  *         column = 2             # <<<<<<<<<<<<<<
@@ -4717,7 +4692,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     __Pyx_INCREF(__pyx_int_2);
     __pyx_v_column = __pyx_int_2;
 
-    /* "util/visualize.pyx":147
+    /* "util/visualize.pyx":146
  * 
  *         column = 2
  *         row = 6             # <<<<<<<<<<<<<<
@@ -4726,21 +4701,21 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
  */
     __pyx_v_row = 6;
 
-    /* "util/visualize.pyx":148
+    /* "util/visualize.pyx":147
  *         column = 2
  *         row = 6
  *         fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))             # <<<<<<<<<<<<<<
  *         fig.tight_layout()
  *         for idx, name in enumerate(sorted_names):
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_plt); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_plt); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_subplots); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_subplots); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_row); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_row); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_4);
@@ -4748,11 +4723,11 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     __Pyx_GIVEREF(__pyx_v_column);
     PyTuple_SET_ITEM(__pyx_t_15, 1, __pyx_v_column);
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_sharex, Py_True) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_figsize, __pyx_tuple__7) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
-    __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_15, __pyx_t_4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_sharex, Py_True) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_figsize, __pyx_tuple__7) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
+    __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_15, __pyx_t_4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
@@ -4763,7 +4738,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 148, __pyx_L1_error)
+        __PYX_ERR(0, 147, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -4776,15 +4751,15 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_15);
       #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_15 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_15 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 147, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
       #endif
       __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_3 = PyObject_GetIter(__pyx_t_17); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_3 = PyObject_GetIter(__pyx_t_17); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 147, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
       __pyx_t_7 = Py_TYPE(__pyx_t_3)->tp_iternext;
@@ -4792,7 +4767,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_GOTREF(__pyx_t_4);
       index = 1; __pyx_t_15 = __pyx_t_7(__pyx_t_3); if (unlikely(!__pyx_t_15)) goto __pyx_L32_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_15);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_7(__pyx_t_3), 2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_7(__pyx_t_3), 2) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
       __pyx_t_7 = NULL;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       goto __pyx_L33_unpacking_done;
@@ -4800,7 +4775,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_7 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 148, __pyx_L1_error)
+      __PYX_ERR(0, 147, __pyx_L1_error)
       __pyx_L33_unpacking_done:;
     }
     __pyx_v_fig = __pyx_t_4;
@@ -4808,14 +4783,14 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     __pyx_v_axarr = __pyx_t_15;
     __pyx_t_15 = 0;
 
-    /* "util/visualize.pyx":149
+    /* "util/visualize.pyx":148
  *         row = 6
  *         fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))
  *         fig.tight_layout()             # <<<<<<<<<<<<<<
  *         for idx, name in enumerate(sorted_names):
  *             i=idx//column
  */
-    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_tight_layout); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_tight_layout); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_15))) {
@@ -4828,16 +4803,16 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_17 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 149, __pyx_L1_error)
+      __pyx_t_17 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 148, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_17 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 149, __pyx_L1_error)
+      __pyx_t_17 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 148, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_17);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-    /* "util/visualize.pyx":150
+    /* "util/visualize.pyx":149
  *         fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))
  *         fig.tight_layout()
  *         for idx, name in enumerate(sorted_names):             # <<<<<<<<<<<<<<
@@ -4850,53 +4825,53 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     for (;;) {
       if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_15)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_4 = PyList_GET_ITEM(__pyx_t_15, __pyx_t_8); __Pyx_INCREF(__pyx_t_4); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+      __pyx_t_4 = PyList_GET_ITEM(__pyx_t_15, __pyx_t_8); __Pyx_INCREF(__pyx_t_4); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
       #else
-      __pyx_t_4 = PySequence_ITEM(__pyx_t_15, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
+      __pyx_t_4 = PySequence_ITEM(__pyx_t_15, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_4);
       __pyx_t_4 = 0;
       __Pyx_INCREF(__pyx_t_17);
       __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_17);
-      __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_17, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_17, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_17);
       __pyx_t_17 = __pyx_t_4;
       __pyx_t_4 = 0;
 
-      /* "util/visualize.pyx":151
+      /* "util/visualize.pyx":150
  *         fig.tight_layout()
  *         for idx, name in enumerate(sorted_names):
  *             i=idx//column             # <<<<<<<<<<<<<<
  *             j=idx%column
  *             axarr[i,j].plot(steps, corrs_dict[name])
  */
-      __pyx_t_4 = PyNumber_FloorDivide(__pyx_v_idx, __pyx_v_column); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 151, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_FloorDivide(__pyx_v_idx, __pyx_v_column); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "util/visualize.pyx":152
+      /* "util/visualize.pyx":151
  *         for idx, name in enumerate(sorted_names):
  *             i=idx//column
  *             j=idx%column             # <<<<<<<<<<<<<<
  *             axarr[i,j].plot(steps, corrs_dict[name])
  *             axarr[i,j].set_title(name)
  */
-      __pyx_t_4 = PyNumber_Remainder(__pyx_v_idx, __pyx_v_column); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_Remainder(__pyx_v_idx, __pyx_v_column); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 151, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "util/visualize.pyx":153
+      /* "util/visualize.pyx":152
  *             i=idx//column
  *             j=idx%column
  *             axarr[i,j].plot(steps, corrs_dict[name])             # <<<<<<<<<<<<<<
  *             axarr[i,j].set_title(name)
  *         fig=axarr[0,0].figure
  */
-      __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 152, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_v_i);
       __Pyx_GIVEREF(__pyx_v_i);
@@ -4904,13 +4879,13 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_INCREF(__pyx_v_j);
       __Pyx_GIVEREF(__pyx_v_j);
       PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_j);
-      __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_plot); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_plot); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 152, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_corrs_dict, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_corrs_dict, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_2 = NULL;
       __pyx_t_19 = 0;
@@ -4927,7 +4902,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_v_steps, __pyx_t_1};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_19, 2+__pyx_t_19); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_19, 2+__pyx_t_19); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4936,14 +4911,14 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_v_steps, __pyx_t_1};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_19, 2+__pyx_t_19); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_19, 2+__pyx_t_19); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else
       #endif
       {
-        __pyx_t_16 = PyTuple_New(2+__pyx_t_19); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 153, __pyx_L1_error)
+        __pyx_t_16 = PyTuple_New(2+__pyx_t_19); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 152, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
         if (__pyx_t_2) {
           __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_2); __pyx_t_2 = NULL;
@@ -4954,21 +4929,21 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_19, __pyx_t_1);
         __pyx_t_1 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_16, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "util/visualize.pyx":154
+      /* "util/visualize.pyx":153
  *             j=idx%column
  *             axarr[i,j].plot(steps, corrs_dict[name])
  *             axarr[i,j].set_title(name)             # <<<<<<<<<<<<<<
  *         fig=axarr[0,0].figure
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  */
-      __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_v_i);
       __Pyx_GIVEREF(__pyx_v_i);
@@ -4976,10 +4951,10 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_INCREF(__pyx_v_j);
       __Pyx_GIVEREF(__pyx_v_j);
       PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_j);
-      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 153, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_set_title); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_set_title); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       __pyx_t_16 = NULL;
@@ -4993,13 +4968,13 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
         }
       }
       if (!__pyx_t_16) {
-        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_16, __pyx_v_name};
-          __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
           __Pyx_GOTREF(__pyx_t_4);
         } else
@@ -5007,19 +4982,19 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_16, __pyx_v_name};
-          __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
           __Pyx_GOTREF(__pyx_t_4);
         } else
         #endif
         {
-          __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+          __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_16); __pyx_t_16 = NULL;
           __Pyx_INCREF(__pyx_v_name);
           __Pyx_GIVEREF(__pyx_v_name);
           PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_v_name);
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         }
@@ -5027,7 +5002,7 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "util/visualize.pyx":150
+      /* "util/visualize.pyx":149
  *         fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))
  *         fig.tight_layout()
  *         for idx, name in enumerate(sorted_names):             # <<<<<<<<<<<<<<
@@ -5038,61 +5013,61 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-    /* "util/visualize.pyx":155
+    /* "util/visualize.pyx":154
  *             axarr[i,j].plot(steps, corrs_dict[name])
  *             axarr[i,j].set_title(name)
  *         fig=axarr[0,0].figure             # <<<<<<<<<<<<<<
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
  */
-    __pyx_t_17 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_tuple__8); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_17 = __Pyx_PyObject_GetItem(__pyx_v_axarr, __pyx_tuple__8); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_figure); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_figure); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
     __Pyx_DECREF_SET(__pyx_v_fig, __pyx_t_15);
     __pyx_t_15 = 0;
 
-    /* "util/visualize.pyx":156
+    /* "util/visualize.pyx":155
  *             axarr[i,j].set_title(name)
  *         fig=axarr[0,0].figure
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)             # <<<<<<<<<<<<<<
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
  *     return corrs_dict, steps
  */
-    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_text); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_text); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
-    __pyx_t_17 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_17 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_ha, __pyx_n_s_center) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_va, __pyx_n_s_center) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_rotation, __pyx_int_90) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_tuple__9, __pyx_t_17); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_ha, __pyx_n_s_center) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_va, __pyx_n_s_center) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_rotation, __pyx_int_90) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_tuple__9, __pyx_t_17); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "util/visualize.pyx":157
+    /* "util/visualize.pyx":156
  *         fig=axarr[0,0].figure
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")             # <<<<<<<<<<<<<<
  *     return corrs_dict, steps
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_fig, __pyx_n_s_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_17 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 157, __pyx_L1_error)
+    __pyx_t_17 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_ha, __pyx_n_s_center) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_va, __pyx_n_s_center) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
-    __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__10, __pyx_t_17); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 157, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_ha, __pyx_n_s_center) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_va, __pyx_n_s_center) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__10, __pyx_t_17); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
 
-    /* "util/visualize.pyx":144
- *     print('Finished.')
+    /* "util/visualize.pyx":143
+ * 
  *     #fig.set_figheight(10)
  *     if (plot_corrs):             # <<<<<<<<<<<<<<
  * 
@@ -5100,13 +5075,13 @@ static PyObject *__pyx_pf_4util_9visualize_4bench_dict(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "util/visualize.pyx":158
+  /* "util/visualize.pyx":157
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
  *     return corrs_dict, steps             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
   __Pyx_INCREF(__pyx_v_corrs_dict);
   __Pyx_GIVEREF(__pyx_v_corrs_dict);
@@ -5201,7 +5176,6 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
   {&__pyx_n_s_C, __pyx_k_C, sizeof(__pyx_k_C), 0, 0, 1, 1},
-  {&__pyx_kp_s_Finished, __pyx_k_Finished, sizeof(__pyx_k_Finished), 0, 0, 1, 0},
   {&__pyx_kp_s_Linguistic_scores_Spearman_Corre, __pyx_k_Linguistic_scores_Spearman_Corre, sizeof(__pyx_k_Linguistic_scores_Spearman_Corre), 0, 0, 1, 0},
   {&__pyx_n_s_MAX_ITER, __pyx_k_MAX_ITER, sizeof(__pyx_k_MAX_ITER), 0, 0, 1, 1},
   {&__pyx_kp_s_MTURK_771, __pyx_k_MTURK_771, sizeof(__pyx_k_MTURK_771), 0, 0, 1, 0},
@@ -5262,7 +5236,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_load, __pyx_k_load, sizeof(__pyx_k_load), 0, 0, 1, 1},
   {&__pyx_n_s_load_CW, __pyx_k_load_CW, sizeof(__pyx_k_load_CW), 0, 0, 1, 1},
   {&__pyx_n_s_load_vocab, __pyx_k_load_vocab, sizeof(__pyx_k_load_vocab), 0, 0, 1, 1},
-  {&__pyx_kp_s_loaded, __pyx_k_loaded, sizeof(__pyx_k_loaded), 0, 0, 1, 0},
   {&__pyx_n_s_lower, __pyx_k_lower, sizeof(__pyx_k_lower), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_matplotlib_pyplot, __pyx_k_matplotlib_pyplot, sizeof(__pyx_k_matplotlib_pyplot), 0, 0, 1, 1},
@@ -5382,46 +5355,46 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__6);
   __Pyx_GIVEREF(__pyx_slice__6);
 
-  /* "util/visualize.pyx":148
+  /* "util/visualize.pyx":147
  *         column = 2
  *         row = 6
  *         fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))             # <<<<<<<<<<<<<<
  *         fig.tight_layout()
  *         for idx, name in enumerate(sorted_names):
  */
-  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_10, __pyx_int_10); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_10, __pyx_int_10); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "util/visualize.pyx":155
+  /* "util/visualize.pyx":154
  *             axarr[i,j].plot(steps, corrs_dict[name])
  *             axarr[i,j].set_title(name)
  *         fig=axarr[0,0].figure             # <<<<<<<<<<<<<<
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
  */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "util/visualize.pyx":156
+  /* "util/visualize.pyx":155
  *             axarr[i,j].set_title(name)
  *         fig=axarr[0,0].figure
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)             # <<<<<<<<<<<<<<
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
  *     return corrs_dict, steps
  */
-  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_float_0_01, __pyx_float_0_5, __pyx_kp_s_Linguistic_scores_Spearman_Corre); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_float_0_01, __pyx_float_0_5, __pyx_kp_s_Linguistic_scores_Spearman_Corre); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "util/visualize.pyx":157
+  /* "util/visualize.pyx":156
  *         fig=axarr[0,0].figure
  *         fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
  *         fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")             # <<<<<<<<<<<<<<
  *     return corrs_dict, steps
  */
-  __pyx_tuple__10 = PyTuple_Pack(3, __pyx_float_0_5, __pyx_float_0_0, __pyx_kp_s_Number_of_Iterations); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(3, __pyx_float_0_5, __pyx_float_0_0, __pyx_kp_s_Number_of_Iterations); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 

@@ -107,7 +107,7 @@ def bench_dict(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_r
 
     if os.path.isfile(from_file):
          corrs_dict, steps = pickle.load(open(from_file, 'rb'))
-         print(from_file+' loaded.')
+         #print(from_file+' loaded.')
     else:   
 
     #sorted_names = ['mc30', 'rg65']
@@ -139,7 +139,6 @@ def bench_dict(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_r
         pickle.dump((corrs_dict, steps), open(from_file, 'wb'))
         print(from_file+' created.')
     
-    print('Finished.')
     #fig.set_figheight(10)
     if (plot_corrs):
                 
