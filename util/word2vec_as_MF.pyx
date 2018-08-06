@@ -129,7 +129,7 @@ class Word2vecMF(object):
         #print(self.D.shape, X.shape, self.B.shape)
         grad = self.D*self.sigmoid(-X) - self.B*self.sigmoid(X)
         return grad
-
+    
     ################# Alternating minimization algorithm ##################
     
     def alt_min(self, eta=1e-7, d=100, MAX_ITER=1, from_iter=0, display=0,
@@ -164,7 +164,7 @@ class Word2vecMF(object):
     
     def bfgd(self, eta=1e-7, d=100, reg=0.0 ,MAX_ITER=1, from_iter=0, display=False,
                 init=(False, None, None), save=(False, None), itv_print=100, itv_save=5000,
-                autostop =False, tol=100):
+                tol=100):
         """
         Alternating mimimization algorithm for word2vec matrix factorization.
         """
@@ -177,47 +177,42 @@ class Word2vecMF(object):
             self.W = np.random.rand(d, self.D.shape[1])
         
         
-        if autostop:
-            Xt1 = (self.C).T.dot(self.W)
+        '''if autostop:
+            Xt1 = (self.C).T.dot(self.W)'''
         
         print("Iter #:", from_iter, "loss", self.MF(self.C, self.W))
         
         if (save[0] and from_iter==0):
-            self.save_CW(save[1], 0)
-            self.save_vocab(save[1]+'/vocab.txt')
+                self.save_CW(save[1], 0)
+                self.save_vocab(save[1]+'/vocab.txt')
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
+ 
             G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
             # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
-            
             grad = self.grad_MF(self.C, self.W)
-            
-            gradW =  self.C.dot(grad)-G.dot(self.W)
-            gradC = self.W.dot(grad.T)+G.dot(self.C)
             #print(norm(grad, 'fro'), 'grad')
             #print(norm(gradW, 'fro'), 'gradW')
             #print(norm(gradC, 'fro'), 'gradC')
             #print(norm(self.W, 'fro'), 'C')
             
-            self.W = self.W + eta*gradW
-            self.C = self.C + eta*gradC
+            self.W = self.W + eta*(self.C.dot(grad)-G.dot(self.W))
+            self.C = self.C + eta*(self.W.dot(grad.T)+G.dot(self.C))
             
-            if autostop:
+            '''if autostop:
                 X = (self.C).T.dot(self.W)
                 if norm(X-Xt1,'fro')/norm(X, 'fro')<tol*eta:
                     print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                     break
                 else:
-                    Xt1=np.array(X)
+                    Xt1=np.array(X)'''
 
             if display and 0==(it+1)%itv_print:
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
             if save[0] and 0==(it+1)%itv_save:
-                self.save_CW(save[1], it+1)
-                
-                
+                self.save_CW(save[1], it+1)     
     #################### Projector splitting algorithm ####################
             
             
@@ -362,6 +357,7 @@ class Word2vecMF(object):
     
         Cvocab = {key: index for index, key in enumerate(Cvocab)}
         Wvocab = {key: index for index, key in enumerate(Wvocab)}
+        self.vocab = Cvocab
     
         return Cvocab, Wvocab    
     #######################################################################
@@ -384,7 +380,8 @@ class Word2vecMF(object):
         sentences = [sentence.split() for sentence in sentences]
 
         sentences = [sentence for sentence in sentences if sentence]      
-        self.vocab = self.create_vocabulary(sentences, r)
+        if self.vocab==None:
+            self.vocab = self.create_vocabulary(sentences, r)
         self.D = self.create_matrix_D(sentences)
         del sentences
         self.B = self.create_matrix_B(k)

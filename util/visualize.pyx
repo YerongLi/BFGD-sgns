@@ -96,103 +96,63 @@ def corr_word2vec(skip ,benchmark, model_vocab):
     
     return corr, vec1, vec2, chosen_pairs
 
-def datasets_corr(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_ratio=1.0):
+def bench_dict(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_ratio=1.0):
     """
     Calculate correlations for all datasets in datasets_path
     """
-    
     sorted_names = ['wordsim_sim', 'wordsim_rel', 'wordsim353','men3000','simlex999', 'rw2034', 'MTURK-771', 'rg65', 'verb143', 'mturk287', 'mc30']
+    
+    
+    from_file=from_folder+'/corrDict.pkl'
+
+    if os.path.isfile(from_file):
+         corrs_dict, steps = pickle.load(open(from_file, 'rb'))
+         print(from_file+' loaded.')
+    else:   
+
     #sorted_names = ['mc30', 'rg65']
     
-    prefix='benchmark/'
-    corrs_dict = {}
-    filelist = glob.glob(from_folder+'/W*.npz')
-    steps = sorted([int(file.split('/')[-1][1:-4]) for file in filelist])
-    steps = [step for step in steps if step<MAX_ITER]
+        prefix='benchmark/'
+        corrs_dict = {}
+        filelist = glob.glob(from_folder+'/W*.npz')
+        steps = sorted([int(file.split('/')[-1][1:-4]) for file in filelist])
+        steps = [step for step in steps if step<MAX_ITER]
     
-    model =  Word2vecMF()
-    model.vocab = model.load_vocab(from_folder+'/vocab.txt')[1]
-    for name in sorted_names:
+        model =  Word2vecMF()
+        model.vocab = model.load_vocab(from_folder+'/vocab.txt')[1]
+        for name in sorted_names:
         
-        corrs = []
-        for idx, step in enumerate(steps):
-            try:
-                corrs.append(correlation(model=model,
+            corrs = []
+            for idx, step in enumerate(steps):
+                try:
+                    corrs.append(correlation(model=model,
                              benchmark=prefix+name+'.csv',
                              from_folder=from_folder,
                              index=step)[0])
-            except:
-                corrs.append(np.inf)
-                print('Step', idx, 'invalid.')
+                except:
+                    corrs.append(np.inf)
+                    print('Step', idx, 'invalid.')
 
-        steps = [steps[i] for i,x in enumerate(corrs) if not np.isinf(x)]
-        corrs = [x for x in corrs if not np.isinf(x)]
-        corrs_dict[name]=(steps, corrs)
-        
-    column = 2
-    row = 6
-    fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))
-    fig.tight_layout()
+            steps = [steps[i] for i,x in enumerate(corrs) if not np.isinf(x)]
+            corrs = [x for x in corrs if not np.isinf(x)]
+            corrs_dict[name]=tuple(corrs)
+        pickle.dump((corrs_dict, steps), open(from_file, 'wb'))
+        print(from_file+' created.')
+    
+    print('Finished.')
     #fig.set_figheight(10)
     if (plot_corrs):
+                
+        column = 2
+        row = 6
+        fig, axarr = plt.subplots(row, column, sharex=True, figsize=(10, 10))
+        fig.tight_layout()
         for idx, name in enumerate(sorted_names):
             i=idx//column
             j=idx%column
-            axarr[i,j].plot(corrs_dict[name][0], corrs_dict[name][1])
+            axarr[i,j].plot(steps, corrs_dict[name])
             axarr[i,j].set_title(name)
-    fig=axarr[0,0].figure
-    fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
-    fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
-    return corrs_dict
-
-def load_sentences(mode='debug'):
-    """
-    Load training corpus sentences/
-    """
-    
-    if (mode == 'imdb'):
-        sentences = pickle.load(open('data/sentences_all.txt', 'rb'))
-    elif (mode == 'debug'):
-        sentences = pickle.load(open('data/sentences1k.txt', 'rb'))
-    elif (mode == 'enwik9'):
-        sentences = pickle.load(open('data/enwik9_sentences.txt', 'rb'))
-    return sentences
-
-def plot_MF(MFs, x=None, xlabel='Iterations', ylabel='MF'):
-    """
-    Plot given MFs.
-    """
-    
-    fig, ax = plt.subplots(figsize=(15, 5))
-    if not x:
-        ax.plot(MFs)
-    else:
-        ax.plot(x, MFs)
-    ax.set_xlabel(xlabel, fontsize=14)
-    ax.set_ylabel(ylabel, fontsize=14)
-    ax.grid(True)
-
-
-
-'''def AR_experiment(model, dataset, from_folder, MAX_ITER=100, step_size=5, plot_accs=False):
-    """
-    Aggregator for analogical reasoning accuracy experiment.
-    """
-    
-    # Calculate accuracies 
-    accs = []
-    num_points = MAX_ITER/step_size + 1
-    for i in xrange(num_points):
-        acc, miss = analogical_reasoning(model, dataset, from_folder, i*step_size)
-        accs.append(acc)
-    accs = np.array(accs)
-    
-    # Plot accuracies
-    if (plot_accs):
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(np.arange(num_points)*step_size, accs)
-        ax.set_ylabel('Accuracy', fontsize=14)
-        ax.set_xlabel('Iterations', fontsize=14)
-        ax.grid()    
-        
-    return accs, miss'''
+        fig=axarr[0,0].figure
+        fig.text(0.01,0.5, "Linguistic scores (Spearman Correlation Scores)", ha="center", va="center",  rotation=90)
+        fig.text(0.5,0.0, "Number of Iterations", ha="center", va="center")
+    return corrs_dict, steps

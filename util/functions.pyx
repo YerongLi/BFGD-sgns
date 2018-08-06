@@ -1,5 +1,5 @@
 import numpy as np
-import os
+import os, glob
 
 from scipy.sparse.linalg import svds
 from scipy.spatial.distance import cosine
@@ -68,39 +68,31 @@ def opt_experiment(model,
 
         model.bfgd(eta=eta, d=d, reg=reg, MAX_ITER=MAX_ITER, from_iter=from_iter, display=display,
                       init=init_, save=(True, from_folder), itv_print=itv_print, itv_save=itv_save,
-                      autostop=autostop, tol=tol)
+                      tol=tol)
 
-def RAND_init(model, dimension, calculate_step=False):
+def RAND_init(model, dimension):
     
     
     C0 = (np.random.rand(dimension,model.D.shape[0])-0.5)/dimension
     W0 = (np.random.rand(dimension,model.D.shape[1])-0.5)/dimension
     
-    RAND = C0.T @ W0  
-    u, s, vt = svd(RAND)
+    RAND = C0.T @ W0
+    u, s, vt = svds(RAND, k=dimension)
     C0 = u.dot(np.sqrt(np.diag(s))).T
-    W0 = np.sqrt(np.diag(s)).dot(vt)
+    W0 = np.sqrt(np.diag(s)).dot(vt)    
     
-    step_size = None
     
-    if calculate_step:
-        L=norm((model.B+model.D)/4, 'fro')
-        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
-        norm2=norm(model.grad_MF(C0, W0), ord=2)
-        step_size = 1/(20*L*(norm1**2)+3*norm2)    
-    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
-    
-    return C0, W0, step_size        
+    return C0, W0        
 
 
 ################################## SPPMI decomposition initialization ##################################
 
-def SPPMI_init(model, dimension, negative, calculate_step = False):
+def SPPMI_init(model, dimension, negative):
+    
     SPPMI = np.maximum(np.nan_to_num(np.log(model.D) - np.log(model.B)),0)
     # SPPMI = np.log(model.D) - np.log(model.B)
-        
-    np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
     
+    np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
     print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
     print(norm(SPPMI, 'fro'))
     '''
@@ -108,54 +100,71 @@ def SPPMI_init(model, dimension, negative, calculate_step = False):
     print(np.log(model.D)[0], 'logD')
     print(np.log(model.B)[0], 'logB')'''
     
-    U, S, V = svds(SPPMI, k = dimension)
-    C0 = U.dot(np.sqrt(np.diag(S))).T
-    W0 = np.sqrt(np.diag(S)).dot(V)
+    u, s, vt = svds(SPPMI, k=dimension)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
     
-    step_size = None
+    print('Initial loss', model.MF(C0, W0))
     
-    if calculate_step:
-        L = norm((model.B + model.D)/4, 'fro')
-        norm1 = norm(np.concatenate((C0.T, W0.T), axis = 0), ord = 2)
-        norm2 = norm(model.grad_MF(C0, W0), ord = 2)
-        step_size = 1/(20*L*(norm1**2) + 3*norm2)    
-    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)
+    return C0, W0
+
+def SPPMI_biased_init(model, dimension, negative):
     
-    return C0, W0, step_size
+    SPPMI = np.maximum(np.nan_to_num(np.log(model.D) - np.log(model.B)),0)
+    # SPPMI = np.log(model.D) - np.log(model.B)
+    
+    #np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
+    print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
+    print(norm(SPPMI, 'fro'))
+    '''
+    print(SPPMI[0], 'SPPMI')
+    print(np.log(model.D)[0], 'logD')
+    print(np.log(model.B)[0], 'logB')'''
+    
+    u, s, vt = svds(SPPMI, k=dimension)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
+    
+    print('Initial loss', model.MF(C0, W0))
+    
+    return C0, W0
 
 ################################## Bi-Factorized Gradient Descent initialization ##################################
-def BFGD_init(model, dimension, reg = 0, calculate_step = False):
-    
-    L = norm((model.B + model.D)/4, 'fro')
+def BFGD_init(model, dimension):
 
+    
+    L=norm((model.B+model.D)/4, 'fro')
     '''
     X0=C0.T @ W0,  Vc x Vw
     ''' 
+    X0 = 1/L*model.grad_MF(
+    np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))
     
-    X0 = (1/L) * model.grad_MF(np.zeros([dimension,model.B.shape[0]]), np.zeros([dimension,model.B.shape[1]]))        
-    U, S, V = svds(X0, k = dimension)
+    print(X0.shape)
+    
+    u, s, vt = svds(X0, k=dimension)
     
     '''
     C0, context matrix, d x Vc
     W0,    word matrix, d x Vw
     '''
-
-    C0 = U.dot(np.sqrt(np.diag(S))).T
-    W0 = np.sqrt(np.diag(S)).dot(V)
+    C0 = u.dot(np.sqrt(np.diag(s))).T
+    W0 = np.sqrt(np.diag(s)).dot(vt)
     
-    step_size = None
-    
-    if calculate_step:    
-        if reg == 0:
-            norm1 = norm(np.concatenate((C0.T, W0.T), axis = 0), ord = 2)
-            norm2 = norm(model.grad_MF(C0, W0), ord = 2)
-            step_size = 1/(20*L*(norm1**2) + 3*norm2)
-        
-    print('Initial loss', model.MF(C0, W0), 'theoretical step size', step_size)    
-    
-    return C0, W0, step_size
+    print('Initial loss', model.MF(C0, W0))
+    return C0, W0
 
-
+def calculate_step_size(model, reg=0):
+    step_size=None
+    C0=model.C; W0=model.W
+    L=norm((model.B+model.D)/4, 'fro')
+    if reg==0:
+        norm1=norm(np.concatenate((C0.T, W0.T), axis=0), ord=2)
+        norm2=norm(model.grad_MF(C0, W0), ord=2)
+        step_size = 1/(20*L*(norm1**2)+3*norm2)
+    
+    print('theoretical step size', step_size)
+    return step_size
 
     
 def nearest_words_from_iter(model, word, from_folder, top=20, display=False, it=1):
@@ -194,6 +203,75 @@ def argmax_fun(W, indices, argmax_type='levi'):
         pred_idx = np.argmax(cosines)
         
     return pred_idx
+
+def svd_rev(from_folder, MAX_ITER=10, plot_corrs=False, matrix='W', train_ratio=1.0):
+    """
+    Calculate correlations for all datasets in datasets_path
+    """
+    
+    filelist = glob.glob(from_folder+'/W*.npz')
+    
+    directory =  from_folder.split('/')[0]+'/rev'+from_folder.split('/')[1]
+    model =  Word2vecMF()
+    model.vocab = model.load_vocab(from_folder+'/vocab.txt')[1]
+    try:
+        os.stat(directory)
+        print(directory+' exists.')
+
+    except:
+        os.mkdir(directory)
+        print(directory+' created.')
+    
+        
+    steps = [int(Wfile.split('/')[2][1:-4]) for Wfile in filelist if int(Wfile.split('/')[2][1:-4])<MAX_ITER ]
+
+        
+    model.save_vocab(directory+'/vocab.txt')
+    for step in steps:
+        try:
+            C, W = model.load_CW(from_folder, step)
+        except:
+            print('Step', step, 'invalid.')
+
+        u, s, vt = svds(C.T @ W , k=C.shape[0])
+        model.C = u.dot(np.sqrt(np.diag(s))).T
+        model.W = np.sqrt(np.diag(s)).dot(vt)
+        model.save_CW(directory, step)
+
+def biased_svd_rev(from_folder, MAX_ITER=10, plot_corrs=False, matrix='W', train_ratio=1.0):
+    """
+    Calculate correlations for all datasets in datasets_path
+    """
+    
+    filelist = glob.glob(from_folder+'/W*.npz')
+    
+    directory =  from_folder.split('/')[0]+'/biasedRev'+from_folder.split('/')[1]
+    model =  Word2vecMF()
+    model.vocab = model.load_vocab(from_folder+'/vocab.txt')[1]
+    try:
+        os.stat(directory)
+        print(directory+' exists.')
+
+    except:
+        os.mkdir(directory)
+        print(directory+' created.')
+    
+        
+    steps = [int(Wfile.split('/')[2][1:-4]) for Wfile in filelist if int(Wfile.split('/')[2][1:-4])<MAX_ITER ]
+
+        
+    model.save_vocab(directory+'/vocab.txt')
+    
+    for step in steps:
+        try:
+            C, W = model.load_CW(from_folder, step)
+        except:
+            print('Step', step, 'invalid.')
+
+        u, s, vt = svds(C.T @ W , k=C.shape[0])
+        model.C = u.T
+        model.W = (np.diag(s)).dot(vt)
+        model.save_CW(directory, step)
 
 def analogical_reasoning(model, dataset, from_folder, it=0):
     """

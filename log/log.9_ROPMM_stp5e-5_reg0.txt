@@ -1,0 +1,28 @@
+Please run:
+  python setup.py build_ext --inplace
+load vocabulary
+Parsing sentences from training set
+enwik-200/PSiter_from9PPM_dim100_step5e-05_0.0
+('Iter #:', 0, 'loss', 1702868711.3638625)
+('Iter #:', 1, 'loss', 1702868711.3638625)
+('Iter #:', 2, 'loss', 1635491581.8795288)
+('Iter #:', 3, 'loss', 1661922028.2173448)
+('Iter #:', 4, 'loss', 1884545246.2463901)
+tee: log.9_ROPMM_stp5e-5_reg0.txt: Stale file handle
+('Iter #:', 5, 'loss', 2086706851.4390223)
+('Iter #:', 6, 'loss', 2096398620.1125007)
+('Iter #:', 7, 'loss', 1931455267.2796352)
+('Iter #:', 8, 'loss', 2053307579.7043664)
+('Iter #:', 9, 'loss', 2125061882.7678137)
+('Iter #:', 10, 'loss', 2043982575.460901)
+('Iter #:', 11, 'loss', 1994988493.4005737)
+('Iter #:', 12, 'loss', 2130391647.4949954)
+('Iter #:', 13, 'loss', 1996135366.8589818)
+('Iter #:', 14, 'loss', 2102628010.7213614)
+('Iter #:', 15, 'loss', 2045386009.4749119)
+('Iter #:', 16, 'loss', 1988998097.7098472)
+('Iter #:', 17, 'loss', 1955389775.0543377)
+('Iter #:', 18, 'loss', 2036919105.5884562)
+('Iter #:', 19, 'loss', 1853000122.6052055)
+('Iter #:', 20, 'loss', 1918051332.6692996)
+--- 25890.97313761711 seconds ---
