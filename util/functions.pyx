@@ -44,7 +44,6 @@ def opt_experiment(model,
     
     from_folder = folder_path(from_iter+MAX_ITER)
     if (from_iter > 0):
-        os.rename(folder_path(from_iter), from_folder)  
         C, W = model.load_CW(from_folder, from_iter)
         init_ = (True, C, W)
     else:

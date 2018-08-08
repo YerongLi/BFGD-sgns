@@ -188,17 +188,20 @@ class Word2vecMF(object):
                 
         for it in range(from_iter, from_iter+MAX_ITER):    
             
- 
-            G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
+            if not 0==reg: 
+                G=-reg*0.25*(self.C.dot(self.C.T)-self.W.dot(self.W.T))
             # grad = np.zeros([self.C.shape[1], self.C.shape[1]]) # self.grad_MF(self.C, self.W)
             grad = self.grad_MF(self.C, self.W)
             #print(norm(grad, 'fro'), 'grad')
             #print(norm(gradW, 'fro'), 'gradW')
             #print(norm(gradC, 'fro'), 'gradC')
             #print(norm(self.W, 'fro'), 'C')
-            
-            self.W = self.W + eta*(self.C.dot(grad)-G.dot(self.W))
-            self.C = self.C + eta*(self.W.dot(grad.T)+G.dot(self.C))
+            if not 0==reg: 
+                self.W = self.W + eta*(self.C.dot(grad)-G.dot(self.W))
+                self.C = self.C + eta*(self.W.dot(grad.T)+G.dot(self.C))
+            else:
+                self.W = self.W + eta*(self.C.dot(grad))
+                self.C = self.C + eta*(self.W.dot(grad.T))
             
             '''if autostop:
                 X = (self.C).T.dot(self.W)
@@ -251,6 +254,11 @@ class Word2vecMF(object):
             self.C = U.dot(np.sqrt(S)).T
             self.W = np.sqrt(S).dot(V.T)
 
+            if display and 0==(it)%itv_print and it>from_iter:
+                print("Iter #:", it, "loss", self.MF(self.C, self.W))
+           
+            if save[0] and 0==(it)%itv_save and it>from_iter:
+                self.save_CW(save[1], it)
                      
             F = self.grad_MF(self.C, self.W)
             #mask = np.random.binomial(1, .5, size=F.shape)
@@ -263,18 +271,29 @@ class Word2vecMF(object):
             
             X = U.dot(S).dot(V)
 
+            
             if autostop:
                 if norm(X-Xt1,'fro')/norm(X, 'fro')<tol*eta:
                     print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                     break
                 else:
                     Xt1=np.array(X)
-
-            if display and 0==(it+1)%itv_print:
-                print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
+            
+        U, S, V = svds(X, d)
+        S = np.diag(S)
+        V = V.T
+            
+        self.C = U.dot(np.sqrt(S)).T
+        self.W = np.sqrt(S).dot(V.T)
+        
+        if display and 0==(from_iter+MAX_ITER)%itv_print:
+            print("Iter #:", from_iter+MAX_ITER, "loss", self.MF(self.C, self.W))
            
-            if save[0] and 0==(it+1)%itv_save:
-                self.save_CW(save[1], it+1)
+        if save[0] and 0==(from_iter+MAX_ITER)%itv_save:
+            self.save_CW(save[1], from_iter+MAX_ITER)
+
+
+
 
     
             
