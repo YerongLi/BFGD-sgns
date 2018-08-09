@@ -1,0 +1,5 @@
+for i in {1..20}
+do
+mv W$i.npz  W$((i-1)).npz
+mv C$i.npz  C$((i-1)).npz
+done

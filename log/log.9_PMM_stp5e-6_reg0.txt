@@ -1,0 +1,12 @@
+Please run:
+  python setup.py build_ext --inplace
+Parsing sentences from training set
+0.011772757480890829
+nan
+(array([ 6.20663667,  1.4362066 ,  0.        , ...,  0.        ,
+        0.        ,  0.        ]), 'SPPMI')
+(array([ 3.09104245,  0.        ,  3.78418963, ...,        -inf,
+              -inf,        -inf]), 'logD')
+(array([-3.11559422, -1.4362066 ,  4.10265521, ..., -5.71103665,
+       -2.14443143, -5.06620805]), 'logB')
+('Initial loss', 1419409585.5061932, 'theoretical step size', 4.585131617648036e-08)

@@ -1,0 +1,4 @@
+Please run:
+  python setup.py build_ext --inplace
+load vocabulary
+Parsing sentences from training set

@@ -1,0 +1,10 @@
+Please run:
+  python setup.py build_ext --inplace
+load vocabulary
+Parsing sentences from training set
+enwik-200/BFGDiter_from9PPM_dim100_step5e-07_0.0
+('Iter #:', 0, 'loss', 1702868711.3638625)
+('Iter #:', 1, 'loss', 1836698491.5669067)
+('Iter #:', 2, 'loss', 3956431356.5513892)
+('Iter #:', 3, 'loss', 4987629613.8798332)
+('Iter #:', 4, 'loss', 13725503573.557953)

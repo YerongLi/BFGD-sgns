@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH --job-name=bf5.2-8
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=64000m
+#SBATCH --time=10:00:00
+#SBATCH --mail-type=ALL
+ 
+srun /opt/apps/software/Core/Anaconda3/5.0.0/bin/python -u 9_PMM_stp5.2e-8_reg0.py | tee log.9_PMM_stp5.2e-8_reg0.txt
+
