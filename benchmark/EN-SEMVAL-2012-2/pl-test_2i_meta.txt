@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,i,PART-WHOLE,Item:Distinctive Nonpart,X is devoid of / cannot have Y

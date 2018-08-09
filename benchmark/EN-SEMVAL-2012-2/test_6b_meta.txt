@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,b,NON-ATTRIBUTE,ObjectAttribute:Noncondition (adjective:adjective),something that is X cannot be Y

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,f,CASE RELATIONS,Object:Recipient,an Y receives an X

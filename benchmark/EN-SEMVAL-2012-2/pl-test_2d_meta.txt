@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,d,PART-WHOLE,Event:Feature,Y is typically found at an event such as X

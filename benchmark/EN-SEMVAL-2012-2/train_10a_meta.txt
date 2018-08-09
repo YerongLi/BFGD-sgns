@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+10,a,REFERENCE,Sign:Significant,an X indicates/signifies Y

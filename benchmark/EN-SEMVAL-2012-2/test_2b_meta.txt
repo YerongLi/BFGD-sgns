@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,b,PART-WHOLE,Collection:Member,X is made from a collection of Y

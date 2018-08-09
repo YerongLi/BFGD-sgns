@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,d,NON-ATTRIBUTE,Attribute:Nonstate (adjective:noun),someone/something who is X cannot be Y or be in the state of Y

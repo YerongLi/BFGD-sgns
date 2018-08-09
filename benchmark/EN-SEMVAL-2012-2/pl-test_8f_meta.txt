@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+8,f,CAUSE-PURPOSE,Instrument:Goal,X is intended to produce Y

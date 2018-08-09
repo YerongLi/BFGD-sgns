@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,j,PART-WHOLE,Item:Ex-part/Ex-possession,an X once had/owned/possessed Y but no longer

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,e,ATTRIBUTE,Object:Typical Action (noun.verb),an X will typically Y

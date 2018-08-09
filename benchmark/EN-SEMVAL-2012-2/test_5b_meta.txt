@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,b,ATTRIBUTE,Object Attribute:Condition,something that is X may be Y

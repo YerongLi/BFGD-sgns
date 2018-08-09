@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+1,d,CLASS-INCLUSION,Plural Collective,Y are items in a collection/group of X

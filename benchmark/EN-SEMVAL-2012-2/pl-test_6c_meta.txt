@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,c,NON-ATTRIBUTE,Object:Nonstate (noun:noun),Y describes a condition or state that is usually absent from X

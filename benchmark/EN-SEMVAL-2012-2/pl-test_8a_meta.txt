@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+8,a,CAUSE-PURPOSE,Cause:Effect,an X causes Y

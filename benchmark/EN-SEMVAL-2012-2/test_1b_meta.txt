@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+1,b,CLASS-INCLUSION,Functional,Y functions as an X

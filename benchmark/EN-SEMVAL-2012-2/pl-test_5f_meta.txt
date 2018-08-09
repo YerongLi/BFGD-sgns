@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,f,ATTRIBUTE,Agent/ObjectAttribute:Typical Action,something/someone that is X will typically Y

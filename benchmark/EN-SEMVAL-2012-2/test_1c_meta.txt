@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+1,c,CLASS-INCLUSION,Singular Collective,a Y is one item in a collection/group of X

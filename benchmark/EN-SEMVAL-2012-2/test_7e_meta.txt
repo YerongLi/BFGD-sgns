@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,e,CASE RELATIONS,Action:Recipient,to X is to have a Y receive some object/service/idea

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,b,CASE RELATIONS,Agent:Recipient,a Y receives an item/knowledge/service from X

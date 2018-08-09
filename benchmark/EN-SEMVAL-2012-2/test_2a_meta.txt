@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,a,PART-WHOLE,Object:Component,a Y is a part of an X

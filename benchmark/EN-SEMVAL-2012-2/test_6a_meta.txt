@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,a,NON-ATTRIBUTE,Item:Nonattribute (noun:adjective),an X cannot have attribute Y; Y is antithetical to being X

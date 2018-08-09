@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,h,CASE RELATIONS,Recipient:Instrument,Y is an instrument through with X receives some object/service/role

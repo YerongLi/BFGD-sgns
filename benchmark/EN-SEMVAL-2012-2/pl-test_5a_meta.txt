@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,a,ATTRIBUTE,ItemAttribute(noun:adjective),an X has the attribute Y

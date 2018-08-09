@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+9,d,SPACE-TIME,Location:Instrument/Associated Item,Y is an instrumental item in the activities that occur at place/location/area Y

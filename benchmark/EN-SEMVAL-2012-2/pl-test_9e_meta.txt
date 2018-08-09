@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+9,e,SPACE-TIME,Contiguity,X and Y share a contiguous border

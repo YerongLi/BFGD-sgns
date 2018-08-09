@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+4,c,CONTRAST,Reverse,X is the reverse act of Y / X may be undone by Y

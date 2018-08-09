@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,g,CASE RELATIONS,Object:Instrument,a Y is used on an X

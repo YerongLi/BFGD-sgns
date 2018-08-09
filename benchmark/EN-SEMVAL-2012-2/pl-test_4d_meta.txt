@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+4,d,CONTRAST,Directional,X is the opposite direction from Y

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+8,b,CAUSE-PURPOSE,Cause:Compensatory Action,X causes/compels a person to Y

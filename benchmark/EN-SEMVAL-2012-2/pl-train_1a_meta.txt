@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+1,a,CLASS-INCLUSION,Taxonomic,Y is a kind/type/instance of X

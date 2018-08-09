@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+8,c,CAUSE-PURPOSE,EnablingAgent:Object,X enables the use of Y

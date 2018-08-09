@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,c,SIMILAR,Dimensional Excessive,Y is an excessive form of X

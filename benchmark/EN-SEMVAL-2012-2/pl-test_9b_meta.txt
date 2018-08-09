@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+9,b,SPACE-TIME,Location:Process/Product,an X is a place/location/area where Y is made/done/produced

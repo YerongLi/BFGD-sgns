@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,b,SIMILAR,Dimensional Similarity,an X and Y are two kinds in a category of actions/things/attributes

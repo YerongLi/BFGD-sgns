@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+4,g,CONTRAST,Pseudoantonym,X is similar to the opposite of Y but X is not truly the opposite of Y

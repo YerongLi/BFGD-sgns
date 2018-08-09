@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,a,CASE RELATIONS,Agent:Object,an X makes Y / an X uses Y to make an item

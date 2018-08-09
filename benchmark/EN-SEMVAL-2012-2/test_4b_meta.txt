@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+4,b,CONTRAST,Contrary,X and Y are contrary / opposite to each other

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,c,PART-WHOLE,Mass:Potion,X may be divided into Y

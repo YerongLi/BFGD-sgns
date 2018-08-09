@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,g,ATTRIBUTE,Action:Action Attribute,X is a Y kind of action

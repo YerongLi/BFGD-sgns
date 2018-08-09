@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,d,ATTRIBUTE,Agent Attribute:State,a person who is X often is in a state of Y

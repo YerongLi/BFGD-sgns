@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+1,e,CLASS-INCLUSION,ClassIndividual,Y is a specific X

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,h,NON-ATTRIBUTE,Action:Object Nonattribute,the result of action X does not produce an object with Y

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+4,e,CONTRAST,Incompatible,Being X is incompatible with being Y

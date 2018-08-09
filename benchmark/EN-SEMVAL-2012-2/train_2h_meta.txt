@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,h,PART-WHOLE,Creature:Possession,X possesses/owns/has Y

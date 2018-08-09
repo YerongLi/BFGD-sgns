@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+7,c,CASE RELATIONS,Agent:Instrument,an X uses Y to perform their role

@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,e,PART-WHOLE,Activity:Stage,X is one step/action/part of the actions in Y

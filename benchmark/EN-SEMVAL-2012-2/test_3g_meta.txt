@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,g,SIMILAR,Coordinates,X and Y are two distinct objects in the same category

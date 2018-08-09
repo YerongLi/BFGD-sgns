@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+10,c,REFERENCE,Representation,a Y represents/is representative of X

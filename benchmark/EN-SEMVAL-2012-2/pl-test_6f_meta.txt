@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+6,f,NON-ATTRIBUTE,Agent/Object Attribute: Atypical Action (adjective:verb),someone/something who is X is unlikely to Y

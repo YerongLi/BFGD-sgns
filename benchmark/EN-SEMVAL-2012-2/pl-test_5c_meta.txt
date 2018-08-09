@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,c,ATTRIBUTE,ObjectState(noun:noun),an X exists in the state of Y

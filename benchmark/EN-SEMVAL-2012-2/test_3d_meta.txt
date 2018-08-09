@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,d,SIMILAR,Dimensional Naughty,Y is an unacceptable form of X

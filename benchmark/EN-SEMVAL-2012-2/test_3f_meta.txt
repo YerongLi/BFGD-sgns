@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,f,SIMILAR,Attribute Similarity,X and Y both have a similar attribute or feature

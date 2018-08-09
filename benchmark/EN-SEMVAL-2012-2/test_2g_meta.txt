@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,g,PART-WHOLE,Object:Stuff,X is made of / is comprised of Y

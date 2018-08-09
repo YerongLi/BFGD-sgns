@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+2,f,PART-WHOLE,Item:Topological Part,Y is one of the areas/locations of X

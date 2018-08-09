@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,h,SIMILAR,Change,an X is an increase/decease in Y

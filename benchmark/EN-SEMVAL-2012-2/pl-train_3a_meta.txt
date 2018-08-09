@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+3,a,SIMILAR,Synonymity,an X and Y are a similar type of action/thing/attribute

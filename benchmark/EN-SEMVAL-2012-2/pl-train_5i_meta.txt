@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+5,i,ATTRIBUTE,Action:Resultant Attribute (verb:noun/adjective),the action X results Y or things that are Y

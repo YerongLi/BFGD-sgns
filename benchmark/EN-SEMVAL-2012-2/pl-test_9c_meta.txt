@@ -1,0 +1,2 @@
+category,subcategory,category_name,subcategory_name,description
+9,c,SPACE-TIME,Location:Action/Activity,an X is a place/location/area where Y takes place
