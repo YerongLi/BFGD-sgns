@@ -27,8 +27,28 @@ class Word2vecMF(object):
         self.W = None
         self.vocab = None
         self.inv_vocab = None
+        self.freq = {}
 
     ############ Create training corpus from raw sentences ################
+    def save_vocabulary(self, from_file,vocab_to_file, r):
+        """
+        Process raw sentences, create word dictionary, matrix D and matrix B
+        then save them to file.
+        """
+        sentences = []
+        with open(from_file) as file:
+            for line in file:
+                sentences+= [line[:-1]]
+
+        print("Parsing sentences from training set")
+        sentences = [sentence.split() for sentence in sentences]
+
+        sentences = [sentence for sentence in sentences if sentence]      
+        if self.vocab==None:
+            self.vocab = self.create_vocabulary(sentences, r)
+        
+
+        self.save_vocab(vocab_to_file)
     
     def create_vocabulary(self, data, r):
         """
@@ -37,7 +57,9 @@ class Word2vecMF(object):
         """
 
         prevocabulary = {}
+        total = 0
         for sentence in data:
+            total = total + len(sentence)
             for word in sentence:
                 if not word in prevocabulary:
                     prevocabulary[word] = 1
@@ -48,9 +70,10 @@ class Word2vecMF(object):
         idx = 0
         for word in prevocabulary:
             if (prevocabulary[word] >= r):
+                self.freq[word] = prevocabulary[word]/total
                 vocabulary[word] = idx
                 idx += 1
-        
+        self.vocab = vocabulary
         return vocabulary
 
     def create_matrix_D(self, data, window_size=5):
@@ -356,6 +379,8 @@ class Word2vecMF(object):
             X = U.dot(S).dot(V)       
 
     def save_vocab(self, to_file):
+       
+        #print(len(self.vocab), self.vocab[list(self.vocab.keys())[0]], self.freq[list(self.vocab.keys())[0]])
         
         sorted_vocab = sorted(self.vocab.items(), key=operator.itemgetter(1))
         vocab_to_save = np.array([item[0] for item in sorted_vocab])
@@ -366,19 +391,22 @@ class Word2vecMF(object):
             filehandle.write('\n')
             # Save word vocabulary
             for listitem in vocab_to_save:
-                filehandle.write('%s ' % listitem)
+                filehandle.write('%s ' % self.freq[listitem])
                 
     def load_vocab(self, from_file):
         file = open(from_file, 'r')
     
-        Cvocab = file.readline().split(' ')[:-1]
-        Wvocab = file.readline().split(' ')[:-1]
-    
-        Cvocab = {key: index for index, key in enumerate(Cvocab)}
-        Wvocab = {key: index for index, key in enumerate(Wvocab)}
-        self.vocab = Cvocab
-    
-        return Cvocab, Wvocab    
+        vocab = file.readline().split(' ')[:-1]
+        freq = file.readline().split(' ')[:-1]
+
+        self.inv_vocab={index:key for index, key in enumerate(vocab)}
+        
+        self.vocab = {key: index for index, key in enumerate(vocab)}
+        self.freq = {key: float(freq[index]) for index, key in enumerate(vocab)}
+        
+        print(len(self.vocab), self.vocab[vocab[0]], self.freq[vocab[0]])
+        
+        return self.vocab, self.freq    
     #######################################################################
     ############################## Data flow ##############################
     #######################################################################
@@ -394,11 +422,13 @@ class Word2vecMF(object):
         with open(from_file) as file:
             for line in file:
                 sentences+= [line[:-1]]
+        
 
         print("Parsing sentences from training set")
         sentences = [sentence.split() for sentence in sentences]
+        
 
-        sentences = [sentence for sentence in sentences if sentence]      
+        sentences = [sentence for sentence in sentences if sentence]
         if self.vocab==None:
             self.vocab = self.create_vocabulary(sentences, r)
         self.D = self.create_matrix_D(sentences)

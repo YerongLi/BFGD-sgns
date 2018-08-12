@@ -6,16 +6,21 @@ Subsampling for manifold algorithms for word embeddings
 #include<fstream>
 #include <sstream>
 #include <unordered_map>
+#include <math.h>
 using namespace std;
 
 int main() {
 
+
+    float sample=1e-5;
     string line;
     ifstream inf("vocab9.txt");
-    ofstream outf("enwik9-sub.txt");
+    ofstream outf("enwik9-sub"+to_string(sample)+".txt");
 
     unordered_map<string, double> freq={};
     unordered_map<int, string> inv_vocab={};
+
+    unsigned long long next_random = (long long) 35613983015;
 
     getline(inf, line);
 	string word;
@@ -35,7 +40,6 @@ int main() {
 
      } while (iss);
     //cout<<count<<"  word"<<endl;
-
 
     getline(inf, line);
     stringstream ss(line);
@@ -58,6 +62,7 @@ int main() {
     inf.close();
 
     inf.open("enwik9.txt");
+    
     count=0;
     iss.clear();
     while ( getline ( inf, line )) {
@@ -68,8 +73,11 @@ int main() {
         { 
             string word;
             iss >> word;
-            if (!word.empty()) {
-                outf << " " << word;
+            float ran = (sqrt(freq[word]/sample) + 1) *sample/freq[word];
+            next_random = next_random * (unsigned long long)25214903917 + 11;
+            if ((!word.empty())) {
+            //if ((ran < (next_random & 0xFFFF) / (float)65536)) cout<<ran <<" :"<< (next_random & 0xFFFF) / (float)65536<<" "<< word<<endl;
+               if (freq.end()==freq.find(word)||(! (ran < (next_random & 0xFFFF) / (float)65536)) )outf << " " << word;
             }
 
         } while (iss);
@@ -77,6 +85,7 @@ int main() {
         outf<<endl;
         //if (count++>2) break;
         }
+    cout<<freq["the"]<<endl;
     inf.close();
     outf.close();
 

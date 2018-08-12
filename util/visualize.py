@@ -9,7 +9,38 @@ from scipy.spatial.distance import cosine
 from scipy.stats import spearmanr
 from sklearn.preprocessing import normalize
 from util.word2vec_as_MF import Word2vecMF
+def analogical_reasoning(model, dataset, from_folder, it=0):
+    """
+    Calculate analogical reasoning accuracy for given dataset.
+    """
+    dic = model.vocab
+    
+    _, W = model.load_CW(from_folder, iteration=it)
+    W = W / np.linalg.norm(W, axis=0)
 
+    good_sum = 0
+    miss_sum = 0
+    print('DEBUG')
+    for words in dataset.values:
+        a, b, a_, b_ = (word.lower() for word in words)
+        #print(a, b, a_, b_)
+        if (a in dic and b in dic and a_ in dic and b_ in dic):
+            indices = [dic[a], dic[b], dic[a_]]
+            
+            words3 = W[:, indices]
+            cosines = ((words3.T).dot(W) + 1) / 2
+            obj = (cosines[1] * cosines[2]) / (cosines[0] + 1e-3)
+            pred_idx = np.argmax(obj)
+            
+            if (model.inv_vocab[pred_idx] == b_):
+                good_sum += 1
+        else: 
+            miss_sum += 1
+    print(miss_sum)
+    # calculate accuracy
+    acc = (good_sum) / float(dataset.shape[0]-miss_sum)
+    
+    return acc, miss_sum
 
 
 ################################## Spearman correlation ########################################
@@ -40,9 +71,9 @@ def correlation(model, benchmark, from_folder, index, plot_corrs=False):
             chosen_pairs.append((word1, word2))
             
     vec1 = []
-    C, W = model.load_CW(from_folder, index)
-
-    
+    model.C, model.W = model.load_CW(from_folder, index)
+    C = model.C
+    W = model.W
     normInv = np.array([1./n if n else 0. for n in np.linalg.norm(W, axis=0)])
     W = W*normInv
     vec1 = (W[:,ind1]*W[:,ind2]).sum(axis=0)
@@ -93,7 +124,6 @@ def corr_word2vec(skip ,benchmark, model_vocab):
         vec1.append(skip.similarity(word1, word2))
 
     corr = spearmanr(vec1, vec2)[0]
-    
     return corr, vec1, vec2, chosen_pairs
 
 def bench_dict(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_ratio=1.0):
@@ -119,7 +149,7 @@ def bench_dict(from_folder, MAX_ITER=1000, plot_corrs=False, matrix='W', train_r
         steps = [step for step in steps if step<MAX_ITER]
     
         model =  Word2vecMF()
-        model.vocab = model.load_vocab(from_folder+'/vocab.txt')[1]
+        model.load_vocab(from_folder+'/vocab.txt')[1]
         for name in sorted_names:
         
             corrs = []

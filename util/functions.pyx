@@ -91,7 +91,7 @@ def SPPMI_init(model, dimension, negative):
     SPPMI = np.maximum(np.nan_to_num(np.log(model.D) - np.log(model.B)),0)
     # SPPMI = np.log(model.D) - np.log(model.B)
     
-    np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
+    #np.savez(open(str(negative)+'debug.npz', 'wb'), Sr1=SPPMI[0], Sc1=SPPMI[:,0])
     print(np.count_nonzero(SPPMI)/SPPMI.shape[0]**2)
     print(norm(SPPMI, 'fro'))
     '''
@@ -272,37 +272,4 @@ def biased_svd_rev(from_folder, MAX_ITER=10, plot_corrs=False, matrix='W', train
         model.W = (np.diag(s)).dot(vt)
         model.save_CW(directory, step)
 
-def analogical_reasoning(model, dataset, from_folder, it=0):
-    """
-    Calculate analogical reasoning accuracy for given dataset.
-    """
-    dic = model.dictionary
-    
-    _, W = model.load_CW(from_folder, iteration=it)
-    W = W / np.linalg.norm(W, axis=0)
 
-    good_sum = 0
-    miss_sum = 0
-
-    for words in dataset.values:
-
-        a, b, a_, b_ = words
-
-        if (a in dic and b in dic and a_ in dic and b_ in dic):
-
-            indices = [dic[a], dic[b], dic[a_]]
-            
-            words3 = W[:, indices]
-            cosines = ((words3.T).dot(W) + 1) / 2
-            obj = (cosines[1] * cosines[2]) / (cosines[0] + 1e-3)
-            pred_idx = np.argmax(obj)
-            
-            if (model.inv_dict[pred_idx] == b_):
-                good_sum += 1
-        else: 
-            miss_sum += 1
-
-    # calculate accuracy
-    acc = (good_sum) / float(dataset.shape[0]-miss_sum)
-    
-    return acc, miss_sum
