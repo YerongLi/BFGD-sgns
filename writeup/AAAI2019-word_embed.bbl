@@ -1,0 +1,30 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Levy and Goldberg}{2014}]{levy2014neural}
+Levy, O., and Goldberg, Y.
+\newblock 2014.
+\newblock Neural word embedding as implicit matrix factorization.
+\newblock In {\em Advances in neural information processing systems},
+  2177--2185.
+
+\bibitem[\protect\citeauthoryear{Levy, Goldberg, and
+  Dagan}{2015}]{levy2015improving}
+Levy, O.; Goldberg, Y.; and Dagan, I.
+\newblock 2015.
+\newblock Improving distributional similarity with lessons learned from word
+  embeddings.
+\newblock {\em Transactions of the Association for Computational Linguistics}
+  3:211--225.
+
+\bibitem[\protect\citeauthoryear{Mikolov \bgroup et al\mbox.\egroup
+  }{2013}]{NIPS2013_5021}
+Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
+\newblock 2013.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In Burges, C. J.~C.; Bottou, L.; Welling, M.; Ghahramani, Z.; and
+  Weinberger, K.~Q., eds., {\em Advances in Neural Information Processing
+  Systems 26}. Curran Associates, Inc.
+\newblock  3111--3119.
+
+\end{thebibliography}

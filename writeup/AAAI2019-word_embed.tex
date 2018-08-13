@@ -1,0 +1,81 @@
+ 
+\def\year{2019}\relax
+%File: formatting-instruction.tex
+\documentclass[letterpaper]{article} %DO NOT CHANGE THIS
+\usepackage{aaai19}  %Required
+\usepackage{times}  %Required
+\usepackage{helvet}  %Required
+\usepackage{courier}  %Required
+\usepackage{url}  %Required
+\usepackage{graphicx}  %Required
+\usepackage{color}  %Customized
+
+\frenchspacing  %Required
+\setlength{\pdfpagewidth}{8.5in}  %Required
+\setlength{\pdfpageheight}{11in}  %Required
+%PDF Info Is Required:
+\pdfinfo{
+Provable word embedding for the skip-gram word2vec model}
+\setcounter{secnumdepth}{0}
+\begin{document}
+% The file aaai.sty is the style file for AAAI Press 
+% proceedings, working notes, and technical reports.
+%
+
+\title{Provable word embedding for the skip-gram word2vec model}
+
+\author{Anonymous}
+
+\maketitle
+
+\begin{abstract}
+To be written
+\end{abstract}
+
+(In \textcolor{magenta}{magenta color} is our comments to drive the writing; in plain black color will be our text)
+
+\section{Introduction}
+\textcolor{magenta}{What is the problem we focus on? Word-embedding, why it is important, where it is used, some references from public science \& media showing its significance.}
+
+\textcolor{magenta}{What is the current state of the art \& what are the shortcomings? Here, we should describe how people solve this problem, what are the tools they use (SGD, Riemannian, etc.) and what are the problems with these methods. We shouldn't spend that much space on related work as there will be a Related Work section next.}
+
+\textcolor{magenta}{What is our perspective? Computational. We need to stress out that we do not focus on finding a better linguistic metric, but given word2vec model interpretation as matrix factorization, we identify the problems of using classical methods that involve huge matrix manipulations, and we propose alternatives. At the same time, we are interested in proposing theory that justifies partially what we observe in practice. E.g., here we should say that current approaches are expensive computationally, as well as non-convex with no theory.}
+
+\textcolor{magenta}{What are our contributions? We need to write them down in bullets; this will be written after we have all the rest}.
+
+\section{Background \& Related Work}
+\textcolor{magenta}{Set up the problem: notation + mathematical description}
+\textcolor{magenta}{What are the works before us: a more detailed description. What did they contribute, how did they evolve the field?}
+
+\textcolor{magenta}{What questions are still open?}
+
+The Skip-Gram model is introduced in \cite{NIPS2013_5021}, and 
+
+\section{Our approach}
+\textcolor{magenta}{Description of the algorithm, details and discussion on initialization + step size, maybe already here have some plots to show how these behave (without giving away comparison results, just showing what is their trend in}
+
+In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$. 
+\textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
+
+\section{Experimental results}
+\textcolor{magenta}{We will move a bit unconventionally and show first some experimental results: this is what we are currently working on}
+
+\section{Theoretical guarantees}
+\textcolor{magenta}{This is where we will try to focus on after we have fixed the experiments. 
+\begin{itemize}
+\item What are the properties of the objective?
+\item What is known out there w.r.t. theory? What can we reuse for our algorithm?
+\item Initialization: what can we say about it? Any theory?
+\item Are there local minima for the non-convex problem we have?
+\item what about the stochastic version? SVRG version? Are there prior results on this?
+\item Can we use momentum/acceleration? Can we gain theoretically?
+\end{itemize}}
+
+\section{Conclusions}
+\textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
+%References and End of Paper
+%These lines must be placed at the end of your paper
+\bibliography{refs.bib}
+\bibliographystyle{aaai}
+
+\end{document}
