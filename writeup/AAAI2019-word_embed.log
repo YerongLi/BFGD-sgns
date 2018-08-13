@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.4.22)  13 AUG 2018 14:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.4.22)  13 AUG 2018 16:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -75,6 +75,17 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
 )
+(/home/yerong/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/home/yerong/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks15
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
 (./AAAI2019-word_embed.aux)
 \openout1 = `AAAI2019-word_embed.aux'.
 
@@ -102,12 +113,12 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 \scratchbox=\box26
 \nofMPsegments=\count89
 \nofMParguments=\count90
-\everyMPshowfont=\toks15
+\everyMPshowfont=\toks16
 \MPscratchCnt=\count91
 \MPscratchDim=\dimen106
 \MPnumerator=\count92
 \makeMPintoPDFobject=\count93
-\everyMPtoPDFconversion=\toks16
+\everyMPtoPDFconversion=\toks17
 )
 (/home/yerong/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
@@ -161,14 +172,20 @@ e
 ))
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 29.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 29.
+LaTeX Font Info:    Try loading font information for U+msa on input line 29.
+ (/home/yerong/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 29.
+
+(/home/yerong/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Try loading font information for OMS+ptm on input line 29.
- (/home/yerong/local/texlive/2017/texmf-dist/tex/latex/psnfss/omsptm.fd
+
+(/home/yerong/local/texlive/2017/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
@@ -176,7 +193,7 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 72.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
 
 (./AAAI2019-word_embed.bbl [1{/home/yerong/local/texlive/2017/texmf-var/fonts/m
 ap/pdftex/updmap/pdftex.map}
@@ -187,25 +204,32 @@ ap/pdftex/updmap/pdftex.map}
 
 ] (./AAAI2019-word_embed.aux) ) 
 Here is how much of TeX's memory you used:
- 1712 strings out of 492995
- 25584 string characters out of 6128969
- 89205 words of memory out of 5000000
- 5246 multiletter control sequences out of 15000+600000
- 14641 words of font info for 29 fonts, out of 8000000 for 9000
+ 2006 strings out of 492995
+ 28932 string characters out of 6128969
+ 88717 words of memory out of 5000000
+ 5520 multiletter control sequences out of 15000+600000
+ 16340 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,25p,597b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,11n,26p,597b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/home/yerong/local/texlive/2017/texmf-dist/font
 s/enc/dvips/base/8r.enc}</home/yerong/local/texlive/2017/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmmi10.pfb></home/yerong/local/texlive/2017/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy10.pfb></home/yerong/local/texlive/2017/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsy9.pfb></home/yerong/local/texlive/2017/te
-xmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/yerong/local/texlive/2017/texm
-f-dist/fonts/type1/urw/times/utmr8a.pfb></home/yerong/local/texlive/2017/texmf-
-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on AAAI2019-word_embed.pdf (2 pages, 68715 bytes).
+/public/amsfonts/cm/cmex10.pfb></home/yerong/local/texlive/2017/texmf-dist/font
+s/type1/public/amsfonts/cm/cmmi10.pfb></home/yerong/local/texlive/2017/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi5.pfb></home/yerong/local/texlive/2017/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></home/yerong/local/texlive/2
+017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/yerong/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/yerong/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></home/yer
+ong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></ho
+me/yerong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msb
+m10.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8
+a.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.
+pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.p
+fb>
+Output written on AAAI2019-word_embed.pdf (2 pages, 113558 bytes).
 PDF statistics:
- 36 PDF objects out of 1000 (max. 8388607)
- 25 compressed objects within 1 object stream
+ 60 PDF objects out of 1000 (max. 8388607)
+ 43 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

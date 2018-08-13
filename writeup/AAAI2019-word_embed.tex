@@ -8,7 +8,7 @@
 \usepackage{courier}  %Required
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
-\usepackage{color}  %Customized
+\usepackage{color, amssymb}  %Customized
 
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
@@ -55,6 +55,12 @@ The Skip-Gram model is introduced in \cite{NIPS2013_5021}, and
 \textcolor{magenta}{Description of the algorithm, details and discussion on initialization + step size, maybe already here have some plots to show how these behave (without giving away comparison results, just showing what is their trend in}
 
 In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$. 
+
+The SGNS model learns distributed word representation by maximizing the following objective function:
+
+\begin{equation}
+	\max_{w,c} \sum_{w,c}\#(w,c)\log(w^Tc)+k\cdot\mathbb{E}_{c\sim P_c}\log(-w^Tc')
+\end{equation}
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
 
 \section{Experimental results}
