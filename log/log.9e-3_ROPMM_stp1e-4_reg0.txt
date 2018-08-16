@@ -1,0 +1,20 @@
+Please run:
+  python setup.py build_ext --inplace
+(37360, 0, 6.435947288497596e-06)
+load vocabulary
+Parsing sentences from training set
+enwik-200/PSiter_fromenwik9-sub0.001000SPPMI5_dim100_step0.0001_0.0
+('Iter #:', 0, 'loss', 1130245298.7560046)
+('Iter #:', 1, 'loss', 1123083883.4187562)
+('Iter #:', 2, 'loss', 1114124408.0163043)
+('Iter #:', 3, 'loss', 1100379904.1940353)
+('Iter #:', 4, 'loss', 1082027087.7053049)
+('Iter #:', 5, 'loss', 1064870935.7146978)
+('Iter #:', 6, 'loss', 1051597250.2113364)
+('Iter #:', 7, 'loss', 1040985450.8383588)
+('Iter #:', 8, 'loss', 1031986757.5266424)
+('Iter #:', 9, 'loss', 1024116633.4121574)
+('Iter #:', 10, 'loss', 1017154183.129438)
+('Iter #:', 11, 'loss', 1010956290.7490396)
+('Iter #:', 12, 'loss', 1005396594.5635265)
+('Iter #:', 13, 'loss', 1000365115.720976)
