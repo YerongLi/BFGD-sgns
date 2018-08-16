@@ -49,18 +49,31 @@ To be written
 
 \textcolor{magenta}{What questions are still open?}
 
-The Skip-Gram model is introduced in \cite{NIPS2013_5021}, and 
+The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpus of words $w_1$, $w_2$ ... $w_n$ and correponding contexts. For every individual word $w_i$, a context $c$ is defined as a word within a $L-$sided window surrounding it, i.e. $w_{i−L},\cdots, w_{i−1},w_{i+1},\cdots,w_L$. Following notations in \cite{levy2014neural}, we denote $\#(w,c)$ as number of word-context pairs and $\#(w)$ are abbreviation for
+\begin{equation}
+\#(w)=\sum_c\#(w,c'),\quad\#(c)=\sum_w\#(w',c)	
+\end{equation}
+It is also convenient to define the set of observed word-context pairs as $D$. 
 
+
+The negative sampling takes a word-context pair and samples $k$ negative pairs $(w,c_N)$ aligning with it, where $k$ is a hyperparameter and equals $5$ in experiments. In every negative pairs, the context is generated from the context distribution from the corpus, which is:
+\begin{equation}
+	c_N\sim P_D(c)=\frac{\#(c)}{|D|}
+\end{equation}
+Therefore for every word-context pair in vocabulary, the SGNS objective is:
+\begin{equation}
+	l_{SGNS}(w,c)= \#(w,c)\log[\sigma(w^Tc)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^Tc_N)]
+\end{equation}
+Summing up over all word-context pairs SGNS model learns distributed word representation by maximizing the following objective function:
+\begin{equation}
+	\max_{w,c} \sum_{w,c}\#(w,c)\log[\sigma(w^Tc)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^Tc_N)]
+\end{equation}
 \section{Our approach}
 \textcolor{magenta}{Description of the algorithm, details and discussion on initialization + step size, maybe already here have some plots to show how these behave (without giving away comparison results, just showing what is their trend in}
 
 In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$. 
 
-The SGNS model learns distributed word representation by maximizing the following objective function:
 
-\begin{equation}
-	\max_{w,c} \sum_{w,c}\#(w,c)\log(w^Tc)+k\cdot\mathbb{E}_{c\sim P_c}\log(-w^Tc')
-\end{equation}
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
 
 \section{Experimental results}

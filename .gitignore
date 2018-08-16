@@ -4,3 +4,9 @@ enwik-200/
 .ipynb_checkpoints/
 *.so
 build/
+
+
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.aux

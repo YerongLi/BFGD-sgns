@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.4.22)  13 AUG 2018 16:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.4.22)  16 AUG 2018 15:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -192,21 +192,36 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
+Missing character: There is no â in font cmr7!
+Missing character: There is no ˆ in font cmr7!
+Missing character: There is no ’ in font cmr7!
+Missing character: There is no â in font cmr7!
+Missing character: There is no ˆ in font cmr7!
+Missing character: There is no ’ in font cmr7!
+
+Overfull \hbox (27.86642pt too wide) detected at line 66
+\OML/cmm/m/it/10 l[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 w; c\OT1/cmr/m/n/10 ) = #
+(\OML/cmm/m/it/10 w; c\OT1/cmr/m/n/10 ) [][\OML/cmm/m/it/10 ^^[\OT1/cmr/m/n/10 
+(\OML/cmm/m/it/10 w[]c\OT1/cmr/m/n/10 )] + \OML/cmm/m/it/10 k \OMS/cmsy/m/n/10 
+^^A \U/msb/m/n/10 E[] []\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 ^^[\OT1/cmr/m/n/10 (\
+OMS/cmsy/m/n/10 ^^@\OML/cmm/m/it/10 w[]c[]\OT1/cmr/m/n/10 )]
+ []
+
+[1{/home/yerong/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+}
+
+
+
+]
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
-
-(./AAAI2019-word_embed.bbl [1{/home/yerong/local/texlive/2017/texmf-var/fonts/m
-ap/pdftex/updmap/pdftex.map}
-
-
-
-]) [2
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 91.
+ (./AAAI2019-word_embed.bbl) [2
 
 ] (./AAAI2019-word_embed.aux) ) 
 Here is how much of TeX's memory you used:
  2006 strings out of 492995
  28932 string characters out of 6128969
- 88717 words of memory out of 5000000
+ 89717 words of memory out of 5000000
  5520 multiletter control sequences out of 15000+600000
  16340 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -218,18 +233,19 @@ s/type1/public/amsfonts/cm/cmmi10.pfb></home/yerong/local/texlive/2017/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmmi5.pfb></home/yerong/local/texlive/2017/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></home/yerong/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/yerong/local/tex
-live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/yerong/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></home/yer
-ong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></ho
-me/yerong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msb
-m10.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8
-a.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.
-pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.p
-fb>
-Output written on AAAI2019-word_embed.pdf (2 pages, 113558 bytes).
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></home/yerong/loca
+l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/yero
+ng/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></hom
+e/yerong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb
+></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbol
+s/msbm10.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/
+utmb8a.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/ut
+mr8a.pfb></home/yerong/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr
+i8a.pfb>
+Output written on AAAI2019-word_embed.pdf (2 pages, 126533 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 64 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
