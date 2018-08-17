@@ -233,8 +233,11 @@ class Word2vecMF(object):
                     break
                 else:
                     Xt1=np.array(X)'''
-
+            G = None 
+            del grad, G
+            
             if display and 0==(it+1)%itv_print:
+                
                 print("Iter #:", it+1, "loss", self.MF(self.C, self.W))
                 
             if save[0] and 0==(it+1)%itv_save:
@@ -308,8 +311,9 @@ class Word2vecMF(object):
             
         self.C = U.dot(np.sqrt(S)).T
         self.W = np.sqrt(S).dot(V.T)
-        
+        del F
         if display and 0==(from_iter+MAX_ITER)%itv_print:
+            
             print("Iter #:", from_iter+MAX_ITER, "loss", self.MF(self.C, self.W))
            
         if save[0] and 0==(from_iter+MAX_ITER)%itv_save:
@@ -404,7 +408,7 @@ class Word2vecMF(object):
         self.vocab = {key: index for index, key in enumerate(vocab)}
         self.freq = {key: float(freq[index]) for index, key in enumerate(vocab)}
         
-        print(len(self.vocab), self.vocab[vocab[0]], self.freq[vocab[0]])
+        #print(len(self.vocab), self.vocab[vocab[0]], self.freq[vocab[0]])
         
         return self.vocab, self.freq    
     #######################################################################
@@ -485,10 +489,10 @@ class Word2vecMF(object):
         
         pref = str(iteration)
         
-        C = np.load(open(from_folder+'/C'+pref+'.npz', 'rb'))['C']
-        W = np.load(open(from_folder+'/W'+pref+'.npz', 'rb'))['W']
+        self.C = np.load(open(from_folder+'/C'+pref+'.npz', 'rb'))['C']
+        self.W = np.load(open(from_folder+'/W'+pref+'.npz', 'rb'))['W']
         
-        return C, W
+        return self.C, self.W
     
     def factors_to_MF(self, from_folder, to_file, MAX_ITER, from_iter=0):
         """
