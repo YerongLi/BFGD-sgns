@@ -8,7 +8,7 @@
 \usepackage{courier}  %Required
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
-\usepackage{color, amssymb}  %Customized
+\usepackage{color, amssymb, multirow, amsmath}  %Customized
 
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
@@ -53,7 +53,8 @@ The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpu
 \begin{equation}
 \#(w)=\sum_c\#(w,c'),\quad\#(c)=\sum_w\#(w',c)	
 \end{equation}
-It is also convenient to define the set of observed word-context pairs as $D$. 
+
+It is also convenient to define the set of observed word-context pairs as $D$, and $|D|=\sum_{w,c}\#(w,c)$
 
 
 The negative sampling takes a word-context pair and samples $k$ negative pairs $(w,c_N)$ aligning with it, where $k$ is a hyperparameter and equals $5$ in experiments. In every negative pairs, the context is generated from the context distribution from the corpus, which is:
@@ -66,12 +67,34 @@ Therefore for every word-context pair in vocabulary, the SGNS objective is:
 \end{equation}
 Summing up over all word-context pairs SGNS model learns distributed word representation by maximizing the following objective function:
 \begin{equation}
-	\max_{w,c} \sum_{w,c}\#(w,c)\log[\sigma(w^Tc)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^Tc_N)]
+	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^Tc)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)] \label{eq: original SGNS}
 \end{equation}
+\subsection{Matrix Factorization}
+\subsection{Project-Splitting algorithm on SGNS}
+On \cite{fonarev2017riemannian} pointed the general two-step scheme of training SGNS word embedding model and suggested a search of a solution in the low-rank form via Riemannian optimization framework.
+\subsection{Linguistic scores}
+
 \section{Our approach}
 \textcolor{magenta}{Description of the algorithm, details and discussion on initialization + step size, maybe already here have some plots to show how these behave (without giving away comparison results, just showing what is their trend in}
 
-In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$. 
+In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. The expectation term $\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)]$ can be explicitly expressed as:
+\begin{equation}
+	\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)]=\sum_{c_N}\frac{\#(c_N)}{|D|}\log{\sigma(-w^Tc_N)}
+\end{equation}
+And one can show that SGNS objective \ref{eq: original SGNS} is factorizing the following matrix \cite{levy2014neural}:
+\begin{equation}
+	X=W^TC= PMI(w_i, c_j)-\log k \label{eq: SPPMI}
+\end{equation}
+where columns in $W$ and $C$ are $w_i$ and $c_i$ respectively. And in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$, so both $W$ and $C$ are $d\times V$.
+
+Different from projector-splitting scheme\cite{fonarev2017riemannian} which shows advantages in optimizing a low-rank $X$ on SGNS model, we observed that the matrix form SGNS objective is both smooth and convex in $X$. And with the explicit expression of SGNS objective $L_{SGNS}(X)$:
+\begin{equation}
+	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^Tc)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^Tc_N)]\}
+\end{equation}
+$L_{SGNS}(X)$ is $L-$smooth with lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_\text{fro}$$
+
+Then we can borrow ideas from Bi-factorized gradient descent\cite{park2016finding}
+
 
 
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
@@ -79,6 +102,35 @@ In this paper, we follow literature dicussions characterizing SGNS as a matrix f
 \section{Experimental results}
 \textcolor{magenta}{We will move a bit unconventionally and show first some experimental results: this is what we are currently working on}
 
+% Please add the following required packages to your document preamble:
+\begin{table}[]
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+   dim      &      & sem & syn & wordsim & men & simlex & murk \\ \hline
+
+\multirow{3}{*}{100} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
+					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
+                     & BFGD &     &     &         &     &        &      \\ \hline
+\multirow{3}{*}{300} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
+					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
+                     & BFGD &     &     &         &     &        &      \\ \hline
+\end{tabular}
+\caption{Comparison of different methods on liguistic scores, on different dimensions}
+\end{table}
+\begin{table}[]
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+   dataset  &      & sem & syn & wordsim & men & simlex & murk \\ \hline
+
+\multirow{3}{*}{NYT} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
+					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
+                     & BFGD &     &     &         &     &        &      \\ \hline
+\multirow{3}{*}{enwik} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
+					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
+                     & BFGD &     &     &         &     &        &      \\ \hline
+\end{tabular}
+\caption{Comparison of different methods on liguistic scores, on different dataset, we kept dimension $d=300$}
+\end{table}
 \section{Theoretical guarantees}
 \textcolor{magenta}{This is where we will try to focus on after we have fixed the experiments. 
 \begin{itemize}

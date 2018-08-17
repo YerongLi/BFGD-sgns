@@ -1,5 +1,13 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Fonarev \bgroup et al\mbox.\egroup
+  }{2017}]{fonarev2017riemannian}
+Fonarev, A.; Grinchuk, O.; Gusev, G.; Serdyukov, P.; and Oseledets, I.
+\newblock 2017.
+\newblock Riemannian optimization for skip-gram negative sampling.
+\newblock In {\em Proceedings of the 55th Annual Meeting of the Association for
+  Computational Linguistics (Volume 1: Long Papers)}, volume~1,  2028--2036.
+
 \bibitem[\protect\citeauthoryear{Levy and Goldberg}{2014}]{levy2014neural}
 Levy, O., and Goldberg, Y.
 \newblock 2014.
@@ -26,5 +34,13 @@ Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
   Weinberger, K.~Q., eds., {\em Advances in Neural Information Processing
   Systems 26}. Curran Associates, Inc.
 \newblock  3111--3119.
+
+\bibitem[\protect\citeauthoryear{Park \bgroup et al\mbox.\egroup
+  }{2016}]{park2016finding}
+Park, D.; Kyrillidis, A.; Caramanis, C.; and Sanghavi, S.
+\newblock 2016.
+\newblock Finding low-rank solutions via non-convex matrix factorization,
+  efficiently and provably.
+\newblock {\em arXiv preprint arXiv:1606.03168}.
 
 \end{thebibliography}
