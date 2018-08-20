@@ -8,7 +8,7 @@
 \usepackage{courier}  %Required
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
-\usepackage{color, amssymb, multirow, amsmath}  %Customized
+\usepackage{color, amssymb, multirow, algorithm, inputenc, algpseudocode}  % Yerong Customized
 
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
@@ -41,6 +41,10 @@ To be written
 
 \textcolor{magenta}{What is our perspective? Computational. We need to stress out that we do not focus on finding a better linguistic metric, but given word2vec model interpretation as matrix factorization, we identify the problems of using classical methods that involve huge matrix manipulations, and we propose alternatives. At the same time, we are interested in proposing theory that justifies partially what we observe in practice. E.g., here we should say that current approaches are expensive computationally, as well as non-convex with no theory.}
 
+Word embedding represents one of the most successful applications of unsupervised learning. It has shown geralization power in varities of NLP tasks, part-of-speech tagging \cite{abka2016evaluating}, document level metric learning\cite{kusner2015word}, machine translation \cite{NIPS2013_5021} etc.
+
+In this paper, we train Skip-Gram model with negative sampling (SGND) under the framework of Bi-factorized gradient descent (BFGD). We show that with BFGD, which does not require singular value decomposition at each iteration, we can obtain similar liguistic performance compared to Splitting Projection Algorithm. And BFGD is able to train the model efficiently as the size of a corpus goes up, since it does not require singular value decomposition at each iteration.
+As we will see, with update rule in word2vec a special version of stochastic gradient descent under BFGD framework, this discussion opens a critical topic on how to train SGNS both efficiently and effectively --- how to design a good stochastic/batched version of BFGD and train Skip-Gram model without loss of performance.
 \textcolor{magenta}{What are our contributions? We need to write them down in bullets; this will be written after we have all the rest}.
 
 \section{Background \& Related Work}
@@ -49,9 +53,11 @@ To be written
 
 \textcolor{magenta}{What questions are still open?}
 
+
+
 The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpus of words $w_1$, $w_2$ ... $w_n$ and correponding contexts. For every individual word $w_i$, a context $c$ is defined as a word within a $L-$sided window surrounding it, i.e. $w_{i−L},\cdots, w_{i−1},w_{i+1},\cdots,w_L$. Following notations in \cite{levy2014neural}, we denote $\#(w,c)$ as number of word-context pairs and $\#(w)$ are abbreviation for
 \begin{equation}
-\#(w)=\sum_c\#(w,c'),\quad\#(c)=\sum_w\#(w',c)	
+\#(w)=\sum_{c'}\#(w,c'),\quad\#(c)=\sum_{w'}\#(w',c)	
 \end{equation}
 
 It is also convenient to define the set of observed word-context pairs as $D$, and $|D|=\sum_{w,c}\#(w,c)$
@@ -71,7 +77,7 @@ Summing up over all word-context pairs SGNS model learns distributed word repres
 \end{equation}
 \subsection{Matrix Factorization}
 \subsection{Project-Splitting algorithm on SGNS}
-On \cite{fonarev2017riemannian} pointed the general two-step scheme of training SGNS word embedding model and suggested a search of a solution in the low-rank form via Riemannian optimization framework.
+On \cite{fonarev2017riemannian} illustrates a general two-step scheme for training SGNS word embedding model and suggested a search of a solution in the low-rank form via Riemannian optimization framework.
 \subsection{Linguistic scores}
 
 \section{Our approach}
@@ -91,18 +97,39 @@ Different from projector-splitting scheme\cite{fonarev2017riemannian} which show
 \begin{equation}
 	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^Tc)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^Tc_N)]\}
 \end{equation}
-$L_{SGNS}(X)$ is $L-$smooth with lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_\text{fro}$$
-
-Then we can borrow ideas from Bi-factorized gradient descent\cite{park2016finding}
+$L_{SGNS}(X)$ is $L-$smooth with lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_F$$
 
 
+
+Then we can borrow ideas from Bi-factorized gradient descent  \cite{park2016finding}
+
+\begin{algorithm}
+\caption{BFGD on Skip-Gram Model with Negative Sampling}\label{alg:bfgd}
+\begin{algorithmic}[1]
+\Procedure{BFGD}{$W_0,C_0, \eta, K$} \Comment{$W_0,C_0$ are initial encoding and decoding matrices, $\eta$ is the step size and $K$ is the total number of iterations}
+\State $W\gets W_0$
+\State $C\gets C_0$
+\For{$i\gets 1, \cdots, K$}
+	\State{Calculate gradient of loss $\nabla L(W^TC)$}
+	\State{$W\gets W+\eta\cdot C\nabla L(W^TC)$}
+	\State{$C\gets C+\eta\cdot W\nabla L(W^TC)^T$}
+\EndFor
+\State \textbf{return W, C}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
 
 \section{Experimental results}
 \textcolor{magenta}{We will move a bit unconventionally and show first some experimental results: this is what we are currently working on}
+\paragraph{Experimental Settings} In experiments, we trained skip-gram negative sampling with Bi-Factorized gradient descent on two corpora:  "enwik9" corpus \cite{mahoney2011large} and New York Times corpus (NYT) \cite{sandhaus2008new}. The "enwik9" contains the first billions bytes of the Wikipedia dump on Mar. 3, 2006. We ignore words that appear less than 100 times in this dump and train a model with vocabulary size 37360. The New York Times Annotated Corpus contains over a million articles tagged with metadata. These articles are published between 1987 and 2007. We pick articles from 2000 to 2005 for training.  We preprocessed the data with Stanford CoreNLP tookenizer \cite{manning2014stanford}. It has 13,567,603 sentences and we use a dictionary of the 40,000 most frequent words from this subcorpus.
 
-% Please add the following required packages to your document preamble:
+In order to reduce training noise from frequent words: we do subsampling and ignore a word $w$ in a sentence with a probability
+\begin{equation}
+P(f(w))= 1-(\sqrt{\frac{f(w)}{t}}+1)\cdot\frac{t}{f(w)}\label{eq:subsampling}
+\end{equation}
+where where $t$, $f(w)$ are subsampling threshold and the frequency of the word respectively. We have to point out equation \ref{eq:subsampling} is used in word2vec\footnote{https://code.google.com/archive/p/word2vec} and is an adapted version of subsampling in \cite{NIPS2013_5021}.
 \begin{table}[]
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
@@ -114,6 +141,10 @@ Then we can borrow ideas from Bi-factorized gradient descent\cite{park2016findin
 \multirow{3}{*}{300} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
 					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
                      & BFGD &     &     &         &     &        &      \\ \hline
+\multirow{3}{*}{300} & SGD   &     &     &         &     &        &      \\ \cline{2-8} 
+					 & PS   &     &     &         &     &        &      \\ \cline{2-8} 
+                     & BFGD &     &     &         &     &        &      \\
+\hline
 \end{tabular}
 \caption{Comparison of different methods on liguistic scores, on different dimensions}
 \end{table}

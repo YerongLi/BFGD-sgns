@@ -1,5 +1,14 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Abka}{2016}]{abka2016evaluating}
+Abka, A.~F.
+\newblock 2016.
+\newblock Evaluating the use of word embeddings for part-of-speech tagging in
+  bahasa indonesia.
+\newblock In {\em Computer, Control, Informatics and its Applications (IC3INA),
+  2016 International Conference on},  209--214.
+\newblock IEEE.
+
 \bibitem[\protect\citeauthoryear{Fonarev \bgroup et al\mbox.\egroup
   }{2017}]{fonarev2017riemannian}
 Fonarev, A.; Grinchuk, O.; Gusev, G.; Serdyukov, P.; and Oseledets, I.
@@ -7,6 +16,13 @@ Fonarev, A.; Grinchuk, O.; Gusev, G.; Serdyukov, P.; and Oseledets, I.
 \newblock Riemannian optimization for skip-gram negative sampling.
 \newblock In {\em Proceedings of the 55th Annual Meeting of the Association for
   Computational Linguistics (Volume 1: Long Papers)}, volume~1,  2028--2036.
+
+\bibitem[\protect\citeauthoryear{Kusner \bgroup et al\mbox.\egroup
+  }{2015}]{kusner2015word}
+Kusner, M.; Sun, Y.; Kolkin, N.; and Weinberger, K.
+\newblock 2015.
+\newblock From word embeddings to document distances.
+\newblock In {\em International Conference on Machine Learning},  957--966.
 
 \bibitem[\protect\citeauthoryear{Levy and Goldberg}{2014}]{levy2014neural}
 Levy, O., and Goldberg, Y.
@@ -24,6 +40,20 @@ Levy, O.; Goldberg, Y.; and Dagan, I.
 \newblock {\em Transactions of the Association for Computational Linguistics}
   3:211--225.
 
+\bibitem[\protect\citeauthoryear{Mahoney}{2011}]{mahoney2011large}
+Mahoney, M.
+\newblock 2011.
+\newblock Large text compression benchmark.
+\newblock {\em URL: http://www. mattmahoney. net/text/text. html}.
+
+\bibitem[\protect\citeauthoryear{Manning \bgroup et al\mbox.\egroup
+  }{2014}]{manning2014stanford}
+Manning, C.; Surdeanu, M.; Bauer, J.; Finkel, J.; Bethard, S.; and McClosky, D.
+\newblock 2014.
+\newblock The stanford corenlp natural language processing toolkit.
+\newblock In {\em Proceedings of 52nd annual meeting of the association for
+  computational linguistics: system demonstrations},  55--60.
+
 \bibitem[\protect\citeauthoryear{Mikolov \bgroup et al\mbox.\egroup
   }{2013}]{NIPS2013_5021}
 Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
@@ -39,8 +69,14 @@ Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
   }{2016}]{park2016finding}
 Park, D.; Kyrillidis, A.; Caramanis, C.; and Sanghavi, S.
 \newblock 2016.
-\newblock Finding low-rank solutions via non-convex matrix factorization,
-  efficiently and provably.
+\newblock Finding low-rank solutions to matrix problems, efficiently and
+  provably.
 \newblock {\em arXiv preprint arXiv:1606.03168}.
+
+\bibitem[\protect\citeauthoryear{Sandhaus}{2008}]{sandhaus2008new}
+Sandhaus, E.
+\newblock 2008.
+\newblock The new york times annotated corpus, linguistic data consortium.
+\newblock {\em Philadelphia} 6(12):e26--752.
 
 \end{thebibliography}
