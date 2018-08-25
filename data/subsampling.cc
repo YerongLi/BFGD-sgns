@@ -12,10 +12,12 @@ using namespace std;
 int main() {
 
 
-    float sample=1e-5;
+    float sample=1e-3;
     string line;
-    ifstream inf("vocab9.txt");
-    ofstream outf("enwik9-sub"+to_string(sample)+".txt");
+    string raw_filename="clean.txt";
+    string raw_vocabname="vocabNYT.txt";
+    ifstream inf(raw_vocabname);
+    ofstream outf("clean-sub"+to_string(sample)+".txt");
 
     unordered_map<string, double> freq={};
     unordered_map<int, string> inv_vocab={};
@@ -61,7 +63,7 @@ int main() {
     cout<<"Done"<<endl;*/
     inf.close();
 
-    inf.open("enwik9.txt");
+    inf.open(raw_filename);
     
     count=0;
     iss.clear();
