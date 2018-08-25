@@ -1,4 +1,3 @@
- 
 \def\year{2019}\relax
 %File: formatting-instruction.tex
 \documentclass[letterpaper]{article} %DO NOT CHANGE THIS
@@ -41,7 +40,7 @@ To be written
 
 \textcolor{magenta}{What is our perspective? Computational. We need to stress out that we do not focus on finding a better linguistic metric, but given word2vec model interpretation as matrix factorization, we identify the problems of using classical methods that involve huge matrix manipulations, and we propose alternatives. At the same time, we are interested in proposing theory that justifies partially what we observe in practice. E.g., here we should say that current approaches are expensive computationally, as well as non-convex with no theory.}
 
-Word embedding represents one of the most successful applications of unsupervised learning. It has shown geralization power in varities of NLP tasks, part-of-speech tagging \cite{abka2016evaluating}, document level metric learning\cite{kusner2015word}, machine translation \cite{NIPS2013_5021} etc.
+Word embedding represents one of the most successful applications of unsupervised learning. It has shown geralization power in varities of NLP tasks, part-of-speech tagging \cite{abka2016evaluating}, document level metric learning\cite{kusner2015word}, machine translation \cite{NIPS2013_5021}\cite{zou2013bilingual} etc.
 
 In this paper, we train Skip-Gram model with negative sampling (SGND) under the framework of Bi-factorized gradient descent (BFGD). We show that with BFGD, which does not require singular value decomposition at each iteration, we can obtain similar liguistic performance compared to Splitting Projection Algorithm. And BFGD is able to train the model efficiently as the size of a corpus goes up, since it does not require singular value decomposition at each iteration.
 As we will see, with update rule in word2vec a special version of stochastic gradient descent under BFGD framework, this discussion opens a critical topic on how to train SGNS both efficiently and effectively --- how to design a good stochastic/batched version of BFGD and train Skip-Gram model without loss of performance.
@@ -54,7 +53,6 @@ As we will see, with update rule in word2vec a special version of stochastic gra
 \textcolor{magenta}{What questions are still open?}
 
 
-
 The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpus of words $w_1$, $w_2$ ... $w_n$ and correponding contexts. For every individual word $w_i$, a context $c$ is defined as a word within a $L-$sided window surrounding it, i.e. $w_{i−L},\cdots, w_{i−1},w_{i+1},\cdots,w_L$. Following notations in \cite{levy2014neural}, we denote $\#(w,c)$ as number of word-context pairs and $\#(w)$ are abbreviation for
 \begin{equation}
 \#(w)=\sum_{c'}\#(w,c'),\quad\#(c)=\sum_{w'}\#(w',c)	
@@ -65,13 +63,13 @@ It is also convenient to define the set of observed word-context pairs as $D$, a
 
 The negative sampling takes a word-context pair and samples $k$ negative pairs $(w,c_N)$ aligning with it, where $k$ is a hyperparameter and equals $5$ in experiments. In every negative pairs, the context is generated from the context distribution from the corpus, which is:
 \begin{equation}
-	c_N\sim P_D(c)=\frac{\#(c)}{|D|}
+	c_N\sim P_D(c)=\frac{\#(c)}{|D|}\footnote{In word2vec implementation, $c_N\sim P_D(c)=\frac{\#(c)^{3/4}}{|D|}$, but in mathematics view SGNS is still doing factorization}
 \end{equation}
 Therefore for every word-context pair in vocabulary, the SGNS objective is:
 \begin{equation}
 	l_{SGNS}(w,c)= \#(w,c)\log[\sigma(w^Tc)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^Tc_N)]
 \end{equation}
-Summing up over all word-context pairs SGNS model learns distributed word representation by maximizing the following objective function:
+When the online learning goes through all word-context pairs in corpus, SGNS model learns distributed word representation by maximizing the following objective function:
 \begin{equation}
 	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^Tc)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)] \label{eq: original SGNS}
 \end{equation}
@@ -175,6 +173,7 @@ where where $t$, $f(w)$ are subsampling threshold and the frequency of the word 
 
 \section{Conclusions}
 \textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
+
 %References and End of Paper
 %These lines must be placed at the end of your paper
 \bibliography{refs.bib}

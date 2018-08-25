@@ -79,4 +79,12 @@ Sandhaus, E.
 \newblock The new york times annotated corpus, linguistic data consortium.
 \newblock {\em Philadelphia} 6(12):e26--752.
 
+\bibitem[\protect\citeauthoryear{Zou \bgroup et al\mbox.\egroup
+  }{2013}]{zou2013bilingual}
+Zou, W.~Y.; Socher, R.; Cer, D.; and Manning, C.~D.
+\newblock 2013.
+\newblock Bilingual word embeddings for phrase-based machine translation.
+\newblock In {\em Proceedings of the 2013 Conference on Empirical Methods in
+  Natural Language Processing},  1393--1398.
+
 \end{thebibliography}

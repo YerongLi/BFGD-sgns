@@ -30,7 +30,7 @@ class Word2vecMF(object):
         self.freq = {}
 
     ############ Create training corpus from raw sentences ################
-    def save_vocabulary(self, from_file,vocab_to_file, r):
+    def save_vocabulary(self, from_file, vocab_to_file, r, limit=30000):
         """
         Process raw sentences, create word dictionary, matrix D and matrix B
         then save them to file.
@@ -45,17 +45,16 @@ class Word2vecMF(object):
 
         sentences = [sentence for sentence in sentences if sentence]      
         if self.vocab==None:
-            self.vocab = self.create_vocabulary(sentences, r)
+            self.vocab = self.create_vocabulary(sentences, r, limit=limit)
         
 
         self.save_vocab(vocab_to_file)
     
-    def create_vocabulary(self, data, r):
+    def create_vocabulary(self, data, r, limit=40000):
         """
         Create a vocabulary from a list of sentences, 
         eliminating words which occur less than r times.
         """
-
         prevocabulary = {}
         total = 0
         for sentence in data:
@@ -67,14 +66,26 @@ class Word2vecMF(object):
                     prevocabulary[word] += 1
 
         vocabulary = {}
+        frequency = []
         idx = 0
+        inv = {}
         for word in prevocabulary:
             if (prevocabulary[word] >= r):
-                self.freq[word] = prevocabulary[word]/total
+                frequency.append(prevocabulary[word]/total)
                 vocabulary[word] = idx
+                inv[idx]=word
                 idx += 1
-        self.vocab = vocabulary
-        return vocabulary
+
+        if len(vocabulary)>limit:
+            keeping = np.argsort(frequency)[-limit:]
+        else:
+            keeping = np.argsort(frequency)
+            
+        self.vocab = { inv[old_idx]: new_idx for new_idx, old_idx in enumerate(keeping)}
+        self.freq = { inv[old_idx]: frequency[old_idx] for old_idx in keeping}
+        
+        print('Length of vocabulary is: '+str(len(self.vocab)))
+        return self.vocab
 
     def create_matrix_D(self, data, window_size=5):
         """
@@ -141,7 +152,8 @@ class Word2vecMF(object):
         
         X = C.T.dot(W)
         MF = self.D*np.log(self.sigmoid(X)) + self.B*np.log(self.sigmoid(-X))
-        return -MF.sum() #, norm(C.dot(C.T)-W.dot(W.T), 'fro')
+        print('reg ',norm(C.dot(C.T)-W.dot(W.T), 'fro'))
+        return -MF.sum()
 
     def grad_MF(self, C, W):
         """
