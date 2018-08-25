@@ -8,7 +8,6 @@
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
 \usepackage{color, amssymb, multirow, algorithm, inputenc, algpseudocode}  % Yerong Customized
-
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
 \setlength{\pdfpageheight}{11in}  %Required
@@ -53,7 +52,7 @@ As we will see, with update rule in word2vec a special version of stochastic gra
 \textcolor{magenta}{What questions are still open?}
 
 
-The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpus of words $w_1$, $w_2$ ... $w_n$ and correponding contexts. For every individual word $w_i$, a context $c$ is defined as a word within a $L-$sided window surrounding it, i.e. $w_{i−L},\cdots, w_{i−1},w_{i+1},\cdots,w_L$. Following notations in \cite{levy2014neural}, we denote $\#(w,c)$ as number of word-context pairs and $\#(w)$ are abbreviation for
+The Skip-Gram model is introduced in \cite{NIPS2013_5021}, which assumes a corpus of words $w_1$, $w_2$ ... $w_n$ and correponding contexts. For every individual word $w_i$, a context $c$ is defined as a word within a $L-$sided window surrounding it, i.e. $w_{i-L},\cdots, w_{i-1},w_{i+1},\cdots,w_L$. Following notations in \cite{levy2014neural}, we denote $\#(w,c)$ as number of word-context pairs and $\#(w)$ are abbreviation for
 \begin{equation}
 \#(w)=\sum_{c'}\#(w,c'),\quad\#(c)=\sum_{w'}\#(w',c)	
 \end{equation}
