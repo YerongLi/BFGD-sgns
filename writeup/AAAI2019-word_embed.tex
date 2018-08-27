@@ -73,6 +73,7 @@ When the online learning goes through all word-context pairs in corpus, SGNS mod
 	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^Tc)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)] \label{eq: original SGNS}
 \end{equation}
 \subsection{Matrix Factorization}
+As what is commonly accepted in literature, some of the "simplest" word embedding models can be viewed as matrix factorizations \cite{li2015word}\cite{NIPS2013_5021}. SGNS is factorizing \textit{shifted} Pointwise Mutual Information matrix, Noise-Contrastive Estimation \cite{gutmann2010noise} is factorizing \textit{shifted} log-conditional-probability matrix for instance. Despite different views on the contrary\cite{arora2015rand}, it has been of parculiar interests to view word embedding views as matrix factorization and studying the landscape of those objectives \cite{li2015word}\cite{mimno2017strange}
 \subsection{Project-Splitting algorithm on SGNS}
 On \cite{fonarev2017riemannian} illustrates a general two-step scheme for training SGNS word embedding model and suggested a search of a solution in the low-rank form via Riemannian optimization framework.
 \subsection{Linguistic scores}
@@ -115,6 +116,7 @@ Then we can borrow ideas from Bi-factorized gradient descent  \cite{park2016find
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+In the BFGD agorlithm \ref{alg:bfgd}, the complexity for each iterations is $(O(V^2d))$: with hidden dimension fixed, the running time scales quadratically with the size of the vocabulary.
 
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
 
@@ -159,6 +161,9 @@ where where $t$, $f(w)$ are subsampling threshold and the frequency of the word 
 \end{tabular}
 \caption{Comparison of different methods on liguistic scores, on different dataset, we kept dimension $d=300$}
 \end{table}
+\begin{figure}
+\includegraphics[width=\linewidth]{img/correlation.png} 
+\end{figure}
 \section{Theoretical guarantees}
 \textcolor{magenta}{This is where we will try to focus on after we have fixed the experiments. 
 \begin{itemize}

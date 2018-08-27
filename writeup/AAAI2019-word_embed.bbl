@@ -9,6 +9,13 @@ Abka, A.~F.
   2016 International Conference on},  209--214.
 \newblock IEEE.
 
+\bibitem[\protect\citeauthoryear{Arora \bgroup et al\mbox.\egroup
+  }{2015}]{arora2015rand}
+Arora, S.; Li, Y.; Liang, Y.; Ma, T.; and Risteski, A.
+\newblock 2015.
+\newblock Rand-walk: A latent variable model approach to word embeddings.
+\newblock {\em arXiv preprint arXiv:1502.03520}.
+
 \bibitem[\protect\citeauthoryear{Fonarev \bgroup et al\mbox.\egroup
   }{2017}]{fonarev2017riemannian}
 Fonarev, A.; Grinchuk, O.; Gusev, G.; Serdyukov, P.; and Oseledets, I.
@@ -16,6 +23,15 @@ Fonarev, A.; Grinchuk, O.; Gusev, G.; Serdyukov, P.; and Oseledets, I.
 \newblock Riemannian optimization for skip-gram negative sampling.
 \newblock In {\em Proceedings of the 55th Annual Meeting of the Association for
   Computational Linguistics (Volume 1: Long Papers)}, volume~1,  2028--2036.
+
+\bibitem[\protect\citeauthoryear{Gutmann and
+  Hyv{\"a}rinen}{2010}]{gutmann2010noise}
+Gutmann, M., and Hyv{\"a}rinen, A.
+\newblock 2010.
+\newblock Noise-contrastive estimation: A new estimation principle for
+  unnormalized statistical models.
+\newblock In {\em Proceedings of the Thirteenth International Conference on
+  Artificial Intelligence and Statistics},  297--304.
 
 \bibitem[\protect\citeauthoryear{Kusner \bgroup et al\mbox.\egroup
   }{2015}]{kusner2015word}
@@ -39,6 +55,14 @@ Levy, O.; Goldberg, Y.; and Dagan, I.
   embeddings.
 \newblock {\em Transactions of the Association for Computational Linguistics}
   3:211--225.
+
+\bibitem[\protect\citeauthoryear{Li \bgroup et al\mbox.\egroup
+  }{2015}]{li2015word}
+Li, Y.; Xu, L.; Tian, F.; Jiang, L.; Zhong, X.; and Chen, E.
+\newblock 2015.
+\newblock Word embedding revisited: A new representation learning and explicit
+  matrix factorization perspective.
+\newblock In {\em IJCAI},  3650--3656.
 
 \bibitem[\protect\citeauthoryear{Mahoney}{2011}]{mahoney2011large}
 Mahoney, M.
@@ -64,6 +88,13 @@ Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
   Weinberger, K.~Q., eds., {\em Advances in Neural Information Processing
   Systems 26}. Curran Associates, Inc.
 \newblock  3111--3119.
+
+\bibitem[\protect\citeauthoryear{Mimno and Thompson}{2017}]{mimno2017strange}
+Mimno, D., and Thompson, L.
+\newblock 2017.
+\newblock The strange geometry of skip-gram with negative sampling.
+\newblock In {\em Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing},  2873--2878.
 
 \bibitem[\protect\citeauthoryear{Park \bgroup et al\mbox.\egroup
   }{2016}]{park2016finding}
