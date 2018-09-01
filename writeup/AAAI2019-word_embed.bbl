@@ -89,6 +89,15 @@ Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
   Systems 26}. Curran Associates, Inc.
 \newblock  3111--3119.
 
+\bibitem[\protect\citeauthoryear{Mikolov, Yih, and
+  Zweig}{2013}]{mikolov2013linguistic}
+Mikolov, T.; Yih, W.-t.; and Zweig, G.
+\newblock 2013.
+\newblock Linguistic regularities in continuous space word representations.
+\newblock In {\em Proceedings of the 2013 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies},  746--751.
+
 \bibitem[\protect\citeauthoryear{Mimno and Thompson}{2017}]{mimno2017strange}
 Mimno, D., and Thompson, L.
 \newblock 2017.
@@ -109,6 +118,13 @@ Sandhaus, E.
 \newblock 2008.
 \newblock The new york times annotated corpus, linguistic data consortium.
 \newblock {\em Philadelphia} 6(12):e26--752.
+
+\bibitem[\protect\citeauthoryear{Tu \bgroup et al\mbox.\egroup
+  }{2015}]{tu2015low}
+Tu, S.; Boczar, R.; Simchowitz, M.; Soltanolkotabi, M.; and Recht, B.
+\newblock 2015.
+\newblock Low-rank solutions of linear matrix equations via procrustes flow.
+\newblock {\em arXiv preprint arXiv:1507.03566}.
 
 \bibitem[\protect\citeauthoryear{Zou \bgroup et al\mbox.\egroup
   }{2013}]{zou2013bilingual}

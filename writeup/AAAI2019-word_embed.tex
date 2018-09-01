@@ -7,7 +7,7 @@
 \usepackage{courier}  %Required
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
-\usepackage{color, amssymb, multirow, algorithm, inputenc, algpseudocode}  % Yerong Customized
+\usepackage{color, amssymb, multirow, algorithm, inputenc, algpseudocode, amsmath}  % Yerong Customized
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
 \setlength{\pdfpageheight}{11in}  %Required
@@ -73,7 +73,7 @@ When the online learning goes through all word-context pairs in corpus, SGNS mod
 	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^Tc)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)] \label{eq: original SGNS}
 \end{equation}
 \subsection{Matrix Factorization}
-As what is commonly accepted in literature, some of the "simplest" word embedding models can be viewed as matrix factorizations \cite{li2015word}\cite{NIPS2013_5021}. SGNS is factorizing \textit{shifted} Pointwise Mutual Information matrix, Noise-Contrastive Estimation \cite{gutmann2010noise} is factorizing \textit{shifted} log-conditional-probability matrix for instance. Despite different views on the contrary\cite{arora2015rand}, it has been of parculiar interests to view word embedding views as matrix factorization and studying the landscape of those objectives \cite{li2015word}\cite{mimno2017strange}
+As what is commonly accepted in literature, some of the "simplest" word embedding models can be viewed as matrix factorizations \cite{li2015word}\cite{NIPS2013_5021}: SGNS is factorizing \textit{shifted} Pointwise Mutual Information matrix, Noise-Contrastive Estimation \cite{gutmann2010noise} is factorizing \textit{shifted} log-conditional-probability matrix for instance. Despite different views on the contrary\cite{arora2015rand}, it has been of parculiar interests to view word embedding views as matrix factorization and studying the landscape of those objectives \cite{li2015word}\cite{mimno2017strange}.
 \subsection{Project-Splitting algorithm on SGNS}
 On \cite{fonarev2017riemannian} illustrates a general two-step scheme for training SGNS word embedding model and suggested a search of a solution in the low-rank form via Riemannian optimization framework.
 \subsection{Linguistic scores}
@@ -116,19 +116,22 @@ Then we can borrow ideas from Bi-factorized gradient descent  \cite{park2016find
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-In the BFGD agorlithm \ref{alg:bfgd}, the complexity for each iterations is $(O(V^2d))$: with hidden dimension fixed, the running time scales quadratically with the size of the vocabulary.
+In the BFGD agorlithm \ref{alg:bfgd}, the complexity for each iterations is $O(V^2d)$: with hidden dimension fixed, the running time scales quadratically with the size of the vocabulary. As a comparision, Project-Splitting\cite{fonarev2017riemannian} operates QR factorization in updating parameters and requires $O(V^3)$ unit operations at each iteration. And in experiments, our see our approach is at least two times faster than the Project-Splitting scheme.
 
 \textcolor{magenta}{Here, we should have a figure with the algorithm's steps etc.}
 
 \section{Experimental results}
 \textcolor{magenta}{We will move a bit unconventionally and show first some experimental results: this is what we are currently working on}
-\paragraph{Experimental Settings} In experiments, we trained skip-gram negative sampling with Bi-Factorized gradient descent on two corpora:  "enwik9" corpus \cite{mahoney2011large} and New York Times corpus (NYT) \cite{sandhaus2008new}. The "enwik9" contains the first billions bytes of the Wikipedia dump on Mar. 3, 2006. We ignore words that appear less than 100 times in this dump and train a model with vocabulary size 37360. The New York Times Annotated Corpus contains over a million articles tagged with metadata. These articles are published between 1987 and 2007. We pick articles from 2000 to 2005 for training.  We preprocessed the data with Stanford CoreNLP tookenizer \cite{manning2014stanford}. It has 13,567,603 sentences and we use a dictionary of the 40,000 most frequent words from this subcorpus.
+\paragraph{Experimental Settings} In experiments, we trained skip-gram negative sampling with Bi-Factorized gradient descent on two corpora:  "enwik9" corpus \cite{mahoney2011large} and New York Times corpus (NYT) \cite{sandhaus2008new}. The "enwik9" contains the first billions bytes of the Wikipedia dump on Mar. 3, 2006. We ignore words that appear less than 100 times in this dump and train a model with vocabulary size 37,360. The New York Times Annotated Corpus contains over a million articles tagged with metadata. These articles are published between 1987 and 2007. We pick articles from 2000 to 2005 for training.  We preprocessed the data with Stanford CoreNLP tookenizer \cite{manning2014stanford}. It has 13,567,603 sentences and we use a dictionary of the 40,000 most frequent words from this subcorpus.
 
 In order to reduce training noise from frequent words: we do subsampling and ignore a word $w$ in a sentence with a probability
 \begin{equation}
 P(f(w))= 1-(\sqrt{\frac{f(w)}{t}}+1)\cdot\frac{t}{f(w)}\label{eq:subsampling}
 \end{equation}
 where where $t$, $f(w)$ are subsampling threshold and the frequency of the word respectively. We have to point out equation \ref{eq:subsampling} is used in word2vec\footnote{https://code.google.com/archive/p/word2vec} and is an adapted version of subsampling in \cite{NIPS2013_5021}.
+\subsection{Evaluation}
+We illustrate equivalence of BFGD and PS analogy tasks and similarity tasks.
+\paragraph{Analogy} The analogy test datasets come from Google analogy \cite{NIPS2013_5021} and MSR's analogy dataset \cite{mikolov2013linguistic}.  Google’s analogy dataset  contains 19,544 questions of two types --- semantic and syntatic analogies. Semantic questions are analogies in semantic sense, as ``Greece  is to Athens as Iraq is to Baghdad'', whereas syntactic questions are related to tokens and their syntactic variants, as ``amazingly is to amazing as apparently is to apparent''. MSR's analogy test set has 8,000 morpho-syntactic analogy questions. it is composed of the syntactic kind of tasks.
 \begin{table}[]
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
@@ -174,7 +177,64 @@ where where $t$, $f(w)$ are subsampling threshold and the frequency of the word 
 \item what about the stochastic version? SVRG version? Are there prior results on this?
 \item Can we use momentum/acceleration? Can we gain theoretically?
 \end{itemize}}
+In this section, we provide theoretical guarantees for the convergence of BFGD algorithm. As shown in analysis above, SGNS objective $L_\text{SGNS}$ is smooth as well as strictly convex, we focus our discussions based on this setting.
 
+Since BFGD gives the best results starting from SPPMI matrix, we provide a convergence guarantee for SPPMI initialization.
+
+From matrix factorization on SGNS objective \cite{levy2014neural} sparse SPPMI matrix and dense PPMI matrix. PPMI is $X^*$, the optimal solution for SGNS. SPPMI is the $X^0$, with its rank$-r$ approximation $X_r^0=W_0^TC_0$ the starting point.
+
+From defintion of SPPMI and PPMI matrix we have
+%\begin{equation}
+%\|X^0-X^*\|_F\le\|X^0|_F\le\|X^*|_F
+%\end{equation}
+%From triangle and Mirsky's theorem, we have
+%\begin{equation}
+%\begin{split}
+%\|X^0-W_0^TC_0\|_F\le\|X^*-X_r^*\|_F+\|X^0-X_r^*\|%_F\\
+%\end{split}
+%\end{equation}
+%Thus,
+%\begin{equation}
+%\|X_r^*-W_0^TC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+%\|X^0-W_0^TC_0\|_F\cite{park2016finding}
+%\end{equation}
+%\begin{equation}
+%\|X^*-W_0^TC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+\|X^0-X_r^*\|_F
+%\end{equation}
+Assume for any number of rows in $X$, $L-smoothness$ holds.
+\section{FGD}
+On one iteration:
+$$X^+=X-\eta \nabla_i f(X)= X-\eta \nabla_i f$$
+
+Define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T\nabla f(X)$, which corresponds to the full graient $f(X)$
+\begin{equation}
+\begin{split}
+&\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2] * \\
+&\le \mathbb{E}[\nabla^T f_i \nabla f_i]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2]\\
+&=\eta\frac{1}{V}\langle\nabla f, \nabla f(X)X\Lambda-\Lambda^T X\nabla f(X)\rangle+\frac{L\eta^2}{2V}\|\nabla f(X)\|_F\\
+&\le-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
+\end{split}
+\end{equation}
+Which is to say
+\begin{equation}
+ \mathbb{E}[f(X^+)]-f(X_r^*)\le f(X)-f(X_r^*)-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
+\end{equation}
+By eqeuation(18) in \cite{tu2015low} we have 
+\begin{equation}
+f(X)-f(X_r^*)\le\frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
+\end{equation}
+Thus with 
+$$\delta^+= \mathbb{E}[f(X^+)]-f(X_r^*)\quad \delta=f(X)-f(X_r^*)$$
+\begin{equation}
+\begin{split}
+\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F &\le
+\mathbb{E}[f(X^+)]-f(X_r^*)\\&\le f(X)-f(X_r^*)
+\le \frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
+\end{split}
+\end{equation}
+We can easily see
+\begin{equation}
+\frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5\text{DIST}(U,U^*_r)}
+\end{equation}
 \section{Conclusions}
 \textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
 
