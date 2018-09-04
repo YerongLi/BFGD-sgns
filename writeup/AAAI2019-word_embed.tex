@@ -201,9 +201,15 @@ From defintion of SPPMI and PPMI matrix we have
 %\|X^*-W_0^TC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+\|X^0-X_r^*\|_F
 %\end{equation}
 Assume for any number of rows in $X$, $L-smoothness$ holds.
-\section{FGD}
+\subsection{FGD}
 On one iteration:
-$$X^+=X-\eta \nabla_i f(X)= X-\eta \nabla_i f$$
+$$X^+=X-\eta \nabla_i f(X)= X-\eta \nabla_i f=X-\eta\begin{bmatrix}
+    0 \\
+    0 \\
+    %\hdotsfor{1} \\
+	\nabla_i f(X)\\    
+    0 
+\end{bmatrix}$$
 
 Define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T\nabla f(X)$, which corresponds to the full graient $f(X)$
 \begin{equation}
@@ -224,16 +230,10 @@ f(X)-f(X_r^*)\le\frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
 \end{equation}
 Thus with 
 $$\delta^+= \mathbb{E}[f(X^+)]-f(X_r^*)\quad \delta=f(X)-f(X_r^*)$$
-\begin{equation}
-\begin{split}
-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F &\le
-\mathbb{E}[f(X^+)]-f(X_r^*)\\&\le f(X)-f(X_r^*)
-\le \frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
-\end{split}
-\end{equation}
+%\end{equation}
 We can easily see
 \begin{equation}
-\frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5\text{DIST}(U,U^*_r)}
+\frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5V\cdot\text{DIST}(U,U^*_r)}
 \end{equation}
 \section{Conclusions}
 \textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
