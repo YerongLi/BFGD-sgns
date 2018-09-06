@@ -203,19 +203,32 @@ From defintion of SPPMI and PPMI matrix we have
 Assume for any number of rows in $X$, $L-smoothness$ holds.
 \subsection{FGD}
 On one iteration:
-$$X^+=X-\eta \nabla_i f(X)= X-\eta \nabla_i f=X-\eta\begin{bmatrix}
+$$U^+=U-\eta (\nabla f(X)U)^i= U-\eta (\nabla f)^iU=U-\eta\begin{bmatrix}
     0 \\
     0 \\
     %\hdotsfor{1} \\
-	\nabla_i f(X)\\    
+	(\nabla f)_iU\\    
     0 
 \end{bmatrix}$$
 
-Define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T\nabla f(X)$, which corresponds to the full graient $f(X)$
+Define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
+\begin{equation}
+X^+=X-\eta(\nabla f(X))^iX\Lambda-\eta\Lambda^TX(\nabla f(X))^i
+\end{equation}
+For any picked $i$ we have:
 \begin{equation}
 \begin{split}
-&\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2] * \\
-&\le \mathbb{E}[\nabla^T f_i \nabla f_i]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2]\\
+f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+&=-\eta\langle(\nabla f)_i, (\nabla f)_i\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+&=-\eta\langle\nabla_i f, \nabla_i f\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+&=\langle\nabla_i f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2
+\end{split}
+\end{equation}
+Conditioned on $X$, we have
+\begin{equation}
+\begin{split}
+&\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2] \\
+&\le -\eta\mathbb{E}[\langle\nabla f_i, \nabla f_i\rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2]\\
 &=\eta\frac{1}{V}\langle\nabla f, \nabla f(X)X\Lambda-\Lambda^T X\nabla f(X)\rangle+\frac{L\eta^2}{2V}\|\nabla f(X)\|_F\\
 &\le-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
 \end{split}
