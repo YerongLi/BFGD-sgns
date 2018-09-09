@@ -67,11 +67,11 @@ The negative sampling takes a word-context pair and samples $k$ negative pairs $
 \end{equation}
 Therefore for every word-context pair in vocabulary, the SGNS objective is:
 \begin{equation}
-	l_{SGNS}(w,c)= \#(w,c)\log[\sigma(w^Tc)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^Tc_N)]
+	l_{SGNS}(w,c)= \#(w,c)\log[\sigma(w^\top c)]+k\cdot\mathbb{E}_{c_N\sim P_D}\log[\sigma(-w^\top c_N)]
 \end{equation}
 When the online learning goes through all word-context pairs in corpus, SGNS model learns distributed word representation by maximizing the following objective function:
 \begin{equation}
-	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^Tc)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)] \label{eq: original SGNS}
+	\max_{w,c} \sum_{w,c}\#(w,c)\log\sigma(w^\top c)+k\cdot\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^\top c_N)] \label{eq: original SGNS}
 \end{equation}
 \subsection{Matrix Factorization}
 As what is commonly accepted in literature, some of the "simplest" word embedding models can be viewed as matrix factorizations \cite{li2015word}\cite{NIPS2013_5021}: SGNS is factorizing \textit{shifted} Pointwise Mutual Information matrix, Noise-Contrastive Estimation \cite{gutmann2010noise} is factorizing \textit{shifted} log-conditional-probability matrix for instance. Despite different views on the contrary\cite{arora2015rand}, it has been of parculiar interests to view word embedding views as matrix factorization and studying the landscape of those objectives \cite{li2015word}\cite{mimno2017strange}.
@@ -82,19 +82,19 @@ On \cite{fonarev2017riemannian} illustrates a general two-step scheme for traini
 \section{Our approach}
 \textcolor{magenta}{Description of the algorithm, details and discussion on initialization + step size, maybe already here have some plots to show how these behave (without giving away comparison results, just showing what is their trend in}
 
-In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. The expectation term $\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)]$ can be explicitly expressed as:
+In this paper, we follow literature dicussions characterizing SGNS as a matrix factorization problem \cite{levy2014neural}\cite{levy2015improving}. The expectation term $\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^\top c_N)]$ can be explicitly expressed as:
 \begin{equation}
-	\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^Tc_N)]=\sum_{c_N}\frac{\#(c_N)}{|D|}\log{\sigma(-w^Tc_N)}
+	\mathbb{E}_{c_N\sim P_D}[\log \sigma(-w^\top c_N)]=\sum_{c_N}\frac{\#(c_N)}{|D|}\log{\sigma(-w^\top c_N)}
 \end{equation}
 And one can show that SGNS objective \ref{eq: original SGNS} is factorizing the following matrix \cite{levy2014neural}:
 \begin{equation}
-	X=W^TC= PMI(w_i, c_j)-\log k \label{eq: SPPMI}
+	X=W^\top C= PMI(w_i, c_j)-\log k \label{eq: SPPMI}
 \end{equation}
 where columns in $W$ and $C$ are $w_i$ and $c_i$ respectively. And in our setting, the vocabulary size is $V$ , and the hidden layer size is $d$, so both $W$ and $C$ are $d\times V$.
 
 Different from projector-splitting scheme\cite{fonarev2017riemannian} which shows advantages in optimizing a low-rank $X$ on SGNS model, we observed that the matrix form SGNS objective is both smooth and convex in $X$. And with the explicit expression of SGNS objective $L_{SGNS}(X)$:
 \begin{equation}
-	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^Tc)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^Tc_N)]\}
+	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^\top c)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^\top c_N)]\}
 \end{equation}
 $L_{SGNS}(X)$ is $L-$smooth with lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_F$$
 
@@ -109,9 +109,9 @@ Then we can borrow ideas from Bi-factorized gradient descent  \cite{park2016find
 \State $W\gets W_0$
 \State $C\gets C_0$
 \For{$i\gets 1, \cdots, K$}
-	\State{Calculate gradient of loss $\nabla L(W^TC)$}
-	\State{$W\gets W+\eta\cdot C\nabla L(W^TC)$}
-	\State{$C\gets C+\eta\cdot W\nabla L(W^TC)^T$}
+	\State{Calculate gradient of loss $\nabla L(W^\top C)$}
+	\State{$W\gets W+\eta\cdot C\nabla L(W^\top C)$}
+	\State{$C\gets C+\eta\cdot W\nabla L(W^\top C)^\top$}
 \EndFor
 \State \textbf{return W, C}
 \EndProcedure
@@ -182,7 +182,7 @@ In this section, we provide theoretical guarantees for the convergence of BFGD a
 
 Since BFGD gives the best results starting from SPPMI matrix, we provide a convergence guarantee for SPPMI initialization.
 
-From matrix factorization on SGNS objective \cite{levy2014neural} sparse SPPMI matrix and dense PPMI matrix. PPMI is $X^*$, the optimal solution for SGNS. SPPMI is the $X^0$, with its rank$-r$ approximation $X_r^0=W_0^TC_0$ the starting point.
+From matrix factorization on SGNS objective \cite{levy2014neural} sparse SPPMI matrix and dense PPMI matrix. PPMI is $X^*$, the optimal solution for SGNS. SPPMI is the $X^0$, with its rank$-r$ approximation $X_r^0=W_0^\top C_0$ the starting point.
 
 From defintion of SPPMI and PPMI matrix we have
 %\begin{equation}
@@ -191,15 +191,15 @@ From defintion of SPPMI and PPMI matrix we have
 %From triangle and Mirsky's theorem, we have
 %\begin{equation}
 %\begin{split}
-%\|X^0-W_0^TC_0\|_F\le\|X^*-X_r^*\|_F+\|X^0-X_r^*\|%_F\\
+%\|X^0-W_0^\topC_0\|_F\le\|X^*-X_r^*\|_F+\|X^0-X_r^*\|%_F\\
 %\end{split}
 %\end{equation}
 %Thus,
 %\begin{equation}
-%\|X_r^*-W_0^TC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+%\|X^0-W_0^TC_0\|_F\cite{park2016finding}
+%\|X_r^*-W_0^\topC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+%\|X^0-W_0^\topC_0\|_F\cite{park2016finding}
 %\end{equation}
 %\begin{equation}
-%\|X^*-W_0^TC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+\|X^0-X_r^*\|_F
+%\|X^*-W_0^\topC\|_F\le\|X^0-X^*\|_F+\|X^*-X_r^*\|_F+\|X^0-X_r^*\|_F
 %\end{equation}
 Assume for any number of rows in $X$, $L-smoothness$ holds.
 \subsection{FGD}
@@ -223,9 +223,9 @@ $$(\nabla f)^i=\begin{bmatrix}
 \end{bmatrix}$$
 
 
-For simplification, we define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
+For simplification, we define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^\top(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
 \begin{equation}
-X^+=X-\eta(\nabla f(X))^iX\Lambda-\eta\Lambda^TX(\nabla f(X))^i
+X^+=X-\eta(\nabla f(X))^iX\Lambda-\eta\Lambda^\top X(\nabla f(X))^i
 \end{equation}
 For the randomly picked $i$ we have:
 \begin{equation}
@@ -238,22 +238,32 @@ f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
 \end{equation}
 \begin{equation}
 	\begin{split}
-		&\Tr\langle\nabla^T f(\nabla f)^iX\Lambda\rangle\\
-		=&\Tr\langle
+		&\Tr(\nabla^\top f(\nabla f)^iX\Lambda)\\
+		=&\Tr(
 		\begin{bmatrix}
-		\cdots(\nabla f)^T_i\cdots 
+		\cdots(\nabla f)^\top_i\cdots 
 		\end{bmatrix}
 		\begin{bmatrix}
-		0 \\
-		0 \\
-		%\hdotsfor{1} \\
-		(\nabla f)_i\\    
-		0 
-		\end{bmatrix}X\Lambda\rangle\\
-		=&\Tr\langle (\nabla^T f)_i(\nabla f)_i X\Lambda\rangle\\
-		=&\Tr\langle (\nabla^T f)_i(\nabla f)_i UU^T\rangle-\Tr\langle (\nabla^T f)_i(\nabla f)_i UU^TQ_UQ^T_U(\nabla f)^i\rangle\\
-		=&\Tr\langle (\nabla f)^i(\nabla f)^i UU^T\rangle-\Tr\langle (\nabla f)^i(\nabla f)^i UU^TQ_UQ^T_U(\nabla f)^i\rangle\\
-		\ge& (1-\frac{\eta}{2}\|Q_UQ_U^T\|_2)\|\nabla f U\|_f^2
+			0 \\0 \\(\nabla f)_i\\	0 
+		\end{bmatrix}X\Lambda)\\
+		=&\Tr( (\nabla^\top f)_i(\nabla f)_i X\Lambda)\\
+		=&\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top)-\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
+		=&\Tr( (\nabla f)^i(\nabla f)^i UU^\top)-\Tr( (\nabla f)^i(\nabla f)^i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
+		\ge& (1-\frac{\eta}{2}\|Q_UQ_U^\top\|_2)\|\nabla f U\|_f^2
+	\end{split}
+\end{equation}
+
+\begin{equation}
+	\begin{split}
+		&\Tr(\nabla^\top f\Lambda^\top X(\nabla f)^i)\\
+		=&\Tr((\nabla f)^i\nabla^\top f\Lambda^\top X)\\
+		=&\Tr(
+		\begin{bmatrix}
+			0 \\0 \\(\nabla f)_i\\0 
+		\end{bmatrix}
+		\begin{bmatrix}
+			\cdots(\nabla f)^\top_i\cdots 
+		\end{bmatrix}\Lambda^\top X)
 	\end{split}
 \end{equation}
 Conditioned on $X$, we have
@@ -261,7 +271,7 @@ Conditioned on $X$, we have
 \begin{split}
 &\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2] \\
 &\le -\eta\mathbb{E}[\langle\nabla f_i, \nabla f_i\rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2]\\
-&=\eta\frac{1}{V}\langle\nabla f, \nabla f(X)X\Lambda-\Lambda^T X\nabla f(X)\rangle+\frac{L\eta^2}{2V}\|\nabla f(X)\|_F\\
+&=\eta\frac{1}{V}\langle\nabla f, \nabla f(X)X\Lambda-\Lambda^\top X\nabla f(X)\rangle+\frac{L\eta^2}{2V}\|\nabla f(X)\|_F\\
 &\le-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
 \end{split}
 \end{equation}
