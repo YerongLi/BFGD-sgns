@@ -8,6 +8,7 @@
 \usepackage{url}  %Required
 \usepackage{graphicx}  %Required
 \usepackage{color, amssymb, multirow, algorithm, inputenc, algpseudocode, amsmath}  % Yerong Customized
+\DeclareMathOperator{\Tr}{Tr} % Yerong Customized
 \frenchspacing  %Required
 \setlength{\pdfpagewidth}{8.5in}  %Required
 \setlength{\pdfpageheight}{11in}  %Required
@@ -211,11 +212,22 @@ $$U^+=U-\eta (\nabla f(X)U)^i= U-\eta (\nabla f)^iU=U-\eta\begin{bmatrix}
     0 
 \end{bmatrix}$$
 
-Define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
+here $\nabla f$ is a shorthand for $\nabla f(X)$. We are using $(\nabla f)^i$ for the full $V\times V$ matrix and $(\nabla f)_i$ for a random component/row:
+
+$$(\nabla f)^i=\begin{bmatrix}
+0 \\
+0 \\
+%\hdotsfor{1} \\
+(\nabla f)_i\\    
+0 
+\end{bmatrix}$$
+
+
+For simplification, we define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^T(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
 \begin{equation}
 X^+=X-\eta(\nabla f(X))^iX\Lambda-\eta\Lambda^TX(\nabla f(X))^i
 \end{equation}
-For any picked $i$ we have:
+For the randomly picked $i$ we have:
 \begin{equation}
 \begin{split}
 f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
@@ -223,6 +235,26 @@ f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
 &=-\eta\langle\nabla_i f, \nabla_i f\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
 &=\langle\nabla_i f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2
 \end{split}
+\end{equation}
+\begin{equation}
+	\begin{split}
+		&\Tr\langle\nabla^T f(\nabla f)^iX\Lambda\rangle\\
+		=&\Tr\langle
+		\begin{bmatrix}
+		\cdots(\nabla f)^T_i\cdots 
+		\end{bmatrix}
+		\begin{bmatrix}
+		0 \\
+		0 \\
+		%\hdotsfor{1} \\
+		(\nabla f)_i\\    
+		0 
+		\end{bmatrix}X\Lambda\rangle\\
+		=&\Tr\langle (\nabla^T f)_i(\nabla f)_i X\Lambda\rangle\\
+		=&\Tr\langle (\nabla^T f)_i(\nabla f)_i UU^T\rangle-\Tr\langle (\nabla^T f)_i(\nabla f)_i UU^TQ_UQ^T_U(\nabla f)^i\rangle\\
+		=&\Tr\langle (\nabla f)^i(\nabla f)^i UU^T\rangle-\Tr\langle (\nabla f)^i(\nabla f)^i UU^TQ_UQ^T_U(\nabla f)^i\rangle\\
+		\ge& (1-\frac{\eta}{2}\|Q_UQ_U^T\|_2)\|\nabla f U\|_f^2
+	\end{split}
 \end{equation}
 Conditioned on $X$, we have
 \begin{equation}
@@ -237,7 +269,7 @@ Which is to say
 \begin{equation}
  \mathbb{E}[f(X^+)]-f(X_r^*)\le f(X)-f(X_r^*)-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
 \end{equation}
-By eqeuation(18) in \cite{tu2015low} we have 
+By equation(18) in \cite{tu2015low} we have 
 \begin{equation}
 f(X)-f(X_r^*)\le\frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
 \end{equation}
