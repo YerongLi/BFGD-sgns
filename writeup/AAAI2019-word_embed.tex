@@ -203,7 +203,7 @@ From defintion of SPPMI and PPMI matrix we have
 %\end{equation}
 Assume for any number of rows in $X$, $L-smoothness$ holds.
 \subsection{FGD}
-On one iteration:
+On one iteration $X$ is $V \times V$:
 $$U^+=U-\eta (\nabla f(X)U)^i= U-\eta (\nabla f)^iU=U-\eta\begin{bmatrix}
     0 \\
     0 \\
@@ -212,7 +212,11 @@ $$U^+=U-\eta (\nabla f(X)U)^i= U-\eta (\nabla f)^iU=U-\eta\begin{bmatrix}
     0 
 \end{bmatrix}$$
 
-here $\nabla f$ is a shorthand for $\nabla f(X)$. We are using $(\nabla f)^i$ for the full $V\times V$ matrix and $(\nabla f)_i$ for a random component/row:
+Here $\nabla f$ is a shorthand for $\nabla f(X)$ and $\eta$ is given by
+\[
+\eta=\frac{1}{16(L\|X^0\|_2+\|\nabla f(X^0)\|_2)}
+\]
+ We are using $(\nabla f)^i$ for the full $V\times V$ matrix and $(\nabla f)_i$ for a random component/row:
 
 $$(\nabla f)^i=\begin{bmatrix}
 0 \\
@@ -223,19 +227,21 @@ $$(\nabla f)^i=\begin{bmatrix}
 \end{bmatrix}$$
 
 
-For simplification, we define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^\top(\nabla f(X))^i$, which corresponds to the stochastic graient $(f(X))^i$. It is easy to check that 
+For simplification, we define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^\top(\nabla f(X))^i$, which corresponds to the stochastic gradient $(f(X))^i$. It is easy to check that 
 \begin{equation}
 X^+=X-\eta(\nabla f(X))^iX\Lambda-\eta\Lambda^\top X(\nabla f(X))^i
 \end{equation}
 For the randomly picked $i$ we have:
-\begin{equation}
-\begin{split}
-f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
-&=-\eta\langle(\nabla f)_i, (\nabla f)_i\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
-&=-\eta\langle\nabla_i f, \nabla_i f\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
-&=\langle\nabla_i f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2
-\end{split}
-\end{equation}
+%\begin{equation}
+%\begin{split}
+%f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+%&=-\eta\langle(\nabla f)_i, (\nabla f)_i\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+%&=-\eta\langle\nabla_i f, \nabla_i f\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
+%&=\langle\nabla_i f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2
+%\end{split}
+%\end{equation}
+
+%This follows from the symmetry of $X$, $f(X)$ the observation: $$\Tr(\nabla^\top f\Lambda^\top X(\nabla f)^i)=\Tr(\Lambda^\top X(\nabla f)^i\nabla^\top f)=\Tr(\nabla f(\nabla^\top  f)^i X\Lambda)$$
 \begin{equation}
 	\begin{split}
 		&\Tr(\nabla^\top f(\nabla f)^iX\Lambda)\\
@@ -246,12 +252,12 @@ f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
 		\begin{bmatrix}
 			0 \\0 \\(\nabla f)_i\\	0 
 		\end{bmatrix}X\Lambda)\\
-		=&\Tr( (\nabla^\top f)_i(\nabla f)_i X\Lambda)\\
-		=&\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top)-\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
-		=&\Tr( (\nabla f)^i(\nabla f)^i UU^\top)-\Tr( (\nabla f)^i(\nabla f)^i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
-		\ge& (1-\frac{\eta}{2}\|Q_UQ_U^\top\|_2)\|\nabla f U\|_f^2
 	\end{split}
 \end{equation}
+%		=&\Tr( (\nabla^\top f)_i(\nabla f)_i X\Lambda)\\
+%=&\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top)-\Tr( (\nabla^\top f)_i(\nabla f)_i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
+%=&\Tr( (\nabla f)^i(\nabla f)^i UU^\top)-\Tr( (\nabla f)^i(\nabla f)^i UU^\top Q_UQ^\top_U(\nabla f)^i)\\
+%\ge& (1-\frac{\eta}{2}\|Q_UQ_U^\top\|_2)\|\nabla f U\|_f^2
 
 \begin{equation}
 	\begin{split}
@@ -266,33 +272,103 @@ f(X^+)-f(X)&\le\langle\nabla f, X^+-X\rangle+\frac{L}{2}\|X^+-X\|_F^2\\
 		\end{bmatrix}\Lambda^\top X)
 	\end{split}
 \end{equation}
-Conditioned on $X$, we have
+
+Thus 
 \begin{equation}
 \begin{split}
-&\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2] \\
-&\le -\eta\mathbb{E}[\langle\nabla f_i, \nabla f_i\rangle]+\frac{L}{2}\mathbb{E}[\|x_i^+-x_i\|^2]\\
-&=\eta\frac{1}{V}\langle\nabla f, \nabla f(X)X\Lambda-\Lambda^\top X\nabla f(X)\rangle+\frac{L\eta^2}{2V}\|\nabla f(X)\|_F\\
+&\mathbb{E}[\Tr(\nabla^\top f\Lambda^\top X(\nabla f)^i)]=\mathbb{E}[\Tr(\nabla^\top f\Lambda^\top X(\nabla f)^i)]\\
+&=\frac{1}{V} \Tr(\nabla f(X)\nabla f(X)X\Lambda)
+\end{split}
+\end{equation}
+Conditioned on $X$, we have
+\begin{equation}
+f(X)-f(X_r^*)\begin{split}
+&\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|X^+-X\|_F^2] \\
+&=-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{L\eta^2}{2V}\|\nabla f(X)X\Lambda+\nabla \Lambda Xf(X)\|^2_F\\
+&\overset{(i)}{\le}-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{V}\|\nabla f(X)X\Lambda\|^2_F\\
+&\le-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{V}\|\nabla f(X)U\|^2_F\|X\|_2\|\Lambda\|^2_2\\
+&\overset{(ii)}{\le}-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{\eta}{7V}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\overset{(iii)}{\le}-\frac{62\eta}{32V}\|\nabla f(X)U\|^2_F+\frac{\eta}{7V}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
 &\le-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
 \end{split}
 \end{equation}
-Which is to say
+$(i)$ is from triangle inequality, $(ii)$ is from equation (18) in \cite{park2016finding} and $(iii)$ is from Lemma $A.5$ in \cite{park2016finding} which implies $\|\Lambda\|_2\le \frac{33}{32}$ and $\sigma_V(\Lambda)\ge \frac{31}{32}$.
+
+Which is to say for the optimal $X_r^*$:
 \begin{equation}
  \mathbb{E}[f(X^+)]-f(X_r^*)\le f(X)-f(X_r^*)-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
+\label{eq: sublinear}
 \end{equation}
 By equation(18) in \cite{tu2015low} we have 
 \begin{equation}
-f(X)-f(X_r^*)\le\frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r)
+f(X)-f(X_r^*)\le\frac{5}{2}\|\nabla f(X)\|_F\text{DIST}(U,U^*_r) \label{eq:distance}
 \end{equation}
 Thus with 
-$$\delta^+= \mathbb{E}[f(X^+)]-f(X_r^*)\quad \delta=f(X)-f(X_r^*)$$
+$$\delta^+= \mathbb{E}[f(X^+)]-f(X_r^*)\quad \delta=\mathbb{E}[f(X)]-f(X_r^*)$$
 %\end{equation}
 We can easily see
 \begin{equation}
-\frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5V\cdot\text{DIST}(U,U^*_r)}
+\begin{split}
+\delta^+&\le\delta -\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F\\
+&\le\delta -\frac{17\eta}{10V}\times(\frac{2}{5})^2\cdot\frac{\delta^2}{\text{DIST}^2(U,U^*_r)}\\
+\end{split}
 \end{equation}
+\begin{equation}
+\frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5V\cdot\text{DIST}(U,U^*_r)}\\
+\end{equation}
+\subsection{Word Embedding}
+Define $U=\begin{bmatrix}W\\C\end{bmatrix}$, $X=WC^T$
+\begin{equation}
+\nabla_U f=\begin{bmatrix}\nabla_X fC\\\nabla^T_X fW\end{bmatrix}=\begin{bmatrix}0&\nabla_X f\\ \\\nabla^T_X f&0\end{bmatrix}\begin{bmatrix}W\\C\end{bmatrix}
+\end{equation}
+Going back to the skip gram iterations, which can be seen as updating the matrix $U$.
+
+Assume from $U$ to $U^+$, we observed a word-context pair $(w_i,c_j)$ with $k$ negative samples oriented to the oriented word $w_i$, namely $(w_i,c_{n1}),\cdots,(w_i,c_{nk})$, Define matrix gradient matrix $G$ as follows:
+\begin{equation}
+G=\begin{bmatrix}0&G'\\G'^T&0\end{bmatrix}
+\end{equation}
+where
+\[
+\begin{split}
+\{G'\}_{i,j}&=-\sigma(-c_jw_i^T)\\
+\{G'\}_{i,n1}&=\sigma(c_{n1}w_i^T)\\
+\cdots\\
+\{G'\}_{i,nk}&=\sigma(c_{nk}w_i^T)
+\end{split}
+\]
+with other elements in $G'$ zeros;
+
+%\[
+%\begin{split}
+%\{G_n\}_{j,i}&=-\sigma(-c_jw_i^T)\\
+%\{G_n\}_{n1,i}&=\sigma(c_{n1}w_i^T)\\
+%\cdots\\
+%\{G_n\}_{nk,i}&=\sigma(c_{nk}w_i^T)\\
+%\end{split}
+%\]
+
+Therefore in matrix form, $U$ is updating to $U^+$ with gradient matrix $G$:
+\begin{equation}
+U^+=U+\eta GU
+\end{equation}
+Intuitively, $G'$ is updating $\nabla_X f$ row by row.
+
+We have to show $G$ is doing coordinate ascend:
+
+\textbf{Lemma:}  Intuitively, $G'$ is updating $\nabla_X f$ row by row, specifically,
+\begin{equation}
+	\mathbb{E}(G')=\nabla_X f
+\end{equation}
+
+\textbf{Proof:} In one epoch, as the observed pairs go through all corpus, $(w_i,c_j)$ appears with distribution: \[\{G'\}_{i,j}\sim\frac{\#(w_i, c_j)}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
+with negative samples from the distribution:
+ \[\{G'\}_{i,ns}\sim\frac{\sum_i\#(w_i, c_{ns})}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
+ 
+ Thus, for an individual element $\{G'\}_{k,l}$ in $G'$, we have
+ \[\mathbb{E}(\{G'\}_{k,l})=\frac{\#(w_k, c_l)}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
 \section{Conclusions}
 \textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
-
+ 
 %References and End of Paper
 %These lines must be placed at the end of your paper
 \bibliography{refs.bib}
