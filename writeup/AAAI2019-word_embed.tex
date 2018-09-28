@@ -94,9 +94,9 @@ where columns in $W$ and $C$ are $w_i$ and $c_i$ respectively. And in our settin
 
 Different from projector-splitting scheme\cite{fonarev2017riemannian} which shows advantages in optimizing a low-rank $X$ on SGNS model, we observed that the matrix form SGNS objective is both smooth and convex in $X$. And with the explicit expression of SGNS objective $L_{SGNS}(X)$:
 \begin{equation}
-	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^\top c)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^\top c_N)]\}
+	L_{SGNS}(X)=\sum_{w,c}\{\#(w,c)\log\sigma(w^\top c)+k\cdot\sum_{c_N}\frac{\#(c_N)}{|D|}[\log \sigma(-w^\top c_N)]\} \label{eq: smoothness}
 \end{equation}
-$L_{SGNS}(X)$ is $L-$smooth with lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_F$$
+$L_{SGNS}(X)$ is $L-$smooth with Lipschitz constant $$L=\frac{1}{4}\|\{\#(w,c)+k\frac{\#(w)\#(c)}{|D|}\}_{w,c}\|_F$$
 
 
 
@@ -316,10 +316,17 @@ We can easily see
 \begin{equation}
 \frac{1}{\delta^+}\le\frac{1}{\delta}+ \frac{\eta}{5V\cdot\text{DIST}(U,U^*_r)}\\
 \end{equation}
-\subsection{Word Embedding}
+\subsection{Convergence of Word Embedding}
 Define $U=\begin{bmatrix}W\\C\end{bmatrix}$, $X=WC^T$
 \begin{equation}
 \nabla_U f=\begin{bmatrix}\nabla_X fC\\\nabla^T_X fW\end{bmatrix}=\begin{bmatrix}0&\nabla_X f\\ \\\nabla^T_X f&0\end{bmatrix}\begin{bmatrix}W\\C\end{bmatrix}
+\end{equation}
+Specifically, 
+\begin{equation}
+\begin{split}
+	&\{\nabla_X f(X=WC^T)\}_{kl}\\
+	=&\sum_{i'}\sum_{j'}\#(w_k, c_l)\cdot(\sigma(-c_lw^T_k))+k\sum_{i'}\#(w_{i'}, c_l)\cdot(-\sigma(c_lw^T_k))\label{eq: grad f}
+\end{split}
 \end{equation}
 Going back to the skip gram iterations, which can be seen as updating the matrix $U$.
 
@@ -328,14 +335,16 @@ Assume from $U$ to $U^+$, we observed a word-context pair $(w_i,c_j)$ with $k$ n
 G=\begin{bmatrix}0&G'\\G'^T&0\end{bmatrix}
 \end{equation}
 where
-\[
+\begin{equation}
 \begin{split}
-\{G'\}_{i,j}&=-\sigma(-c_jw_i^T)\\
-\{G'\}_{i,n1}&=\sigma(c_{n1}w_i^T)\\
+\{G'\}_{i,j}&=\sigma(-c_jw_i^T)\\
+\{G'\}_{i,n1}&=-\sigma(c_{n1}w_i^T)\\
 \cdots\\
-\{G'\}_{i,nk}&=\sigma(c_{nk}w_i^T)
+\{G'\}_{i,nk}&=-\sigma(c_{nk}w_i^T)
 \end{split}
-\]
+\end{equation}
+
+
 with other elements in $G'$ zeros;
 
 %\[
@@ -349,7 +358,7 @@ with other elements in $G'$ zeros;
 
 Therefore in matrix form, $U$ is updating to $U^+$ with gradient matrix $G$:
 \begin{equation}
-U^+=U+\eta GU
+U^+=U+\eta GU \label{eq: ascent}
 \end{equation}
 Intuitively, $G'$ is updating $\nabla_X f$ row by row.
 
@@ -357,17 +366,52 @@ We have to show $G$ is doing coordinate ascend:
 
 \textbf{Lemma:}  Intuitively, $G'$ is updating $\nabla_X f$ row by row, specifically,
 \begin{equation}
-	\mathbb{E}(G')=\nabla_X f
+	\mathbb{E}(G')=\frac{1}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\cdot \nabla_X f
 \end{equation}
 
 \textbf{Proof:} In one epoch, as the observed pairs go through all corpus, $(w_i,c_j)$ appears with distribution: \[\{G'\}_{i,j}\sim\frac{\#(w_i, c_j)}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
 with negative samples from the distribution:
- \[\{G'\}_{i,ns}\sim\frac{\sum_i\#(w_i, c_{ns})}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
+ \[\{G'\}_{i,ns}\sim\frac{\sum_{i'}\#(w_{i'}, c_{ns})}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\quad\text{which is independent of $i$}\]
  
  Thus, for an individual element $\{G'\}_{k,l}$ in $G'$, we have
- \[\mathbb{E}(\{G'\}_{k,l})=\frac{\#(w_k, c_l)}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\]
+ \[
+ \begin{split}
+&\mathbb{E}(\{G'\}_{k,l})\\
+=&\sum_{i'}\sum_{j'}\frac{\#(w_k, c_l)}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\cdot(\sigma(-c_lw^T_k))+\frac{k\sum_{i'}\#(w_{i'}, c_{ns})}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\cdot(-\sigma(c_lw^T_k))\\
+=&\frac{1}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}[\sum_{i'}\sum_{j'}\#(w_k, c_l)\cdot(\sigma(-c_lw^T_k))+k\sum_{i'}\#(w_{i'}, c_{ns})\cdot(-\sigma(c_lw^T_k))]
+ \end{split} \label{eq :expectation}\]
+  
+Matching \ref{eq :expectation} with \ref{eq: grad f}, we know that
+\begin{equation}
+\mathbb{E}(\{G'\}_{k,l})=\frac{1}{\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}\cdot \{\nabla_X f(X=WC^T)\}_{kl} \label{eq: scaling}
+\end{equation} 
+\[
+\text{Q.E.D}\blacksquare
+\]
+For short, we denote the scaling factor as:
+\begin{equation}
+S={\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}
+\end{equation}
+Defining define $\Lambda=I-\frac{\eta}{2}Q_UQ_U^\top G$, from equation \ref{eq: ascent}, we know
+\begin{equation}
+X^+=\begin{bmatrix}W^+\\C^+\end{bmatrix}\begin{bmatrix}W^{+T}C^{+T}\end{bmatrix}=X+\eta GX\Lambda+\eta\Lambda^\top XG
+\end{equation}
+The loss function $f(X)$ is concave on $X=\begin{bmatrix}W\\C\end{bmatrix}\begin{bmatrix}W^{T} C^{T}\end{bmatrix}$ and $L'=\frac{L}{2}-$ smooth with $L$ in equation \ref{eq: smoothness}
+\
+Conditioned on $X$, we have
+\begin{equation}
+f(X)-f(X_r^*)\begin{split}
+&\mathbb{E}[f(X^+)]-f(X)\\&\ge \mathbb{E}[\langle G, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|X^+-X\|_F^2] \\
+&=-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{L\eta^2}{2S}\|\nabla f(X)X\Lambda+\nabla \Lambda Xf(X)\|^2_F\\
+&\overset{(i)}{\ge}-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{S}\|\nabla f(X)X\Lambda\|^2_F\\
+&\ge-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{S}\|\nabla f(X)U\|^2_F\|X\|_2\|\Lambda\|^2_2\\
+&\overset{(ii)}{\ge}-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\overset{(iii)}{\ge}-\frac{62\eta}{32S}\|\nabla f(X)U\|^2_F+\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\ge-\frac{17\eta}{10S}\|\nabla f(X)U\|^2_F
+\end{split}
+\end{equation}
 \section{Conclusions}
-\textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
+\textcolor{magenta}{In disicussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
  
 %References and End of Paper
 %These lines must be placed at the end of your paper
