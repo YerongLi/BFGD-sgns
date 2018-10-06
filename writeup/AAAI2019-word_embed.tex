@@ -282,13 +282,13 @@ Thus
 \end{equation}
 Conditioned on $X$, we have
 \begin{equation}
-f(X)-f(X_r^*)\begin{split}
+\begin{split}
 &\mathbb{E}[f(X^+)]-f(X)\\&\le \mathbb{E}[\langle\nabla_i f, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|X^+-X\|_F^2] \\
 &=-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{L\eta^2}{2V}\|\nabla f(X)X\Lambda+\nabla \Lambda Xf(X)\|^2_F\\
 &\overset{(i)}{\le}-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{V}\|\nabla f(X)X\Lambda\|^2_F\\
 &\le-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{V}\|\nabla f(X)U\|^2_F\|X\|_2\|\Lambda\|^2_2\\
 &\overset{(ii)}{\le}-\frac{2\eta}{V}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{\eta}{7V}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
-&\overset{(iii)}{\le}-\frac{62\eta}{32V}\|\nabla f(X)U\|^2_F+\frac{\eta}{7V}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\overset{(iii)}{\le}-\frac{31\eta}{16V}\|\nabla f(X)U\|^2_F+\frac{\eta}{7V}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
 &\le-\frac{17\eta}{10V}\|\nabla f(X)U\|^2_F
 \end{split}
 \end{equation}
@@ -400,18 +400,23 @@ The loss function $f(X)$ is concave on $X=\begin{bmatrix}W\\C\end{bmatrix}\begin
 \
 Conditioned on $X$, we have
 \begin{equation}
-f(X)-f(X_r^*)\begin{split}
-&\mathbb{E}[f(X^+)]-f(X)\\&\ge \mathbb{E}[\langle G, X^+-X \rangle]+\frac{L}{2}\mathbb{E}[\|X^+-X\|_F^2] \\
-&=-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{L\eta^2}{2S}\|\nabla f(X)X\Lambda+\nabla \Lambda Xf(X)\|^2_F\\
-&\overset{(i)}{\ge}-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{S}\|\nabla f(X)X\Lambda\|^2_F\\
-&\ge-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{2L\eta^2}{S}\|\nabla f(X)U\|^2_F\|X\|_2\|\Lambda\|^2_2\\
-&\overset{(ii)}{\ge}-\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)+\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
-&\overset{(iii)}{\ge}-\frac{62\eta}{32S}\|\nabla f(X)U\|^2_F+\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
-&\ge-\frac{17\eta}{10S}\|\nabla f(X)U\|^2_F
+\begin{split}
+&\mathbb{E}[f(X^+)]-f(X)\\&\ge \mathbb{E}[\langle \nabla f(X), X^+-X \rangle]-\frac{L'}{2}\mathbb{E}[\|X^+-X\|_F^2] \\
+&=\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)-\frac{L'\eta^2}{2S}\|\nabla f(X)X\Lambda+\nabla \Lambda Xf(X)\|^2_F\\
+&\overset{(i)}{\ge}\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)-\frac{2L'\eta^2}{S}\|\nabla f(X)X\Lambda\|^2_F\\
+&\ge\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)-\frac{2L'\eta^2}{S}\|\nabla f(X)U\|^2_F\|X\|_2\|\Lambda\|^2_2\\
+&\overset{(ii)}{\ge}\frac{2\eta}{S}\Tr(\nabla f(X)\nabla f(X)X\Lambda)-\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\overset{(iii)}{\ge}\frac{31\eta}{16S}\|\nabla f(X)U\|^2_F-\frac{\eta}{7S}(\frac{33}{32})^2\|\nabla f(X)U\|^2_F\\
+&\ge\frac{17\eta}{10S}\|\nabla f(X)U\|^2_F
 \end{split}
 \end{equation}
+
+$(i)$ is from triangle inequality, $(ii)$ is from equation (18) in \cite{park2016finding} and $(iii)$ is from Lemma $A.5$ in \cite{park2016finding} which implies $\|\Lambda\|_2\le \frac{33}{32}$ and $\sigma_V(\Lambda)\ge \frac{31}{32}$
+
+Due to concaveness of $f(X)$ on $X$ and definition of $\text{DIST}(\cdot,\cdot)$, we have 
+
 \section{Conclusions}
-\textcolor{magenta}{In disicussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
+\textcolor{magenta}{In discussion, we should claim that our purpose is to design a distributed version of the non-convex algorithm that can scale up and out.}
  
 %References and End of Paper
 %These lines must be placed at the end of your paper
