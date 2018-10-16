@@ -319,7 +319,7 @@ We can easily see
 \subsection{Convergence of Word Embedding}
 Define $U=\begin{bmatrix}W\\C\end{bmatrix}$, $X=WC^T$
 \begin{equation}
-\nabla_U f=\begin{bmatrix}\nabla_X fC\\\nabla^T_X fW\end{bmatrix}=\begin{bmatrix}0&\nabla_X f\\ \\\nabla^T_X f&0\end{bmatrix}\begin{bmatrix}W\\C\end{bmatrix}
+\nabla_U f=\begin{bmatrix}\nabla_X fC\\\nabla^T_X fW\end{bmatrix}=\begin{bmatrix}0&\nabla_X f\\ \\\nabla^T_X f&0\end{bmatrix}\begin{bmatrix}W\\C\end{bmatrix}\label{eq: gradient}
 \end{equation}
 Specifically, 
 \begin{equation}
@@ -388,6 +388,10 @@ Matching \ref{eq :expectation} with \ref{eq: grad f}, we know that
 \[
 \text{Q.E.D}\blacksquare
 \]
+This lemma tells us that 
+\begin{equation}
+a
+\end{equation}
 For short, we denote the scaling factor as:
 \begin{equation}
 S={\sum_{i'}\sum_{j'} \#(w_{i'}, c_{j'})}
